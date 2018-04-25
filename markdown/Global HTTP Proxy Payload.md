@@ -14,7 +14,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`ProxyType`|String|If you choose manual proxy type, you need the proxy server address including its port and optionally a username and password into the proxy server. If you choose auto proxy type, you can enter a proxy autoconfiguration (PAC) URL.|
 |`ProxyServer`|String|The proxy server’s network address.|
-|`ProxyServerPort`|Number|The proxy server’s port|
+|`ProxyServerPort`|Integer|The proxy server’s port|
 |`ProxyUsername`|String|Optional. The username used to authenticate to the proxy server.|
 |`ProxyPassword`|String|Optional. The password used to authenticate to the proxy server.|
 |`ProxyPACURL`|String|Optional. The URL of the PAC file that defines the proxy configuration.|

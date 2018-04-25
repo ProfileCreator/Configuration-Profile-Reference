@@ -15,6 +15,6 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`CardDAVUsername`|String|The user's login name.|
 |`CardDAVPassword`|String|Optional. The user's password.|
 |`CardDAVUseSSL`|Boolean|Optional. Whether or not to use SSL.|
-|`CardDAVPort`|Number|Optional. The port on which to connect to the server.|
+|`CardDAVPort`|Integer|Optional. The port on which to connect to the server.|
 |`CardDAVPrincipalURL`|String|Optional. Not supported on macOS. The base URL to the user’s address book.|
   

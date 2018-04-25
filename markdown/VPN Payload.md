@@ -111,12 +111,12 @@ The `OnDemandRules` dictionaries can contain one or more of the following keys:
 |Key|Type|Value|
 |-|-|-|
 |`Action`|String|The action to take if this dictionary matches the current network. Possible values are:</br></br>* `Allow`—*Deprecated.* Allow VPN On Demand to connect if triggered.  </br></br>* `Connect`—Unconditionally initiate a VPN connection on the next network attempt.  </br></br>* `Disconnect`—Tear down the VPN connection and do not reconnect on demand as long as this dictionary matches.  </br></br>* `EvaluateConnection`—Evaluate the `ActionParameters` array for each connection attempt.  </br></br>* `Ignore`—Leave any existing VPN connection up, but do not reconnect on demand as long as this dictionary matches.  </br></br>|
-|`ActionParameters`|Array of dictionaries|A dictionary that provides rules similar to the `OnDemandRules` dictionary, but evaluated on each connection instead of when the network changes. These dictionaries are evaluated in order, and the behavior is determined by the first dictionary that matches.</br>The keys allowed in each dictionary are described in [Table 1-1](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW41).</br>**Note:** This array is used only for dictionaries in which `EvaluateConnection` is the `Action` value.|
-|`DNSDomainMatch`|Array of strings|An array of domain names.
+|`ActionParameters`|Array of Dictionaries|A dictionary that provides rules similar to the `OnDemandRules` dictionary, but evaluated on each connection instead of when the network changes. These dictionaries are evaluated in order, and the behavior is determined by the first dictionary that matches.</br>The keys allowed in each dictionary are described in [Table 1-1](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW41).</br>**Note:** This array is used only for dictionaries in which `EvaluateConnection` is the `Action` value.|
+|`DNSDomainMatch`|Array of Strings|An array of domain names.
 This rule matches if any of the domain names in the specified list matches any domain in the device’s search domains list.</br>A wildcard '*' prefix is supported. For example, `*.example.com` matches against either `mydomain.example.com` or `yourdomain.example.com`.|
-|`DNSServerAddressMatch`|Array of strings|An array of IP addresses. This rule matches if any of the network’s specified DNS servers match any entry in the array.</br>Matching with a single wildcard is supported. For example, `17.*` matches any DNS server in the class A 17 subnet.|
+|`DNSServerAddressMatch`|Array of Strings|An array of IP addresses. This rule matches if any of the network’s specified DNS servers match any entry in the array.</br>Matching with a single wildcard is supported. For example, `17.*` matches any DNS server in the class A 17 subnet.|
 |`InterfaceTypeMatch`|String|An interface type. If specified, this rule matches only if the primary network interface hardware matches the specified type.</br>Supported values are `Ethernet`, `WiFi`, and `Cellular`.|
-|`SSIDMatch`|Array of strings|An array of SSIDs to match against the current network. If the network is not a Wi-Fi network or if the SSID does not appear in this array, the match fails.</br>Omit this key and the corresponding array to match against any SSID.|
+|`SSIDMatch`|Array of Strings|An array of SSIDs to match against the current network. If the network is not a Wi-Fi network or if the SSID does not appear in this array, the match fails.</br>Omit this key and the corresponding array to match against any SSID.|
 |`URLStringProbe`|String|A URL to probe. If this URL is successfully fetched (returning a `200` HTTP status code) without redirection, this rule matches.|
   
 
@@ -125,9 +125,9 @@ The keys allowed in each `ActionParameters` dictionary are described in .
 
 |Key|Type|Value|
 |-|-|-|
-|`Domains`|Array of strings|*Required.* The domains for which this evaluation applies.|
+|`Domains`|Array of Strings|*Required.* The domains for which this evaluation applies.|
 |`DomainAction`|String|*Required.* Defines the VPN behavior for the specified domains. Allowed values are:</br></br>* ConnectIfNeeded—The specified domains should trigger a VPN connection attempt if domain name resolution fails, such as when the DNS server indicates that it cannot resolve the domain, responds with a redirection to a different server, or fails to respond (timeout).  </br></br>* NeverConnect—The specified domains will not trigger a VPN connection nor be accessible through an existing VPN connection.  </br></br>|
-|`RequiredDNSServers`|Array of strings|*Optional.* An array of IP addresses of DNS servers to be used for resolving the specified domains. These servers need not be part of the device’s current network configuration. If these DNS servers are not reachable, a VPN connection is established in response. These DNS servers should be either internal DNS servers or trusted external DNS servers.</br>**Note:** This key is valid only if the value of `DomainAction` is `ConnectIfNeeded`.|
+|`RequiredDNSServers`|Array of Strings|*Optional.* An array of IP addresses of DNS servers to be used for resolving the specified domains. These servers need not be part of the device’s current network configuration. If these DNS servers are not reachable, a VPN connection is established in response. These DNS servers should be either internal DNS servers or trusted external DNS servers.</br>**Note:** This key is valid only if the value of `DomainAction` is `ConnectIfNeeded`.|
 |`RequiredURLStringProbe`|String|*Optional.* An `HTTP` or `HTTPS` (preferred) URL to probe, using a `GET` request. If no HTTP response code is received from the server, a VPN connection is established in response.</br>**Note:** This key is valid only if the value of `DomainAction` is `ConnectIfNeeded`.|
   
   
@@ -205,7 +205,7 @@ The `Proxies` dictionary may contain the following keys:
 |-|-|-|
 |`ProxyAutoConfigEnable`|Integer|Optional. Set to 1 to enable automatic proxy configuration. Defaults to 0.|
 |`ProxyAutoConfigURLString`|String|Optional. URL to the location of the proxy auto-configuration file. Used only when `ProxyAutoConfigEnable` is 1.|
-|`SupplementalMatchDomains`|Array of strings|Optional. If set, then only connections to hosts within one or more of the specified domains will use the proxy settings|
+|`SupplementalMatchDomains`|Array of Strings|Optional. If set, then only connections to hosts within one or more of the specified domains will use the proxy settings|
   
 
 If `ProxyAutoConfigEnable` is 0, the dictionary may also contain the following keys:  
@@ -232,11 +232,11 @@ If `VPNType` is `AlwaysOn`, the following keys may be provided in a dictionary:
 |Key|Type|Value|
 |-|-|-|
 |`UIToggleEnabled`|Integer|Optional. If set to 1, allows the user to disable this VPN configuration. Defaults to 0.|
-|`TunnelConfigurations`|Array of dictionaries|Required. See below.|
-|`ServiceExceptions`|Array of dictionaries|Optional. See below.|
+|`TunnelConfigurations`|Array of Dictionaries|Required. See below.|
+|`ServiceExceptions`|Array of Dictionaries|Optional. See below.|
 |`AllowCaptiveWebSheet`|Integer|Optional. Set to 1 to allow traffic from Captive Web Sheet outside the VPN tunnel. Defaults to 0.|
 |`AllowAllCaptiveNetworkPlugins`|Integer|Optional. Set to 1 to allow traffic from all Captive Networking apps outside the VPN tunnel to perform Captive network handling. Defaults to 0.|
-|`AllowedCaptiveNetworkPlugins`|Array of dictionaries|Optional. Array of Captive Networking apps whose traffic will be allowed outside the VPN tunnel to perform Captive network handling. Used only when `AllowAllCaptiveNetworkPlugins` is 0.</br>Each dictionary in the `AllowedCaptiveNetworkPlugins` array must contain a `BundleIdentifier` key of type string, the value of which is the app’s bundle identifier.</br>Captive Networking apps may require additional entitlements to operate in a captive environment.|
+|`AllowedCaptiveNetworkPlugins`|Array of Dictionaries|Optional. Array of Captive Networking apps whose traffic will be allowed outside the VPN tunnel to perform Captive network handling. Used only when `AllowAllCaptiveNetworkPlugins` is 0.</br>Each dictionary in the `AllowedCaptiveNetworkPlugins` array must contain a `BundleIdentifier` key of type string, the value of which is the app’s bundle identifier.</br>Captive Networking apps may require additional entitlements to operate in a captive environment.|
   
 
 Each dictionary in a `TunnelConfigurations` array may contain the following keys:  
@@ -244,7 +244,7 @@ Each dictionary in a `TunnelConfigurations` array may contain the following keys
 |Key|Type|Value|
 |-|-|-|
 |`ProtocolType`|String|Must be IKEv2.|
-|`Interfaces`|Array of strings|Optional. Specify the interfaces to which this configuration applies. Valid values are `Cellular` and `WiFi`. Defaults to `Cellular, WiFi`.|
+|`Interfaces`|Array of Strings|Optional. Specify the interfaces to which this configuration applies. Valid values are `Cellular` and `WiFi`. Defaults to `Cellular, WiFi`.|
   
 
 In addition, all keys defined for the IKEv2 dictionary, such as `RemoteAddress` and `LocalIdentifier` may be present in a `TunnelConfigurations` dictionary.  

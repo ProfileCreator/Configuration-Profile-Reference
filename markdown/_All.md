@@ -16,10 +16,10 @@ At the top level, a profile property list contains the following keys:
 |`PayloadUUID`|String|A globally unique identifier for the profile. The actual content is unimportant, but it must be globally unique. In macOS, you can use `uuidgen` to generate reasonable UUIDs.|
 |`PayloadRemovalDisallowed`|Boolean|Optional. Supervised only. If present and set to `true`, the user cannot delete the profile (unless the profile has a removal password and the user provides it).|
 |`PayloadType`|String|The only supported value is `Configuration`.|
-|`PayloadVersion`|Number|The version number of the profile format. This describes the version of the configuration profile as a whole, not of the individual profiles within it.</br>Currently, this value should be `1`.|
+|`PayloadVersion`|Integer|The version number of the profile format. This describes the version of the configuration profile as a whole, not of the individual profiles within it.</br>Currently, this value should be `1`.|
 |`PayloadScope`|String|Optional. Determines if the profile should be installed for the system or the user. In many cases, it determines the location of the certificate items, such as keychains. Though it is not possible to declare different payload scopes, payloads, like VPN, may automatically install their items in both scopes if needed.</br>Legal values are `System` and `User`, with `User` as the default value.</br>**Availability:** Available in macOS 10.7 and later.|
-|`RemovalDate`|date|Optional. The date on which the profile will be automatically removed.|
-|`DurationUntilRemoval`|float|Optional. Number of seconds until the profile is automatically removed. If the `RemovalDate` keys is present, whichever field yields the earliest date will be used.|
+|`RemovalDate`|Date|Optional. The date on which the profile will be automatically removed.|
+|`DurationUntilRemoval`|Float|Optional. Number of seconds until the profile is automatically removed. If the `RemovalDate` keys is present, whichever field yields the earliest date will be used.|
 |`ConsentText`|Dictionary|Optional. A dictionary containing these keys and values:</br></br>* For each language in which a consent or license agreement is available, a key consisting of the IETF BCP 47 identifier for that language (for example, `en` or `jp`) and a value consisting of the agreement localized to that language. The agreement is displayed in a dialog to which the user must agree before installing the profile.  </br></br>* The optional key `default` with its value consisting of the unlocalized agreement (usually in `en`).  </br></br></br>The system chooses a localized version in the order of preference specified by the user (macOS) or based on the user’s current language setting (iOS). If no exact match is found, the default localization is used. If there is no default localization, the `en` localization is used. If there is no `en` localization, then the first available localization is used.</br>You should provide a default value if possible. No warning will be displayed if the user’s locale does not match any localization in the `ConsentText` dictionary.|
   
 
@@ -40,7 +40,7 @@ If a `PayloadContent` value is provided in a payload, each entry in the array is
 |Key|Type|Content|
 |-|-|-|
 |`PayloadType`|String|The payload type. The payload types are described in [Payload-Specific Property Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW2).|
-|`PayloadVersion`|Number|The version number of the individual payload.</br>A profile can consist of payloads with different version numbers. For example, changes to the VPN software in iOS might introduce a new payload version to support additional features, but Mail payload versions would not necessarily change in the same release.|
+|`PayloadVersion`|Integer|The version number of the individual payload.</br>A profile can consist of payloads with different version numbers. For example, changes to the VPN software in iOS might introduce a new payload version to support additional features, but Mail payload versions would not necessarily change in the same release.|
 |`PayloadIdentifier`|String|A reverse-DNS-style identifier for the specific payload. It is usually the same identifier as the root-level `PayloadIdentifier` value with an additional component appended.|
 |`PayloadUUID`|String|A globally unique identifier for the payload. The actual content is unimportant, but it must be globally unique. In macOS, you can use `uuidgen` to generate reasonable UUIDs.|
 |`PayloadDisplayName`|String|A human-readable name for the profile payload. This name is displayed on the Detail screen. It does not have to be unique.|
@@ -126,7 +126,7 @@ The following `ConfiguredAccounts` dictionary is currently supported:
 |Key|Type|Value|
 |-|-|-|
 |`Type`|String|Mandatory. The Documents account type: `com.apple.osxserver.documents`.|
-|`Port`|Number|Optional. Designates the port number to use when contacting the server. If no port number is specified, the default port is used.|
+|`Port`|Integer|Optional. Designates the port number to use when contacting the server. If no port number is specified, the default port is used.|
   
   
 
@@ -146,43 +146,43 @@ The following AD configuration keys can be added to the Directory payload, of ty
 
 |Key|Type|Description|
 |-|-|-|
-|`HostName`|string|The Active Directory domain to join.|
-|`UserName`|string|User name of the account used to join the domain.|
-|`Password`|string|Password of the account used to join the domain.|
-|`ADOrganizationalUnit`|string|The organizational unit (OU) where the joining computer object is added.|
-|`ADMountStyle`|string|Network home protocol to use: “afp” or “smb”.|
-|`ADCreateMobileAccountAtLoginFlag`|boolean|Enable or disable the ADCreateMobileAccountAtLogin key.|
-|`ADCreateMobileAccountAtLogin`|boolean|Create mobile account at login.|
-|`ADWarnUserBeforeCreatingMAFlag`|boolean|Enable or disable the ADWarnUserBeforeCreatingMA key.|
-|`ADWarnUserBeforeCreatingMA`|boolean|Warn user before creating a Mobile Account.|
-|`ADForceHomeLocalFlag`|boolean|Enable or disable the ADForceHomeLocal key.|
-|`ADForceHomeLocal`|boolean|Force local home directory.|
-|`ADUseWindowsUNCPathFlag`|boolean|Enable or disable the ADUseWindowsUNCPath key.|
-|`ADUseWindowsUNCPath`|boolean|Use UNC path from Active Directory to derive network home location.|
-|`ADAllowMultiDomainAuthFlag`|boolean|Enable or disable the ADAllowMultiDomainAuth key.|
-|`ADAllowMultiDomainAuth`|boolean|Allow authentication from any domain in the forest.|
-|`ADDefaultUserShellFlag`|boolean|Enable or disable the ADDefaultUserShell key.|
-|`ADDefaultUserShell`|string|Default user shell; e.g. /bin/bash.|
-|`ADMapUIDAttributeFlag`|boolean|Enable or disable the ADMapUIDAttribute key.|
-|`ADMapUIDAttribute`|string|Map UID to attribute.|
-|`ADMapGIDAttributeFlag`|boolean|Enable or disable the ADMapGIDAttribute key.|
-|`ADMapGIDAttribute`|string|Map user GID to attribute.|
-|`ADMapGGIDAttributeFlag`|boolean|Enable or disable the ADMapGGIDAttributeFlag key.|
-|`ADMapGGIDAttribute`|string|Map group GID to attribute.|
-|`ADPreferredDCServerFlag`|boolean|Enable or disable the ADPreferredDCServer key.|
-|`ADPreferredDCServer`|string|Prefer this domain server.|
-|`ADDomainAdminGroupListFlag`|boolean|Enable or disable the ADDomainAdminGroupList key.|
-|`ADDomainAdminGroupList`|array of strings|Allow administration by specified Active Directory groups.|
-|`ADNamespaceFlag`|boolean|Enable or disable the ADNamespace key.|
-|`ADNamespace`|string|Set primary user account naming convention: “forest” or “domain”; “domain” is default.|
-|`ADPacketSignFlag`|boolean|Enable or disable the ADPacketSign key.|
-|`ADPacketSign`|string|Packet signing: "allow", "disable" or "require"; “allow” is default.|
-|`ADPacketEncryptFlag`|boolean|Enable or disable the ADPacketEncrypt key.|
-|`ADPacketEncrypt`|string|Packet encryption: "allow", "disable", "require" or "ssl"; “allow” is default.|
-|`ADRestrictDDNSFlag`|boolean|Enable or disable the ADRestrictDDNS key.|
-|`ADRestrictDDNS`|array of strings|Restrict Dynamic DNS updates to the specified interfaces (e.g. en0, en1, etc).|
-|`ADTrustChangePassIntervalDaysFlag`|boolean|Enable or disable the ADTrustChangePassIntervalDays key.|
-|`ADTrustChangePassIntervalDays`|number|How often to require change of the computer trust account password in days; “0” is disabled.|
+|`HostName`|String|The Active Directory domain to join.|
+|`UserName`|String|User name of the account used to join the domain.|
+|`Password`|String|Password of the account used to join the domain.|
+|`ADOrganizationalUnit`|String|The organizational unit (OU) where the joining computer object is added.|
+|`ADMountStyle`|String|Network home protocol to use: “afp” or “smb”.|
+|`ADCreateMobileAccountAtLoginFlag`|Boolean|Enable or disable the ADCreateMobileAccountAtLogin key.|
+|`ADCreateMobileAccountAtLogin`|Boolean|Create mobile account at login.|
+|`ADWarnUserBeforeCreatingMAFlag`|Boolean|Enable or disable the ADWarnUserBeforeCreatingMA key.|
+|`ADWarnUserBeforeCreatingMA`|Boolean|Warn user before creating a Mobile Account.|
+|`ADForceHomeLocalFlag`|Boolean|Enable or disable the ADForceHomeLocal key.|
+|`ADForceHomeLocal`|Boolean|Force local home directory.|
+|`ADUseWindowsUNCPathFlag`|Boolean|Enable or disable the ADUseWindowsUNCPath key.|
+|`ADUseWindowsUNCPath`|Boolean|Use UNC path from Active Directory to derive network home location.|
+|`ADAllowMultiDomainAuthFlag`|Boolean|Enable or disable the ADAllowMultiDomainAuth key.|
+|`ADAllowMultiDomainAuth`|Boolean|Allow authentication from any domain in the forest.|
+|`ADDefaultUserShellFlag`|Boolean|Enable or disable the ADDefaultUserShell key.|
+|`ADDefaultUserShell`|String|Default user shell; e.g. /bin/bash.|
+|`ADMapUIDAttributeFlag`|Boolean|Enable or disable the ADMapUIDAttribute key.|
+|`ADMapUIDAttribute`|String|Map UID to attribute.|
+|`ADMapGIDAttributeFlag`|Boolean|Enable or disable the ADMapGIDAttribute key.|
+|`ADMapGIDAttribute`|String|Map user GID to attribute.|
+|`ADMapGGIDAttributeFlag`|Boolean|Enable or disable the ADMapGGIDAttributeFlag key.|
+|`ADMapGGIDAttribute`|String|Map group GID to attribute.|
+|`ADPreferredDCServerFlag`|Boolean|Enable or disable the ADPreferredDCServer key.|
+|`ADPreferredDCServer`|String|Prefer this domain server.|
+|`ADDomainAdminGroupListFlag`|Boolean|Enable or disable the ADDomainAdminGroupList key.|
+|`ADDomainAdminGroupList`|Array of Strings|Allow administration by specified Active Directory groups.|
+|`ADNamespaceFlag`|Boolean|Enable or disable the ADNamespace key.|
+|`ADNamespace`|String|Set primary user account naming convention: “forest” or “domain”; “domain” is default.|
+|`ADPacketSignFlag`|Boolean|Enable or disable the ADPacketSign key.|
+|`ADPacketSign`|String|Packet signing: "allow", "disable" or "require"; “allow” is default.|
+|`ADPacketEncryptFlag`|Boolean|Enable or disable the ADPacketEncrypt key.|
+|`ADPacketEncrypt`|String|Packet encryption: "allow", "disable", "require" or "ssl"; “allow” is default.|
+|`ADRestrictDDNSFlag`|Boolean|Enable or disable the ADRestrictDDNS key.|
+|`ADRestrictDDNS`|Array of Strings|Restrict Dynamic DNS updates to the specified interfaces (e.g. en0, en1, etc).|
+|`ADTrustChangePassIntervalDaysFlag`|Boolean|Enable or disable the ADTrustChangePassIntervalDays key.|
+|`ADTrustChangePassIntervalDays`|Integer|How often to require change of the computer trust account password in days; “0” is disabled.|
   
 
 # Encrypted Profiles  
@@ -316,8 +316,8 @@ This payload is supported on iOS 7.0 and later and on macOS 10.10 and later.
 
 |Key|Type|Value|
 |-|-|-|
-|`Whitelist`|Array of dictionaries|Optional. Supervised only (ignored otherwise). If present, only AirPlay destinations present in this list are available to the device.</br>The dictionary format is described below.|
-|`Passwords`|Array of dictionaries|Optional. If present, sets passwords for known AirPlay destinations. The dictionary format is described below.|
+|`Whitelist`|Array of Dictionaries|Optional. Supervised only (ignored otherwise). If present, only AirPlay destinations present in this list are available to the device.</br>The dictionary format is described below.|
+|`Passwords`|Array of Dictionaries|Optional. If present, sets passwords for known AirPlay destinations. The dictionary format is described below.|
   
 
 Each entry in the `Whitelist` array is a dictionary that can contain the following fields:  
@@ -363,7 +363,7 @@ This payload is supported on iOS 7.0 and later and on macOS 10.10 and later.
 
 |Key|Type|Value|
 |-|-|-|
-|`AirPrint`|Array of dictionaries|An array of AirPrint printers that should always be shown.|
+|`AirPrint`|Array of Dictionaries|An array of AirPrint printers that should always be shown.|
   
 
 Each dictionary in the `AirPrint` array must contain the following keys and values:  
@@ -372,7 +372,7 @@ Each dictionary in the `AirPrint` array must contain the following keys and valu
 |-|-|-|
 |`IPAddress`|String|The IP Address of the AirPrint destination.|
 |`ResourcePath`|String|The Resource Path associated with the printer. This corresponds to the `rp` parameter of the `_ipps.tcp` Bonjour record. For example:</br></br>* `printers/Canon_MG5300_series`  </br></br>* `printers/Xerox_Phaser_7600`  </br></br>* `ipp/print`  </br></br>* `Epson_IPP_Printer`  </br></br>|
-|`Port`|Number|Listening port of the AirPrint destination. If this key is not specified AirPrint will use the default port.</br>**Availability:** Available only in iOS 11.0 and later.|
+|`Port`|Integer|Listening port of the AirPrint destination. If this key is not specified AirPrint will use the default port.</br>**Availability:** Available only in iOS 11.0 and later.|
 |`ForceTLS`|Boolean|If `true` AirPrint connections are secured by Transport Layer Security (TLS). Default is `false`.</br>**Availability:** Available only in iOS 11.0 and later.|
   
 
@@ -397,7 +397,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`username`|String|This string specifies the user name for this APN. If it is missing, the device prompts for it during profile installation.|
 |`password`|Data|Optional. This data represents the password for the user for this APN. For obfuscation purposes, the password is encoded. If it is missing from the payload, the device prompts for the password during profile installation.|
 |`Proxy`|String|Optional. The IP address or URL of the APN proxy.|
-|`ProxyPort`|Number|Optional. The port number of the APN proxy.|
+|`ProxyPort`|Integer|Optional. The port number of the APN proxy.|
   
 
 # Per-App VPN Payload  
@@ -439,7 +439,7 @@ This payload is supported only in macOS 10.9 and later. It is not supported in i
 
 |Key|Type|Value|
 |-|-|-|
-|`AppLayerVPNMapping`|Array of dictionaries|An array of mapping dictionaries.|
+|`AppLayerVPNMapping`|Array of Dictionaries|An array of mapping dictionaries.|
   
 
 Each dictionary in the array can contain the following keys:  
@@ -545,7 +545,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`CalDAVUsername`|String|The user's login name.</br>In macOS, this key is required.|
 |`CalDAVPassword`|String|Optional. The user's password.|
 |`CalDAVUseSSL`|Boolean|Whether or not to use SSL.</br>In macOS, this key is optional.|
-|`CalDAVPort`|Number|Optional. The port on which to connect to the server.|
+|`CalDAVPort`|Integer|Optional. The port on which to connect to the server.|
 |`CalDAVPrincipalURL`|String|Optional. The base URL to the user’s calendar. In macOS this URL is required if the user doesn’t provide a password, because auto-discovery of the service will fail and the account won’t be created.|
   
 
@@ -587,7 +587,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`CardDAVUsername`|String|The user's login name.|
 |`CardDAVPassword`|String|Optional. The user's password.|
 |`CardDAVUseSSL`|Boolean|Optional. Whether or not to use SSL.|
-|`CardDAVPort`|Number|Optional. The port on which to connect to the server.|
+|`CardDAVPort`|Integer|Optional. The port on which to connect to the server.|
 |`CardDAVPrincipalURL`|String|Optional. Not supported on macOS. The base URL to the user’s address book.|
   
 
@@ -634,11 +634,11 @@ Each `APN` dictionary contains the following keys:
 |`Username`|String|Optional. A user name used for authentication.|
 |`Password`|String|Optional. A password used for authentication.|
 |`ProxyServer`|String|Optional. The proxy server's network address.|
-|`ProxyServerPort`|Number|Optional. The proxy server's port.|
-|`DefaultProtocolMask`|Number|**Deprecated.** Default Internet Protocol versions. Set to the same value as `AllowedProtocolMask`. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
-|`AllowedProtocolMask`|Number|Optional. Supported Internet Protocol versions. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
-|`AllowedProtocolMaskInRoaming`|Number|Optional. Supported Internet Protocol versions while roaming. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
-|`AllowedProtocolMaskInDomesticRoaming`|Number|Optional. Supported Internet Protocol versions while domestic roaming. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
+|`ProxyServerPort`|Integer|Optional. The proxy server's port.|
+|`DefaultProtocolMask`|Integer|**Deprecated.** Default Internet Protocol versions. Set to the same value as `AllowedProtocolMask`. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
+|`AllowedProtocolMask`|Integer|Optional. Supported Internet Protocol versions. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
+|`AllowedProtocolMaskInRoaming`|Integer|Optional. Supported Internet Protocol versions while roaming. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
+|`AllowedProtocolMaskInDomesticRoaming`|Integer|Optional. Supported Internet Protocol versions while domestic roaming. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
   
 
 # Certificate Payload  
@@ -755,14 +755,14 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`minimize-to-application -immutable`|Boolean|Optional. If `true`, the minimize-to-application checkbox is disabled.|
 |`magnification`|Boolean|Optional. If `true`, magnification is active.|
 |`magnify-immutable`|Boolean|Optional. If `true`, the magnification checkbox is disabled.|
-|`largesize`|Number|Optional. The size of the largest magnification. Values must be in range 16 to 128.|
+|`largesize`|Integer|Optional. The size of the largest magnification. Values must be in range 16 to 128.|
 |`magsize-immutable`|Boolean|Optional. If `true`, the magnify slider is disabled.|
 |`show-process-indicators`|Boolean|Optional. If `true`, show the process indicator.|
 |`launchanim`|Boolean|Optional. If `true`, animate opening applications.|
 |`launchanim-immutable`|Boolean|Optional. If `true`, the Animate Opening Applications checkbox is disabled.|
 |`mineffect`|String|Optional. Set minimize effect. Values may be `genie` or `scale`.|
 |`mineffect-immutable`|Boolean|Optional. If `true`, the Minimize Using popup is disabled.|
-|`tilesize`|Number|Optional. The tile size. Values must be in range 16 to 128.|
+|`tilesize`|Integer|Optional. The tile size. Values must be in range 16 to 128.|
 |`size-immutable`|Boolean|Optional. If `true`, the size slider will be disabled.|
 |`MCXDockSpecialFolders`|Array of Strings|Optional. One or more special folders that may be created at user login time and placed in the dock. Values may be `AddDockMCXMyApplicationsFolder`,  `AddDockMCXDocumentsFolder`,  `AddDockMCXSharedFolder`,  or  `AddDockMCXOriginalNetworkHomeFolder`. The "My Applications" item is only used for Simple Finder environments. The "Original Network Home" item is only used for mobile account users.|
 |`AllowDockFixupOverride`|Boolean|Optional. If `true`, use the file in `/Library/Preferences/ com.apple.dockfixup.plist` when a new user or migrated user logs in. The format of this file currently has no documentation. This option has no effect for existing users.|
@@ -786,7 +786,7 @@ The `tile-data` dictionary defines the following keys:
 |-|-|-|
 |`label`|String|Required. Label of a dock item.|
 |`url`|String|Optional. For URL tiles, the URL string.|
-|`file-type`|Number|Required. The type of the tile expressed as a number. 3 = `directory`, 0 = `URL`, 1 = `file`.|
+|`file-type`|Integer|Required. The type of the tile expressed as a number. 3 = `directory`, 0 = `URL`, 1 = `file`.|
   
 
 # Education Configuration Payload  
@@ -826,7 +826,7 @@ The `Groups` key must contain an array of dictionaries with the following key-va
 
 |Key|Type|Value|
 |-|-|-|
-|`BeaconID`|Number|Required: unsigned 16 bit integer specifying this group’s unique beacon ID.|
+|`BeaconID`|Integer|Required: unsigned 16 bit integer specifying this group’s unique beacon ID.|
 |`Name`|String|Required: the display name of the group.|
 |`Description`|String|Optional: description of the group.|
 |`ImageURL`|String|**Deprecated in iOS 9.3.1 and later.** URL of an image for the group.|
@@ -887,7 +887,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`EmailAddress`|String|Designates the full email address for the account. If not present in the payload, the device prompts for this string during profile installation.|
 |`IncomingMailServerAuthentication`|String|Designates the authentication scheme for incoming mail. Allowed values are `EmailAuthPassword`, `EmailAuthCRAMMD5`, `EmailAuthNTLM`, `EmailAuthHTTPMD5`, and `EmailAuthNone`.|
 |`IncomingMailServerHostName`|String|Designates the incoming mail server host name (or IP address).|
-|`IncomingMailServerPortNumber`|Number|Optional. Designates the incoming mail server port number. If no port number is specified, the default port for a given protocol is used.|
+|`IncomingMailServerPortNumber`|Integer|Optional. Designates the incoming mail server port number. If no port number is specified, the default port for a given protocol is used.|
 |`IncomingMailServerUseSSL`|Boolean|Optional. Default `false`. Designates whether the incoming mail server uses SSL for authentication.|
 |`IncomingMailServerUsername`|String|Designates the user name for the email account, usually the same as the email address up to the @ character. If not present in the payload, and the account is set up to require authentication for incoming email, the device will prompt for this string during profile installation.|
 |`IncomingPassword`|String|Optional. Password for the Incoming Mail Server. Use only with encrypted profiles.|
@@ -895,7 +895,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`OutgoingPasswordSameAsIncomingPassword`|Boolean|Optional. If set, the user will be prompted for the password only once and it will be used for both outgoing and incoming mail.|
 |`OutgoingMailServerAuthentication`|String|Designates the authentication scheme for outgoing mail. Allowed values are `EmailAuthPassword`, `EmailAuthCRAMMD5`, `EmailAuthNTLM`, `EmailAuthHTTPMD5`, and `EmailAuthNone`.|
 |`OutgoingMailServerHostName`|String|Designates the outgoing mail server host name (or IP address).|
-|`OutgoingMailServerPortNumber`|Number|Optional. Designates the outgoing mail server port number. If no port number is specified, ports 25, 587 and 465 are used, in this order.|
+|`OutgoingMailServerPortNumber`|Integer|Optional. Designates the outgoing mail server port number. If no port number is specified, ports 25, 587 and 465 are used, in this order.|
 |`OutgoingMailServerUseSSL`|Boolean|Optional. Default `false`. Designates whether the outgoing mail server uses SSL for authentication.|
 |`OutgoingMailServerUsername`|String|Designates the user name for the email account, usually the same as the email address up to the @ character. If not present in the payload, and the account is set up to require authentication for outgoing email, the device prompts for this string during profile installation.|
 |`PreventMove`|Boolean|Optional. Default `false`.</br>If `true`, messages may not be moved out of this email account into another account. Also prevents forwarding or replying from a different account than the message was originated from.</br>**Availability:** Available only in iOS 5.0 and later.|
@@ -968,7 +968,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |Available in iOS only|
 |`Certificate`|NSData blob|Optional. For accounts that allow authentication via certificate, a .p12 identity certificate in NSData blob format.|
 |`CertificateName`|String|Optional. Specifies the name or description of the certificate.|
-|`CertificatePassword`|data|Optional. The password necessary for the p12 identity certificate. Used with mandatory encryption of profiles.|
+|`CertificatePassword`|Data|Optional. The password necessary for the p12 identity certificate. Used with mandatory encryption of profiles.|
 |`PreventMove`|Boolean|Optional. Default `false`.</br>If set to `true`, messages may not be moved out of this email account into another account. Also prevents forwarding or replying from a different account than the message was originated from.</br>**Availability:** Available in iOS 5.0 and later.|
 |`PreventAppSheet`|Boolean|Optional. Default `false`. If set to `true`, this account will not be available for sending mail in any app other than the Apple Mail app.</br>**Availability:** Available in iOS 5.0 and later.|
 |`PayloadCertificateUUID`|String|UUID of the certificate payload to use for the identity credential. If this field is present, the `Certificate` field is not used.</br>**Availability:** Available in iOS 5.0 and later.|
@@ -983,11 +983,11 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`CommunicationServiceRules`|Dictionary|Optional. The communication service handler rules for this account. The `CommunicationServiceRules` dictionary currently contains only a `DefaultServiceHandlers` key; its value is a dictionary which contains an `AudioCall` key whose value is a string containing the bundle identifier for the default application that handles audio calls made to contacts from this account.|
 |Available in macOS Only|
 |`Path`|String|Optional.|
-|`Port`|Number|Optional.|
+|`Port`|Integer|Optional.|
 |`ExternalHost`|String|Optional.|
 |`ExternalSSL`|Boolean|Optional.|
 |`ExternalPath`|String|Optional.|
-|`ExternalPort`|Number|Optional.|
+|`ExternalPort`|Integer|Optional.|
   
 
 
@@ -1082,7 +1082,7 @@ Upon receiving the client’s request, the server must respond to the client wit
 |Key|Type|Value|
 |-|-|-|
 |`SerialNumber`|String|The serial number of the client computer. This value must be the same as the one sent in the request.|
-|`RecordNumber`|Short string|This value must be nonempty but otherwise is up to the site to define it. This value will be displayed to the user along with the serial number on the EFI login screen when the user is asked to enter the recovery key. As an example, this could be a value to assist the site administrator in locating or verifying the user's recovery key in a database.|
+|`RecordNumber`|String|This value must be nonempty but otherwise is up to the site to define it. This value will be displayed to the user along with the serial number on the EFI login screen when the user is asked to enter the recovery key. As an example, this could be a value to assist the site administrator in locating or verifying the user's recovery key in a database.|
   
 
 # Firewall Payload  
@@ -1108,7 +1108,7 @@ The Firewall payload contains the following keys:
 |`EnableFirewall`|Boolean|Required. Whether the firewall should be enabled or not.|
 |`BlockAllIncoming`|Boolean|Optional. Corresponds to the “Block all incoming connections” option.|
 |`EnableStealthMode`|Boolean|Optional. Corresponds to “Enable stealth mode.”|
-|`Applications`|Array of dictionaries|Optional. The list of applications. Each dictionary contains these keys:</br></br>* `BundleID` (string) : identifies the application  </br></br>* `Allowed` (Boolean) : specifies whether or not incoming connections are allowed  </br></br>|
+|`Applications`|Array of Dictionaries|Optional. The list of applications. Each dictionary contains these keys:</br></br>* `BundleID` (string) : identifies the application  </br></br>* `Allowed` (Boolean) : specifies whether or not incoming connections are allowed  </br></br>|
   
 
 # Font Payload  
@@ -1149,7 +1149,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`ProxyType`|String|If you choose manual proxy type, you need the proxy server address including its port and optionally a username and password into the proxy server. If you choose auto proxy type, you can enter a proxy autoconfiguration (PAC) URL.|
 |`ProxyServer`|String|The proxy server’s network address.|
-|`ProxyServerPort`|Number|The proxy server’s port|
+|`ProxyServerPort`|Integer|The proxy server’s port|
 |`ProxyUsername`|String|Optional. The username used to authenticate to the proxy server.|
 |`ProxyPassword`|String|Optional. The password used to authenticate to the proxy server.|
 |`ProxyPACURL`|String|Optional. The URL of the PAC file that defines the proxy configuration.|
@@ -1158,6 +1158,24 @@ In addition to the settings common to all payloads, this payload defines the fol
   
 
 If the `ProxyType` field is set to `Auto` and no `ProxyPACURL` value is specified, the device uses the web proxy autodiscovery protocol (WPAD) to discover proxies.  
+
+# Google Account Payload  
+
+ [Configuration Profile Reference - Google Account Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW610)  
+
+The Google account payload is designated by specifying `com.apple.google-oauth` as the `PayloadType` value. You can install multiple Google payloads.  
+
+Each Google payload sets up a Google email address as well as any other Google services the user enables after authentication. Google accounts must be installed via MDM or by Apple Configurator 2 (if the device is supervised). The payload never contains credentials; the user will be prompted to enter credentials shortly after the payload has been successfully installed.  
+
+In addition to the settings common to all payloads, this payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`AccountDescription`|String|Optional. A user-visible description of the Google account, shown in the Mail and Settings apps.|
+|`AccountName`|String|Optional. The user’s full name for the Google account. This name will appear in sent messages.|
+|`EmailAddress`|String|Required. The full Google email address for the account.|
+|`CommunicationServiceRules`|Dictionary|Optional. The communication service handler rules for this account. The `CommunicationServiceRules` dictionary currently contains only a `DefaultServiceHandlers` key; its value is a dictionary which contains an `AudioCall` key whose value is a string containing the bundle identifier for the default application that handles audio calls made to contacts from this account.|
+  
 
 # Home Screen Layout Payload  
 
@@ -1188,24 +1206,6 @@ Icon format dictionaries are defined as follows:
 |`DisplayName`|String|Optional. Human-readable string to be shown to the user.|
 |`BundleID`|String|Required if App type. The bundle identifier of the app.|
 |`Pages`|Array|Optional. Array of arrays of dictionaries. Each of the dictionaries complies to the icon dictionary format.|
-  
-
-# Google Account Payload  
-
- [Configuration Profile Reference - Google Account Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW610)  
-
-The Google account payload is designated by specifying `com.apple.google-oauth` as the `PayloadType` value. You can install multiple Google payloads.  
-
-Each Google payload sets up a Google email address as well as any other Google services the user enables after authentication. Google accounts must be installed via MDM or by Apple Configurator 2 (if the device is supervised). The payload never contains credentials; the user will be prompted to enter credentials shortly after the payload has been successfully installed.  
-
-In addition to the settings common to all payloads, this payload defines the following keys:  
-
-|Key|Type|Value|
-|-|-|-|
-|`AccountDescription`|String|Optional. A user-visible description of the Google account, shown in the Mail and Settings apps.|
-|`AccountName`|String|Optional. The user’s full name for the Google account. This name will appear in sent messages.|
-|`EmailAddress`|String|Required. The full Google email address for the account.|
-|`CommunicationServiceRules`|Dictionary|Optional. The communication service handler rules for this account. The `CommunicationServiceRules` dictionary currently contains only a `DefaultServiceHandlers` key; its value is a dictionary which contains an `AudioCall` key whose value is a string containing the bundle identifier for the default application that handles audio calls made to contacts from this account.|
   
 
 # Identification Payload  
@@ -1243,6 +1243,23 @@ An Identity Preference payload contains the following keys:
 |-|-|-|
 |`Name`|String|Required. An email address (RFC822), DNS hostname, or other name that uniquely identifies a service requiring this identity.|
 |`PayloadCertificateUUID`|String|The UUID of another payload within the same profile that installed the identity; for example, a 'com.apple.security.pkcs12' or 'com.apple.security.scep' payload.|
+  
+
+# Kernel Extension Policy  
+
+ [Configuration Profile Reference - Kernel Extension Policy](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-DontLinkElementID_1)  
+
+The Kernel Extension Policy payload is designated by specifying `com.apple.syspolicy.kernel-extension-policy` as the `PayloadType` value. It is supported on macOS 10.13.2 and later.  
+
+This profile must be delivered via a user approved MDM server.  
+
+In addition to the settings common to all payloads, this payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`AllowUserOverrides`|Boolean|If set to `true`, users can approve additional kernel extensions not explicitly allowed by configuration profiles.|
+|`AllowedTeamIdentifiers`|Array of Strings|An array of team identifiers that define which validly signed kernel extensions will be allowed to load.|
+|`AllowedKernelExtensions`|Dictionary|A dictionary representing a set of kernel extensions that will always be allowed to load on the machine. The dictionary maps team identifiers (keys) to arrays of bundle identifiers. For unsigned legacy kernel extensions, use an empty key for the team identifier.|
   
 
 # LDAP Payload  
@@ -1397,7 +1414,7 @@ In addition to the settings common to all payloads, this payload defines this ke
 
 |Key|Type|Value|
 |-|-|-|
-|`ApplicationRules`|Array of disctionaries|Required.|
+|`ApplicationRules`|Array of Dictionaries|Required.|
   
 
 Each entry in the `ApplicationRules` array must be a dictionary containing these keys:  
@@ -1501,10 +1518,10 @@ Each `allowance` or `curfew` dictionary contains these keys:
 |Key|Type|Value|
 |-|-|-|
 |`enabled`|Boolean|Required. Set to `true` to enable these settings.|
-|`rangeType`|Number|Required. Type of day range: 0 = weekday, 1 = weekend.|
+|`rangeType`|Integer|Required. Type of day range: 0 = weekday, 1 = weekend.|
 |`start`|String|Optional. Curfew start time in the format %d:%d:%d.|
 |`end`|String|Optional. Curfew end time in the format %d:%d:%d.|
-|`secondsPerDay`|Number|Optional. Seconds for that day for allowance.|
+|`secondsPerDay`|Integer|Optional. Seconds for that day for allowance.|
   
   
 
@@ -1516,23 +1533,40 @@ The Parental Control Application Access payload is designated by specifying `com
 
 It enables application access restrictions on macOS.  
 
+To determine if an application can be launched, these rules are evaluated:  
+
+
+1 Certain system applications and utilities are always allowed to run.   
+
+2 The `whiteList` is searched to see if a matching entry is found by `bundleID`.  If a match is found, the `appID` and `detachedSignature` (if present) are used to verify the signature of the application being launched.  If the signature is valid and matches the designated requirement (in the `appID` key), the application is allowed to launch.  
+
+3 If the path to the binary being launched matches (or is in a subdirectory) of a path in `pathBlackList`, the binary is denied.  
+
+4  If the path to the binary being launched matches (or is a subdirectory) of a path in `pathWhiteList`, the binary is allowed to launch.  
+
+5 The binary is denied permission to launch.  
+  
+
 In addition to the settings common to all payloads, this payload defines these keys:  
 
 |Key|Type|Value|
 |-|-|-|
 |`familyControlsEnabled`|Boolean|Required. Set to `true` to enable application access restrictions.|
-|`whiteList`|Array of Dictionaries|Optional. Allowed processes.|
-|`pathBlackList`|Array of Strings|Optional. Paths to disallowed processes.|
-|`pathWhiteList`|Array of Strings|Optional. Paths to allowed processes.|
+|`whiteList`|Array of Dictionaries|Optional. A list of code signatures for applications that are allowed to run. |
+|`pathBlackList`|Array of Strings|Optional. Paths to disallowed applications.|
+|`pathWhiteList`|Array of Strings|Optional. Paths to allowed applications.|
   
 
 Each `whiteList` dictionary contains these keys:  
 
 |Key|Type|Value|
 |-|-|-|
-|`bundleID`|String|Optional. Bundle ID of application.|
+|`bundleID`|String|Required. Bundle ID of application.|
+|`appID`|Data|Required. The designated requirement describing the code signature of this executable. This value is obtained from the `Security.framework` using `SecCodeCopyDesignatedRequirement`.|
+|`detachedSignature`|Data|Optional. Can be used to provide the required signature for an unsigned binary.  Generate an ad-hoc signature of the unsigned binary and store the signature here.|
+|`disabled`|Boolean|Optional. Specifies whether this application information is to be included in the `whiteList` or not.  Set to `true` to keep the application off the `whiteList`. It could still be allowed to launch via `pathWhiteList`, although this behavior is discouraged.</br>Default is `false`. |
+|`subApps`|Array of Dictionaries|Optional. For applications that include nested helper applications, describes the signatures of embedded applications.  The dictionary format is the same as for the `whiteList` key.|
 |`displayName`|String|Optional. Display name.|
-|`displayName`|String|Optional. Path to application.|
   
   
 
@@ -1646,14 +1680,14 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`allowSimple`|Boolean|Optional. Default `true`. Determines whether a simple passcode is allowed. A simple passcode is defined as containing repeated characters, or increasing/decreasing characters (such as 123 or CBA). Setting this value to `false` is synonymous to setting minComplexChars to "1".|
 |`forcePIN`|Boolean|Optional. Default NO. Determines whether the user is forced to set a PIN. Simply setting this value (and not others) forces the user to enter a passcode, without imposing a length or quality.|
-|`maxFailedAttempts`|Number|Optional. Default 10 (iOS only). Allowed range [1...10]. Specifies the number of allowed failed attempts to enter the passcode at the device's lock screen. Once this number is exceeded, the device is locked and must be connected to its designated iTunes in order to be unlocked.|
-|`maxInactivity`|Number|Optional. Default Infinity. Specifies the number of minutes for which the device can be idle (without being unlocked by the user) before it gets locked by the system. Once this limit is reached, the device is locked and the passcode must be entered.</br>In macOS, this will be translated to screensaver settings.|
-|`maxPINAgeInDays`|Number|Optional. Default Infinity. Specifies the number of days for which the passcode can remain unchanged. After this number of days, the user is forced to change the passcode before the device is unlocked.|
-|`minComplexChars`|Number|Optional. Default 0. Specifies the minimum number of complex characters that a passcode must contain. A "complex" character is a character other than a number or a letter, such as &%$#.|
-|`minLength`|Number|Optional. Default 0. Specifies the minimum overall length of the passcode. This parameter is independent of the also optional minComplexChars argument.|
+|`maxFailedAttempts`|Integer|Optional. Default 10 (iOS only). Allowed range [1...10]. Specifies the number of allowed failed attempts to enter the passcode at the device's lock screen. Once this number is exceeded, the device is locked and must be connected to its designated iTunes in order to be unlocked.|
+|`maxInactivity`|Integer|Optional. Default Infinity. Specifies the number of minutes for which the device can be idle (without being unlocked by the user) before it gets locked by the system. Once this limit is reached, the device is locked and the passcode must be entered.</br>In macOS, this will be translated to screensaver settings.|
+|`maxPINAgeInDays`|Integer|Optional. Default Infinity. Specifies the number of days for which the passcode can remain unchanged. After this number of days, the user is forced to change the passcode before the device is unlocked.|
+|`minComplexChars`|Integer|Optional. Default 0. Specifies the minimum number of complex characters that a passcode must contain. A "complex" character is a character other than a number or a letter, such as &%$#.|
+|`minLength`|Integer|Optional. Default 0. Specifies the minimum overall length of the passcode. This parameter is independent of the also optional minComplexChars argument.|
 |`requireAlphanumeric`|Boolean|Optional. Default NO. Specifies whether the user must enter alphabetic characters ("abcd"), or if numbers are sufficient.|
-|`pinHistory`|Number|Optional. When the user changes the passcode, it has to be unique within the last N entries in the history. Minimum value is 1, maximum value is 50.|
-|`maxGracePeriod`|Number|Optional. The maximum grace period, in minutes, to unlock the phone without entering a passcode. Default is 0, that is no grace period, which requires a passcode immediately.</br>In macOS, this will be translated to screensaver settings.|
+|`pinHistory`|Integer|Optional. When the user changes the passcode, it has to be unique within the last N entries in the history. Minimum value is 1, maximum value is 50.|
+|`maxGracePeriod`|Integer|Optional. The maximum grace period, in minutes, to unlock the phone without entering a passcode. Default is 0, that is no grace period, which requires a passcode immediately.</br>In macOS, this will be translated to screensaver settings.|
 |`allowFingerprintModification`|Boolean|Optional. Supervised only. Not supported on macOS. Allows the user to modify Touch ID. Default NO.|
 |`changeAtNextAuth`|Boolean|Optional. On macOS, setting this to `true` will cause a password reset to occur the next time the user tries to authenticate.  If this key is set in a device profile, the setting takes effect for all users, and admin authentications may fail until the admin user password is also reset.</br>**Availability:** Available in macOS 10.13 and later.|
   
@@ -1712,7 +1746,8 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowCloudAddressBook`|Boolean|Optional. When `false`, disallows macOS iCloud Address Book services.</br>**Availability:** Available in macOS 10.12 and later.|
 |`allowCloudNotes`|Boolean|Optional. When `false`, disallows macOS iCloud Notes services.</br>**Availability:** Available in macOS 10.12 and later.|
 |`allowCloudDocumentSync`|Boolean|Optional. When `false`, disables document and  key-value syncing to iCloud. This key is deprecated on unsupervised devices.</br>**Availability:** Available in iOS 5.0 and later and in macOS 10.11 and later.|
-|`allowCloudKeychainSync`|Boolean|Optional. If `false`, disables iCloud keychain synchronization. Default is `true`.</br>**Availability:** Available in iOS 7.0 and later and macOS 10.12 and later.|
+|`allowCloudKeychainSync`|Boolean|Optional. When `false`, disables iCloud keychain synchronization. Default is `true`.</br>**Availability:** Available in iOS 7.0 and later and macOS 10.12 and later.|
+|`allowContentCaching`|Boolean|Optional. When `false`, this disallows content caching. Defaults to `true`.</br>**Availability:** Available only in macOS 10.13 and later.|
 |`allowDiagnosticSubmission`|Boolean|Optional. When `false`, this prevents the device from automatically submitting diagnostic reports to Apple. Defaults to `true`.</br>**Availability:** Available only in iOS 6.0 and later.|
 |`allowExplicitContent`|Boolean|Optional. When `false`, explicit music or video content purchased from the iTunes Store is hidden. Explicit content is marked as such by content providers, such as record labels, when sold through the iTunes Store. This key is deprecated on unsupervised devices.|
 |`allowFindMyFriendsModification`|Boolean|Optional. Supervised only. If set to `false`, changes to Find My Friends are disabled.</br>**Availability:** Available only in iOS 7.0 and later.|
@@ -1744,7 +1779,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowYouTube`|Boolean|Optional. When `false`, the YouTube application is disabled and its icon is removed from the Home screen.</br>This key is ignored in iOS 6 and later because the YouTube app is not provided.|
 |`allowiTunes`|Boolean|Optional. When `false`, the iTunes Music Store is disabled and its icon is removed from the Home screen. Users cannot preview, purchase, or download content. This key is deprecated on unsupervised devices.|
 |`allowiTunesFileSharing`|Boolean|Optional. When `false`, iTunes application file sharing services are disabled. </br>**Availability:** Available in macOS 10.13 and later.|
-|`autonomousSingleAppModePermittedAppIDs`|Array of strings|Optional. Supervised only. If present, allows apps identified by the bundle IDs listed in the array to autonomously enter Single App Mode.</br>**Availability:** Available only in iOS 7.0 and later.|
+|`autonomousSingleAppModePermittedAppIDs`|Array of Strings|Optional. Supervised only. If present, allows apps identified by the bundle IDs listed in the array to autonomously enter Single App Mode.</br>**Availability:** Available only in iOS 7.0 and later.|
 |`forceAssistantProfanityFilter`|Boolean|Optional. Supervised only. When `true`, forces the use of the profanity filter assistant.|
 |`forceEncryptedBackup`|Boolean|Optional. When `true`, encrypts all backups.|
 |`forceITunesStorePasswordEntry`|Boolean|Optional. When `true`, forces user to enter their iTunes password for each transaction.</br>**Availability:** Available in iOS 5.0 and later.|
@@ -1778,8 +1813,8 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowAutomaticAppDownloads`|Boolean|Supervised only. If set to `false`, prevents automatic downloading of apps purchased on other devices. Does not affect updates to existing apps. Defaults to `true`.</br>**Availability:** Available in iOS 9.0 and later.|
 |`allowEnterpriseAppTrust`|Boolean|If set to `false` removes the Trust Enterprise Developer button in Settings->General->Profiles & Device Management, preventing apps from being provisioned by universal provisioning profiles. This restriction applies to free developer accounts but it does not apply to enterprise app developers who are trusted because their apps were pushed via MDM, nor does it revoke previously granted trust. Defaults to `true`.</br>**Availability:** Available in iOS 9.0 and later.|
 |`allowRadioService`|Boolean|Supervised only. If set to `false`, Apple Music Radio is disabled. Defaults to `true`.</br>**Availability:** Available in iOS 9.3 and later.|
-|`blacklistedAppBundleIDs`|Array of strings|Supervised only. If present, prevents bundle IDs listed in the array from being shown or launchable.</br>**Availability:** Available in iOS 9.3 and later.|
-|`whitelistedAppBundleIDs`|Array of strings|Supervised only. If present, allows only bundle IDs listed in the array from being shown or launchable.</br>**Availability:** Available in iOS 9.3 and later.|
+|`blacklistedAppBundleIDs`|Array of Strings|Supervised only. If present, prevents bundle IDs listed in the array from being shown or launchable.</br>**Availability:** Available in iOS 9.3 and later.|
+|`whitelistedAppBundleIDs`|Array of Strings|Supervised only. If present, allows only bundle IDs listed in the array from being shown or launchable.</br>**Availability:** Available in iOS 9.3 and later.|
 |`allowNotificationsModification`|Boolean|Supervised only. If set to `false`, notification settings cannot be modified. Defaults to `true`.</br>**Availability:** Available in iOS 9.3 and later.|
 |`allowRemoteScreenObservation`|Boolean|Supervised only. If set to `false`, remote screen observation by the Classroom app is disabled. Defaults to `true`.</br>This key should be nested beneath `allowScreenShot` as a sub-restriction. If `allowScreenShot` is set to `false`, it also prevents the Classroom app from observing remote screens.</br>**Availability:** Available in iOS 9.3 and later.|
 |`allowDiagnosticSubmissionModification`|Boolean|Supervised only. If set to `false`, the diagnostic submission and app analytics settings in the Diagnostics & Usage pane in Settings cannot be modified. Defaults to `true`.</br>**Availability:** Available in iOS 9.3.2 and later.|
@@ -1813,9 +1848,9 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`Name`|String|Optional. Any string that is understood by the SCEP server. For example, it could be a domain name like `example.org`. If a certificate authority has multiple CA certificates this field can be used to distinguish which is required.|
 |`Subject`|Array|Optional. The representation of a X.500 name represented as an array of OID and value. For example, `/C=US/O=Apple Inc./CN=foo/1.2.5.3=bar`, which would translate to:</br>`[ [ ["C", "US"] ], [ ["O", "Apple Inc."] ], ..., [ [ "1.2.5.3", "bar" ] ] ]`</br>OIDs can be represented as dotted numbers, with shortcuts for country (`C`), locality (`L`), state (`ST`), organization (`O`), organizational unit (`OU`), and common name (`CN`).|
 |`Challenge`|String|Optional. A pre-shared secret.|
-|`Keysize`|Number|Optional. The key size in bits, either 1024 or 2048.|
+|`Keysize`|Integer|Optional. The key size in bits, either 1024 or 2048.|
 |`KeyType`|String|Optional. Currently always "RSA".|
-|`KeyUsage`|Number|Optional. A bitmask indicating the use of the key. 1 is signing, 4 is encryption, 5 is both signing and encryption. Some certificate authorities, such as Windows CA, support only encryption or signing, but not both at the same time.</br>**Availability:** Available only in iOS 4 and later.|
+|`KeyUsage`|Integer|Optional. A bitmask indicating the use of the key. 1 is signing, 4 is encryption, 5 is both signing and encryption. Some certificate authorities, such as Windows CA, support only encryption or signing, but not both at the same time.</br>**Availability:** Available only in iOS 4 and later.|
 |`Retries`|Integer|Optional. The number of times the device should retry if the server sends a PENDING response. Defaults to 3.|
 |`RetryDelay`|Integer|Optional. The number of seconds to wait between subsequent retries. The first retry is attempted without this delay. Defaults to 10.|
 |`CAFingerprint`|Data|Optional. The fingerprint of the Certificate Authority certificate.|
@@ -1949,8 +1984,8 @@ The Kerberos `dictionary` can contain the following keys:
 |`PrincipalName`|String|Optional. The Kerberos principal name. If not provided, the user is prompted for one during profile installation.</br>This field must be provided for MDM installation.|
 |`PayloadCertificateUUID`|String|Optional. The PayloadUUID of an identity certificate payload that can be used to renew the Kerberos credential without user interaction. The certificate payload must have either the `com.apple.security.pkcs12` or `com.apple.security.scep` payload type. Both the Single Sign On payload and the identity certificate payload must be included in the same configuration profile|
 |`Realm`|String|The Kerberos realm name. This value should be properly capitalized.|
-|`URLPrefixMatches`|Array of strings|List of URLs prefixes that must be matched to use this account for Kerberos authentication over HTTP. **Note** that the URL postfixes must match as well.|
-|`AppIdentifierMatches`|Array of strings|Optional. List of app identifiers that are allowed to use this login. If this field missing, this login matches all app identifiers.</br>This array, if present, may not be empty.|
+|`URLPrefixMatches`|Array of Strings|List of URLs prefixes that must be matched to use this account for Kerberos authentication over HTTP. **Note** that the URL postfixes must match as well.|
+|`AppIdentifierMatches`|Array of Strings|Optional. List of app identifiers that are allowed to use this login. If this field missing, this login matches all app identifiers.</br>This array, if present, may not be empty.|
   
 
 Each entry in the `URLPrefixMatches` array must contain a URL prefix. Only URLs that begin with one of the strings in this account are allowed to access the Kerberos ticket. URL matching patterns must include the scheme—for example, `http://www.example.com/`. If a matching pattern does not end in `/`, a `/` is appended to it.  
@@ -1995,7 +2030,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 
 |Key|Type|Value|
 |-|-|-|
-|`CustomBehavior`|Array of dictionaries|Optional. Specifies custom behavior for the context designated in each dictionary.|
+|`CustomBehavior`|Array of Dictionaries|Optional. Specifies custom behavior for the context designated in each dictionary.|
   
 
 Each dictionary in the `CustomBehavior` array contains these keys:  
@@ -2003,7 +2038,7 @@ Each dictionary in the `CustomBehavior` array contains these keys:
 |Key|Type|Value|
 |-|-|-|
 |`Context`|String|Required. The context to which custom paths apply.|
-|`Paths`|Array of dictionaries|Required. The custom paths to be migrated from a source system to a target system.|
+|`Paths`|Array of Dictionaries|Required. The custom paths to be migrated from a source system to a target system.|
   
 
 Each dictionary in the `Paths` array contains these keys:  
@@ -2222,12 +2257,12 @@ The `OnDemandRules` dictionaries can contain one or more of the following keys:
 |Key|Type|Value|
 |-|-|-|
 |`Action`|String|The action to take if this dictionary matches the current network. Possible values are:</br></br>* `Allow`—*Deprecated.* Allow VPN On Demand to connect if triggered.  </br></br>* `Connect`—Unconditionally initiate a VPN connection on the next network attempt.  </br></br>* `Disconnect`—Tear down the VPN connection and do not reconnect on demand as long as this dictionary matches.  </br></br>* `EvaluateConnection`—Evaluate the `ActionParameters` array for each connection attempt.  </br></br>* `Ignore`—Leave any existing VPN connection up, but do not reconnect on demand as long as this dictionary matches.  </br></br>|
-|`ActionParameters`|Array of dictionaries|A dictionary that provides rules similar to the `OnDemandRules` dictionary, but evaluated on each connection instead of when the network changes. These dictionaries are evaluated in order, and the behavior is determined by the first dictionary that matches.</br>The keys allowed in each dictionary are described in [Table 1-1](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW41).</br>**Note:** This array is used only for dictionaries in which `EvaluateConnection` is the `Action` value.|
-|`DNSDomainMatch`|Array of strings|An array of domain names.
+|`ActionParameters`|Array of Dictionaries|A dictionary that provides rules similar to the `OnDemandRules` dictionary, but evaluated on each connection instead of when the network changes. These dictionaries are evaluated in order, and the behavior is determined by the first dictionary that matches.</br>The keys allowed in each dictionary are described in [Table 1-1](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW41).</br>**Note:** This array is used only for dictionaries in which `EvaluateConnection` is the `Action` value.|
+|`DNSDomainMatch`|Array of Strings|An array of domain names.
 This rule matches if any of the domain names in the specified list matches any domain in the device’s search domains list.</br>A wildcard '*' prefix is supported. For example, `*.example.com` matches against either `mydomain.example.com` or `yourdomain.example.com`.|
-|`DNSServerAddressMatch`|Array of strings|An array of IP addresses. This rule matches if any of the network’s specified DNS servers match any entry in the array.</br>Matching with a single wildcard is supported. For example, `17.*` matches any DNS server in the class A 17 subnet.|
+|`DNSServerAddressMatch`|Array of Strings|An array of IP addresses. This rule matches if any of the network’s specified DNS servers match any entry in the array.</br>Matching with a single wildcard is supported. For example, `17.*` matches any DNS server in the class A 17 subnet.|
 |`InterfaceTypeMatch`|String|An interface type. If specified, this rule matches only if the primary network interface hardware matches the specified type.</br>Supported values are `Ethernet`, `WiFi`, and `Cellular`.|
-|`SSIDMatch`|Array of strings|An array of SSIDs to match against the current network. If the network is not a Wi-Fi network or if the SSID does not appear in this array, the match fails.</br>Omit this key and the corresponding array to match against any SSID.|
+|`SSIDMatch`|Array of Strings|An array of SSIDs to match against the current network. If the network is not a Wi-Fi network or if the SSID does not appear in this array, the match fails.</br>Omit this key and the corresponding array to match against any SSID.|
 |`URLStringProbe`|String|A URL to probe. If this URL is successfully fetched (returning a `200` HTTP status code) without redirection, this rule matches.|
   
 
@@ -2236,9 +2271,9 @@ The keys allowed in each `ActionParameters` dictionary are described in .
 
 |Key|Type|Value|
 |-|-|-|
-|`Domains`|Array of strings|*Required.* The domains for which this evaluation applies.|
+|`Domains`|Array of Strings|*Required.* The domains for which this evaluation applies.|
 |`DomainAction`|String|*Required.* Defines the VPN behavior for the specified domains. Allowed values are:</br></br>* ConnectIfNeeded—The specified domains should trigger a VPN connection attempt if domain name resolution fails, such as when the DNS server indicates that it cannot resolve the domain, responds with a redirection to a different server, or fails to respond (timeout).  </br></br>* NeverConnect—The specified domains will not trigger a VPN connection nor be accessible through an existing VPN connection.  </br></br>|
-|`RequiredDNSServers`|Array of strings|*Optional.* An array of IP addresses of DNS servers to be used for resolving the specified domains. These servers need not be part of the device’s current network configuration. If these DNS servers are not reachable, a VPN connection is established in response. These DNS servers should be either internal DNS servers or trusted external DNS servers.</br>**Note:** This key is valid only if the value of `DomainAction` is `ConnectIfNeeded`.|
+|`RequiredDNSServers`|Array of Strings|*Optional.* An array of IP addresses of DNS servers to be used for resolving the specified domains. These servers need not be part of the device’s current network configuration. If these DNS servers are not reachable, a VPN connection is established in response. These DNS servers should be either internal DNS servers or trusted external DNS servers.</br>**Note:** This key is valid only if the value of `DomainAction` is `ConnectIfNeeded`.|
 |`RequiredURLStringProbe`|String|*Optional.* An `HTTP` or `HTTPS` (preferred) URL to probe, using a `GET` request. If no HTTP response code is received from the server, a VPN connection is established in response.</br>**Note:** This key is valid only if the value of `DomainAction` is `ConnectIfNeeded`.|
   
   
@@ -2316,7 +2351,7 @@ The `Proxies` dictionary may contain the following keys:
 |-|-|-|
 |`ProxyAutoConfigEnable`|Integer|Optional. Set to 1 to enable automatic proxy configuration. Defaults to 0.|
 |`ProxyAutoConfigURLString`|String|Optional. URL to the location of the proxy auto-configuration file. Used only when `ProxyAutoConfigEnable` is 1.|
-|`SupplementalMatchDomains`|Array of strings|Optional. If set, then only connections to hosts within one or more of the specified domains will use the proxy settings|
+|`SupplementalMatchDomains`|Array of Strings|Optional. If set, then only connections to hosts within one or more of the specified domains will use the proxy settings|
   
 
 If `ProxyAutoConfigEnable` is 0, the dictionary may also contain the following keys:  
@@ -2343,11 +2378,11 @@ If `VPNType` is `AlwaysOn`, the following keys may be provided in a dictionary:
 |Key|Type|Value|
 |-|-|-|
 |`UIToggleEnabled`|Integer|Optional. If set to 1, allows the user to disable this VPN configuration. Defaults to 0.|
-|`TunnelConfigurations`|Array of dictionaries|Required. See below.|
-|`ServiceExceptions`|Array of dictionaries|Optional. See below.|
+|`TunnelConfigurations`|Array of Dictionaries|Required. See below.|
+|`ServiceExceptions`|Array of Dictionaries|Optional. See below.|
 |`AllowCaptiveWebSheet`|Integer|Optional. Set to 1 to allow traffic from Captive Web Sheet outside the VPN tunnel. Defaults to 0.|
 |`AllowAllCaptiveNetworkPlugins`|Integer|Optional. Set to 1 to allow traffic from all Captive Networking apps outside the VPN tunnel to perform Captive network handling. Defaults to 0.|
-|`AllowedCaptiveNetworkPlugins`|Array of dictionaries|Optional. Array of Captive Networking apps whose traffic will be allowed outside the VPN tunnel to perform Captive network handling. Used only when `AllowAllCaptiveNetworkPlugins` is 0.</br>Each dictionary in the `AllowedCaptiveNetworkPlugins` array must contain a `BundleIdentifier` key of type string, the value of which is the app’s bundle identifier.</br>Captive Networking apps may require additional entitlements to operate in a captive environment.|
+|`AllowedCaptiveNetworkPlugins`|Array of Dictionaries|Optional. Array of Captive Networking apps whose traffic will be allowed outside the VPN tunnel to perform Captive network handling. Used only when `AllowAllCaptiveNetworkPlugins` is 0.</br>Each dictionary in the `AllowedCaptiveNetworkPlugins` array must contain a `BundleIdentifier` key of type string, the value of which is the app’s bundle identifier.</br>Captive Networking apps may require additional entitlements to operate in a captive environment.|
   
 
 Each dictionary in a `TunnelConfigurations` array may contain the following keys:  
@@ -2355,7 +2390,7 @@ Each dictionary in a `TunnelConfigurations` array may contain the following keys
 |Key|Type|Value|
 |-|-|-|
 |`ProtocolType`|String|Must be IKEv2.|
-|`Interfaces`|Array of strings|Optional. Specify the interfaces to which this configuration applies. Valid values are `Cellular` and `WiFi`. Defaults to `Cellular, WiFi`.|
+|`Interfaces`|Array of Strings|Optional. Specify the interfaces to which this configuration applies. Valid values are `Cellular` and `WiFi`. Defaults to `Cellular, WiFi`.|
   
 
 In addition, all keys defined for the IKEv2 dictionary, such as `RemoteAddress` and `LocalIdentifier` may be present in a `TunnelConfigurations` dictionary.  
@@ -2408,9 +2443,9 @@ If `FilterType` is `BuiltIn`, this payload defines the following keys in additio
 |Key|Type|Value|
 |-|-|-|
 |`AutoFilterEnabled`|Boolean|Optional. If `true`, automatic filtering is enabled. This function evaluates each web page as it is loaded and attempts to identify and block content not suitable for children. The search algorithm is complex and may vary from release to release, but it is basically looking for adult language, i.e. swearing and sexually explicit language. The default value is `false`.|
-|`PermittedURLs`|Array of strings|Optional. Used only when `AutoFilterEnabled` is `true`. Otherwise, this field is ignored.</br>Each entry contains a URL that is accessible whether the automatic filter allows access or not.|
-|`WhitelistedBookmarks`|Array of dictionaries|Optional. If present, these URLs are added to the browser’s bookmarks, and the user is not allowed to visit any sites other than these. The number of these URLs should be limited to about 500.|
-|`BlacklistedURLs`|Array of strings|Optional. Access to the specified URLs is blocked. The number of these URLs should be limited to about 500.|
+|`PermittedURLs`|Array of Strings|Optional. Used only when `AutoFilterEnabled` is `true`. Otherwise, this field is ignored.</br>Each entry contains a URL that is accessible whether the automatic filter allows access or not.|
+|`WhitelistedBookmarks`|Array of Dictionaries|Optional. If present, these URLs are added to the browser’s bookmarks, and the user is not allowed to visit any sites other than these. The number of these URLs should be limited to about 500.|
+|`BlacklistedURLs`|Array of Strings|Optional. Access to the specified URLs is blocked. The number of these URLs should be limited to about 500.|
   
 
 Each entry in the `WhitelistedBookmarks` field contains a dictionary with the following keys:  
@@ -2473,9 +2508,9 @@ In addition to the settings common to all payload types, the payload defines the
 |`IsHotspot`|Boolean|Optional. Default `false`. If `true`, the network is treated as a hotspot.</br>**Availability:** Available in iOS 7.0 and later and in macOS 10.9 and later.|
 |`DomainName`|String|Optional. Domain Name used for Wi-Fi Hotspot 2.0 negotiation. This field can be provided instead of `SSID_STR`.</br>**Availability:** Available in iOS 7.0 and later and in macOS 10.9 and later..|
 |`ServiceProviderRoamingEnabled`|Boolean|Optional. If `true`, allows connection to roaming service providers. Defaults to `false`.</br>**Availability:** Available in iOS 7.0 and later and in macOS 10.9 and later.|
-|`RoamingConsortiumOIs`|Array of strings|Optional. Array of Roaming Consortium Organization Identifiers used for Wi-Fi Hotspot 2.0 negotiation.</br>**Availability:** Available in iOS 7.0 and later and in macOS 10.9 and later..|
-|`NAIRealmNames`|Array of strings|Optional. Array of strings. List of Network Access Identifier Realm names used for Wi-Fi Hotspot 2.0 negotiation.</br>**Availability:** Available in iOS 7.0 and later and in macOS 10.9 and later..|
-|`MCCAndMNCs`|Array of strings|Optional. Array of strings. List of Mobile Country Code (MCC)/Mobile Network Code (MNC) pairs used for Wi-Fi Hotspot 2.0 negotiation. Each string must contain exactly six digits.</br>**Availability:** Available in iOS 7.0 and later. This feature is not supported in macOS.|
+|`RoamingConsortiumOIs`|Array of Strings|Optional. Array of Roaming Consortium Organization Identifiers used for Wi-Fi Hotspot 2.0 negotiation.</br>**Availability:** Available in iOS 7.0 and later and in macOS 10.9 and later..|
+|`NAIRealmNames`|Array of Strings|Optional. Array of strings. List of Network Access Identifier Realm names used for Wi-Fi Hotspot 2.0 negotiation.</br>**Availability:** Available in iOS 7.0 and later and in macOS 10.9 and later..|
+|`MCCAndMNCs`|Array of Strings|Optional. Array of strings. List of Mobile Country Code (MCC)/Mobile Network Code (MNC) pairs used for Wi-Fi Hotspot 2.0 negotiation. Each string must contain exactly six digits.</br>**Availability:** Available in iOS 7.0 and later. This feature is not supported in macOS.|
 |`DisplayedOperatorName`|String|</br>The operator name to display when connected to this network. Used only with Wi-Fi Hotspot 2.0 access points. **Availability:** Available in iOS 7.0 and later and in macOS 10.9 and later.|
 |`ProxyType`|String|Optional. Valid values are `None`, `Manual`, and `Auto`.</br>**Availability:** Available in iOS 5.0 and later and on all versions of macOS.|
 |`CaptiveBypass`|Boolean|Optional. If set to `true`, Captive Network detection will be bypassed when the device connects to the network. Defaults to `false`.</br>**Availability:** Available in iOS 10.0 and later.|
@@ -2486,7 +2521,7 @@ The `QoSMarkingPolicy` dictionary contains these keys:
 
 |Key|Type|Value|
 |-|-|-|
-|`QoSMarkingWhitelistedAppIdentifiers`|Array of strings|Optional. Array of app bundle identifiers that will be whitelisted for L2 and L3 marking for traffic sent to the Wi-Fi network. If the array is not present but the `QoSMarkingPolicy` key is present (even empty) no app gets whitelisted.|
+|`QoSMarkingWhitelistedAppIdentifiers`|Array of Strings|Optional. Array of app bundle identifiers that will be whitelisted for L2 and L3 marking for traffic sent to the Wi-Fi network. If the array is not present but the `QoSMarkingPolicy` key is present (even empty) no app gets whitelisted.|
 |`QoSMarkingAppleAudioVideoCalls`|Boolean|Optional. Specifies if audio and video traffic of built-in audio/video services such as FaceTime and Wi-Fi Calling will be whitelisted for L2 and L3 marking for traffic sent to the Wi-Fi network. Defaults to `true`.|
 |`QoSMarkingEnabled`|Boolean|Optional. May be used to disable L3 marking and only use L2 marking for traffic sent to the Wi-Fi network. When this key is `false` the system behaves as if Wi-Fi was not associated with a Cisco QoS fast lane network. Defaults to `true`.|
   
@@ -2529,11 +2564,11 @@ In addition to the standard encryption types, it is possible to specify an enter
 |Key|Type|Value|
 |-|-|-|
 |`UserName`|String|Optional. Unless you know the exact user name, this property won't appear in an imported configuration. Users can enter this information when they authenticate.|
-|`AcceptEAPTypes`|Array of integers. |The following EAP types are accepted:</br>13 = TLS</br>17 = LEAP</br>18 = EAP-SIM</br>21 = TTLS</br>23 = EAP-AKA</br>25 = PEAP</br>43 = EAP-FAST|
+|`AcceptEAPTypes`|Array of Integers|The following EAP types are accepted:</br>13 = TLS</br>17 = LEAP</br>18 = EAP-SIM</br>21 = TTLS</br>23 = EAP-AKA</br>25 = PEAP</br>43 = EAP-FAST|
 |`UserPassword`|String|Optional. User password. If not provided, the user may be prompted during login.|
 |`OneTimePassword`|Boolean|Optional. If `true`, the user will be prompted for a password each time they connect to the network. Defaults to `false`.|
-|`PayloadCertificateAnchorUUID`|Array of strings|Optional. Identifies the certificates to be trusted for this authentication. Each entry must contain the UUID of a certificate payload. Use this key to prevent the device from asking the user if the listed certificates are trusted.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless TLSAllowTrustExceptions is also specified with the value `true`.|
-|`TLSTrustedServerNames`|Array of strings|Optional. This is the list of server certificate common names that will be accepted. You can use wildcards to specify the name, such as wpa.*.example.com. If a server presents a certificate that isn't in this list, it won't be trusted.</br>Used alone or in combination with TLSTrustedCertificates, the property allows someone to carefully craft which certificates to trust for the given network, and avoid dynamically trusted certificates.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless TLSAllowTrustExceptions is also specified with the value `true`.|
+|`PayloadCertificateAnchorUUID`|Array of Strings|Optional. Identifies the certificates to be trusted for this authentication. Each entry must contain the UUID of a certificate payload. Use this key to prevent the device from asking the user if the listed certificates are trusted.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless TLSAllowTrustExceptions is also specified with the value `true`.|
+|`TLSTrustedServerNames`|Array of Strings|Optional. This is the list of server certificate common names that will be accepted. You can use wildcards to specify the name, such as wpa.*.example.com. If a server presents a certificate that isn't in this list, it won't be trusted.</br>Used alone or in combination with TLSTrustedCertificates, the property allows someone to carefully craft which certificates to trust for the given network, and avoid dynamically trusted certificates.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless TLSAllowTrustExceptions is also specified with the value `true`.|
 |`TLSAllowTrustExceptions`|Boolean|Optional. Allows/disallows a dynamic trust decision by the user. The dynamic trust is the certificate dialogue that appears when a certificate isn't trusted. If this is `false`, the authentication fails if the certificate isn't already trusted. See PayloadCertificateAnchorUUID and TLSTrustedNames above.</br>The default value of this property is `true` unless either PayloadCertificateAnchorUUID or TLSTrustedServerNames is supplied, in which case the default value is `false`.|
 |`TLSCertificateIsRequired`|Boolean|Optional. If `true`, allows for two-factor authentication for EAP-TTLS, PEAP, or EAP-FAST. If `false`, allows for zero-factor authentication for EAP-TLS. The default is `true` for EAP-TLS, and `false` for other EAP types.</br>**Availability:** Available in iOS 7.0 and later.|
 |`TLSMinimumVersion`|String|Optional. The minimum TLS version to be used with EAP authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default minimum is 1.0. </br>**Availability:** Available in iOS 11.0 and macOS 10.13 and later.|
@@ -2635,5 +2670,5 @@ Managed Safari Web Domain definitions are cumulative. Patterns defined by all Ma
 |Key|Type|Value|
 |-|-|-|
 |`Type`|String|Mandatory. The Documents account type: `com.apple.osxserver.documents`.|
-|`Port`|Number|Optional. Designates the port number to use when contacting the server. If no port number is specified, the default port is used.|
+|`Port`|Integer|Optional. Designates the port number to use when contacting the server. If no port number is specified, the default port is used.|
   

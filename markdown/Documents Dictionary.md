@@ -5,5 +5,5 @@
 |Key|Type|Value|
 |-|-|-|
 |`Type`|String|Mandatory. The Documents account type: `com.apple.osxserver.documents`.|
-|`Port`|Number|Optional. Designates the port number to use when contacting the server. If no port number is specified, the default port is used.|
+|`Port`|Integer|Optional. Designates the port number to use when contacting the server. If no port number is specified, the default port is used.|
   

@@ -62,10 +62,10 @@ Each `allowance` or `curfew` dictionary contains these keys:
 |Key|Type|Value|
 |-|-|-|
 |`enabled`|Boolean|Required. Set to `true` to enable these settings.|
-|`rangeType`|Number|Required. Type of day range: 0 = weekday, 1 = weekend.|
+|`rangeType`|Integer|Required. Type of day range: 0 = weekday, 1 = weekend.|
 |`start`|String|Optional. Curfew start time in the format %d:%d:%d.|
 |`end`|String|Optional. Curfew end time in the format %d:%d:%d.|
-|`secondsPerDay`|Number|Optional. Seconds for that day for allowance.|
+|`secondsPerDay`|Integer|Optional. Seconds for that day for allowance.|
   
   
 
@@ -77,23 +77,40 @@ The Parental Control Application Access payload is designated by specifying `com
 
 It enables application access restrictions on macOS.  
 
+To determine if an application can be launched, these rules are evaluated:  
+
+
+1 Certain system applications and utilities are always allowed to run.   
+
+2 The `whiteList` is searched to see if a matching entry is found by `bundleID`.  If a match is found, the `appID` and `detachedSignature` (if present) are used to verify the signature of the application being launched.  If the signature is valid and matches the designated requirement (in the `appID` key), the application is allowed to launch.  
+
+3 If the path to the binary being launched matches (or is in a subdirectory) of a path in `pathBlackList`, the binary is denied.  
+
+4  If the path to the binary being launched matches (or is a subdirectory) of a path in `pathWhiteList`, the binary is allowed to launch.  
+
+5 The binary is denied permission to launch.  
+  
+
 In addition to the settings common to all payloads, this payload defines these keys:  
 
 |Key|Type|Value|
 |-|-|-|
 |`familyControlsEnabled`|Boolean|Required. Set to `true` to enable application access restrictions.|
-|`whiteList`|Array of Dictionaries|Optional. Allowed processes.|
-|`pathBlackList`|Array of Strings|Optional. Paths to disallowed processes.|
-|`pathWhiteList`|Array of Strings|Optional. Paths to allowed processes.|
+|`whiteList`|Array of Dictionaries|Optional. A list of code signatures for applications that are allowed to run. |
+|`pathBlackList`|Array of Strings|Optional. Paths to disallowed applications.|
+|`pathWhiteList`|Array of Strings|Optional. Paths to allowed applications.|
   
 
 Each `whiteList` dictionary contains these keys:  
 
 |Key|Type|Value|
 |-|-|-|
-|`bundleID`|String|Optional. Bundle ID of application.|
+|`bundleID`|String|Required. Bundle ID of application.|
+|`appID`|Data|Required. The designated requirement describing the code signature of this executable. This value is obtained from the `Security.framework` using `SecCodeCopyDesignatedRequirement`.|
+|`detachedSignature`|Data|Optional. Can be used to provide the required signature for an unsigned binary.  Generate an ad-hoc signature of the unsigned binary and store the signature here.|
+|`disabled`|Boolean|Optional. Specifies whether this application information is to be included in the `whiteList` or not.  Set to `true` to keep the application off the `whiteList`. It could still be allowed to launch via `pathWhiteList`, although this behavior is discouraged.</br>Default is `false`. |
+|`subApps`|Array of Dictionaries|Optional. For applications that include nested helper applications, describes the signatures of embedded applications.  The dictionary format is the same as for the `whiteList` key.|
 |`displayName`|String|Optional. Display name.|
-|`displayName`|String|Optional. Path to application.|
   
   
 

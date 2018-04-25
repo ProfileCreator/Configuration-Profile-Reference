@@ -19,5 +19,5 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`username`|String|This string specifies the user name for this APN. If it is missing, the device prompts for it during profile installation.|
 |`password`|Data|Optional. This data represents the password for the user for this APN. For obfuscation purposes, the password is encoded. If it is missing from the payload, the device prompts for the password during profile installation.|
 |`Proxy`|String|Optional. The IP address or URL of the APN proxy.|
-|`ProxyPort`|Number|Optional. The port number of the APN proxy.|
+|`ProxyPort`|Integer|Optional. The port number of the APN proxy.|
   

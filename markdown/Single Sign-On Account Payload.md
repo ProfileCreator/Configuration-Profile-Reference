@@ -21,8 +21,8 @@ The Kerberos `dictionary` can contain the following keys:
 |`PrincipalName`|String|Optional. The Kerberos principal name. If not provided, the user is prompted for one during profile installation.</br>This field must be provided for MDM installation.|
 |`PayloadCertificateUUID`|String|Optional. The PayloadUUID of an identity certificate payload that can be used to renew the Kerberos credential without user interaction. The certificate payload must have either the `com.apple.security.pkcs12` or `com.apple.security.scep` payload type. Both the Single Sign On payload and the identity certificate payload must be included in the same configuration profile|
 |`Realm`|String|The Kerberos realm name. This value should be properly capitalized.|
-|`URLPrefixMatches`|Array of strings|List of URLs prefixes that must be matched to use this account for Kerberos authentication over HTTP. **Note** that the URL postfixes must match as well.|
-|`AppIdentifierMatches`|Array of strings|Optional. List of app identifiers that are allowed to use this login. If this field missing, this login matches all app identifiers.</br>This array, if present, may not be empty.|
+|`URLPrefixMatches`|Array of Strings|List of URLs prefixes that must be matched to use this account for Kerberos authentication over HTTP. **Note** that the URL postfixes must match as well.|
+|`AppIdentifierMatches`|Array of Strings|Optional. List of app identifiers that are allowed to use this login. If this field missing, this login matches all app identifiers.</br>This array, if present, may not be empty.|
   
 
 Each entry in the `URLPrefixMatches` array must contain a URL prefix. Only URLs that begin with one of the strings in this account are allowed to access the Kerberos ticket. URL matching patterns must include the scheme—for example, `http://www.example.com/`. If a matching pattern does not end in `/`, a `/` is appended to it.  

@@ -14,41 +14,41 @@ The following AD configuration keys can be added to the Directory payload, of ty
 
 |Key|Type|Description|
 |-|-|-|
-|`HostName`|string|The Active Directory domain to join.|
-|`UserName`|string|User name of the account used to join the domain.|
-|`Password`|string|Password of the account used to join the domain.|
-|`ADOrganizationalUnit`|string|The organizational unit (OU) where the joining computer object is added.|
-|`ADMountStyle`|string|Network home protocol to use: “afp” or “smb”.|
-|`ADCreateMobileAccountAtLoginFlag`|boolean|Enable or disable the ADCreateMobileAccountAtLogin key.|
-|`ADCreateMobileAccountAtLogin`|boolean|Create mobile account at login.|
-|`ADWarnUserBeforeCreatingMAFlag`|boolean|Enable or disable the ADWarnUserBeforeCreatingMA key.|
-|`ADWarnUserBeforeCreatingMA`|boolean|Warn user before creating a Mobile Account.|
-|`ADForceHomeLocalFlag`|boolean|Enable or disable the ADForceHomeLocal key.|
-|`ADForceHomeLocal`|boolean|Force local home directory.|
-|`ADUseWindowsUNCPathFlag`|boolean|Enable or disable the ADUseWindowsUNCPath key.|
-|`ADUseWindowsUNCPath`|boolean|Use UNC path from Active Directory to derive network home location.|
-|`ADAllowMultiDomainAuthFlag`|boolean|Enable or disable the ADAllowMultiDomainAuth key.|
-|`ADAllowMultiDomainAuth`|boolean|Allow authentication from any domain in the forest.|
-|`ADDefaultUserShellFlag`|boolean|Enable or disable the ADDefaultUserShell key.|
-|`ADDefaultUserShell`|string|Default user shell; e.g. /bin/bash.|
-|`ADMapUIDAttributeFlag`|boolean|Enable or disable the ADMapUIDAttribute key.|
-|`ADMapUIDAttribute`|string|Map UID to attribute.|
-|`ADMapGIDAttributeFlag`|boolean|Enable or disable the ADMapGIDAttribute key.|
-|`ADMapGIDAttribute`|string|Map user GID to attribute.|
-|`ADMapGGIDAttributeFlag`|boolean|Enable or disable the ADMapGGIDAttributeFlag key.|
-|`ADMapGGIDAttribute`|string|Map group GID to attribute.|
-|`ADPreferredDCServerFlag`|boolean|Enable or disable the ADPreferredDCServer key.|
-|`ADPreferredDCServer`|string|Prefer this domain server.|
-|`ADDomainAdminGroupListFlag`|boolean|Enable or disable the ADDomainAdminGroupList key.|
-|`ADDomainAdminGroupList`|array of strings|Allow administration by specified Active Directory groups.|
-|`ADNamespaceFlag`|boolean|Enable or disable the ADNamespace key.|
-|`ADNamespace`|string|Set primary user account naming convention: “forest” or “domain”; “domain” is default.|
-|`ADPacketSignFlag`|boolean|Enable or disable the ADPacketSign key.|
-|`ADPacketSign`|string|Packet signing: "allow", "disable" or "require"; “allow” is default.|
-|`ADPacketEncryptFlag`|boolean|Enable or disable the ADPacketEncrypt key.|
-|`ADPacketEncrypt`|string|Packet encryption: "allow", "disable", "require" or "ssl"; “allow” is default.|
-|`ADRestrictDDNSFlag`|boolean|Enable or disable the ADRestrictDDNS key.|
-|`ADRestrictDDNS`|array of strings|Restrict Dynamic DNS updates to the specified interfaces (e.g. en0, en1, etc).|
-|`ADTrustChangePassIntervalDaysFlag`|boolean|Enable or disable the ADTrustChangePassIntervalDays key.|
-|`ADTrustChangePassIntervalDays`|number|How often to require change of the computer trust account password in days; “0” is disabled.|
+|`HostName`|String|The Active Directory domain to join.|
+|`UserName`|String|User name of the account used to join the domain.|
+|`Password`|String|Password of the account used to join the domain.|
+|`ADOrganizationalUnit`|String|The organizational unit (OU) where the joining computer object is added.|
+|`ADMountStyle`|String|Network home protocol to use: “afp” or “smb”.|
+|`ADCreateMobileAccountAtLoginFlag`|Boolean|Enable or disable the ADCreateMobileAccountAtLogin key.|
+|`ADCreateMobileAccountAtLogin`|Boolean|Create mobile account at login.|
+|`ADWarnUserBeforeCreatingMAFlag`|Boolean|Enable or disable the ADWarnUserBeforeCreatingMA key.|
+|`ADWarnUserBeforeCreatingMA`|Boolean|Warn user before creating a Mobile Account.|
+|`ADForceHomeLocalFlag`|Boolean|Enable or disable the ADForceHomeLocal key.|
+|`ADForceHomeLocal`|Boolean|Force local home directory.|
+|`ADUseWindowsUNCPathFlag`|Boolean|Enable or disable the ADUseWindowsUNCPath key.|
+|`ADUseWindowsUNCPath`|Boolean|Use UNC path from Active Directory to derive network home location.|
+|`ADAllowMultiDomainAuthFlag`|Boolean|Enable or disable the ADAllowMultiDomainAuth key.|
+|`ADAllowMultiDomainAuth`|Boolean|Allow authentication from any domain in the forest.|
+|`ADDefaultUserShellFlag`|Boolean|Enable or disable the ADDefaultUserShell key.|
+|`ADDefaultUserShell`|String|Default user shell; e.g. /bin/bash.|
+|`ADMapUIDAttributeFlag`|Boolean|Enable or disable the ADMapUIDAttribute key.|
+|`ADMapUIDAttribute`|String|Map UID to attribute.|
+|`ADMapGIDAttributeFlag`|Boolean|Enable or disable the ADMapGIDAttribute key.|
+|`ADMapGIDAttribute`|String|Map user GID to attribute.|
+|`ADMapGGIDAttributeFlag`|Boolean|Enable or disable the ADMapGGIDAttributeFlag key.|
+|`ADMapGGIDAttribute`|String|Map group GID to attribute.|
+|`ADPreferredDCServerFlag`|Boolean|Enable or disable the ADPreferredDCServer key.|
+|`ADPreferredDCServer`|String|Prefer this domain server.|
+|`ADDomainAdminGroupListFlag`|Boolean|Enable or disable the ADDomainAdminGroupList key.|
+|`ADDomainAdminGroupList`|Array of Strings|Allow administration by specified Active Directory groups.|
+|`ADNamespaceFlag`|Boolean|Enable or disable the ADNamespace key.|
+|`ADNamespace`|String|Set primary user account naming convention: “forest” or “domain”; “domain” is default.|
+|`ADPacketSignFlag`|Boolean|Enable or disable the ADPacketSign key.|
+|`ADPacketSign`|String|Packet signing: "allow", "disable" or "require"; “allow” is default.|
+|`ADPacketEncryptFlag`|Boolean|Enable or disable the ADPacketEncrypt key.|
+|`ADPacketEncrypt`|String|Packet encryption: "allow", "disable", "require" or "ssl"; “allow” is default.|
+|`ADRestrictDDNSFlag`|Boolean|Enable or disable the ADRestrictDDNS key.|
+|`ADRestrictDDNS`|Array of Strings|Restrict Dynamic DNS updates to the specified interfaces (e.g. en0, en1, etc).|
+|`ADTrustChangePassIntervalDaysFlag`|Boolean|Enable or disable the ADTrustChangePassIntervalDays key.|
+|`ADTrustChangePassIntervalDays`|Integer|How often to require change of the computer trust account password in days; “0” is disabled.|
   

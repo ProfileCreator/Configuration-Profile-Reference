@@ -8,7 +8,7 @@ This payload is supported only in macOS 10.9 and later. It is not supported in i
 
 |Key|Type|Value|
 |-|-|-|
-|`AppLayerVPNMapping`|Array of dictionaries|An array of mapping dictionaries.|
+|`AppLayerVPNMapping`|Array of Dictionaries|An array of mapping dictionaries.|
   
 
 Each dictionary in the array can contain the following keys:  

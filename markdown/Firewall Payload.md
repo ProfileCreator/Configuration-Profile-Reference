@@ -21,5 +21,5 @@ The Firewall payload contains the following keys:
 |`EnableFirewall`|Boolean|Required. Whether the firewall should be enabled or not.|
 |`BlockAllIncoming`|Boolean|Optional. Corresponds to the “Block all incoming connections” option.|
 |`EnableStealthMode`|Boolean|Optional. Corresponds to “Enable stealth mode.”|
-|`Applications`|Array of dictionaries|Optional. The list of applications. Each dictionary contains these keys:</br></br>* `BundleID` (string) : identifies the application  </br></br>* `Allowed` (Boolean) : specifies whether or not incoming connections are allowed  </br></br>|
+|`Applications`|Array of Dictionaries|Optional. The list of applications. Each dictionary contains these keys:</br></br>* `BundleID` (string) : identifies the application  </br></br>* `Allowed` (Boolean) : specifies whether or not incoming connections are allowed  </br></br>|
   

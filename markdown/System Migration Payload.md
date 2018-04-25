@@ -14,7 +14,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 
 |Key|Type|Value|
 |-|-|-|
-|`CustomBehavior`|Array of dictionaries|Optional. Specifies custom behavior for the context designated in each dictionary.|
+|`CustomBehavior`|Array of Dictionaries|Optional. Specifies custom behavior for the context designated in each dictionary.|
   
 
 Each dictionary in the `CustomBehavior` array contains these keys:  
@@ -22,7 +22,7 @@ Each dictionary in the `CustomBehavior` array contains these keys:
 |Key|Type|Value|
 |-|-|-|
 |`Context`|String|Required. The context to which custom paths apply.|
-|`Paths`|Array of dictionaries|Required. The custom paths to be migrated from a source system to a target system.|
+|`Paths`|Array of Dictionaries|Required. The custom paths to be migrated from a source system to a target system.|
   
 
 Each dictionary in the `Paths` array contains these keys:  

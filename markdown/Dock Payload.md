@@ -18,14 +18,14 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`minimize-to-application -immutable`|Boolean|Optional. If `true`, the minimize-to-application checkbox is disabled.|
 |`magnification`|Boolean|Optional. If `true`, magnification is active.|
 |`magnify-immutable`|Boolean|Optional. If `true`, the magnification checkbox is disabled.|
-|`largesize`|Number|Optional. The size of the largest magnification. Values must be in range 16 to 128.|
+|`largesize`|Integer|Optional. The size of the largest magnification. Values must be in range 16 to 128.|
 |`magsize-immutable`|Boolean|Optional. If `true`, the magnify slider is disabled.|
 |`show-process-indicators`|Boolean|Optional. If `true`, show the process indicator.|
 |`launchanim`|Boolean|Optional. If `true`, animate opening applications.|
 |`launchanim-immutable`|Boolean|Optional. If `true`, the Animate Opening Applications checkbox is disabled.|
 |`mineffect`|String|Optional. Set minimize effect. Values may be `genie` or `scale`.|
 |`mineffect-immutable`|Boolean|Optional. If `true`, the Minimize Using popup is disabled.|
-|`tilesize`|Number|Optional. The tile size. Values must be in range 16 to 128.|
+|`tilesize`|Integer|Optional. The tile size. Values must be in range 16 to 128.|
 |`size-immutable`|Boolean|Optional. If `true`, the size slider will be disabled.|
 |`MCXDockSpecialFolders`|Array of Strings|Optional. One or more special folders that may be created at user login time and placed in the dock. Values may be `AddDockMCXMyApplicationsFolder`,  `AddDockMCXDocumentsFolder`,  `AddDockMCXSharedFolder`,  or  `AddDockMCXOriginalNetworkHomeFolder`. The "My Applications" item is only used for Simple Finder environments. The "Original Network Home" item is only used for mobile account users.|
 |`AllowDockFixupOverride`|Boolean|Optional. If `true`, use the file in `/Library/Preferences/ com.apple.dockfixup.plist` when a new user or migrated user logs in. The format of this file currently has no documentation. This option has no effect for existing users.|
@@ -49,5 +49,5 @@ The `tile-data` dictionary defines the following keys:
 |-|-|-|
 |`label`|String|Required. Label of a dock item.|
 |`url`|String|Optional. For URL tiles, the URL string.|
-|`file-type`|Number|Required. The type of the tile expressed as a number. 3 = `directory`, 0 = `URL`, 1 = `file`.|
+|`file-type`|Integer|Required. The type of the tile expressed as a number. 3 = `directory`, 0 = `URL`, 1 = `file`.|
   

@@ -10,7 +10,7 @@ In addition to the settings common to all payloads, this payload defines this ke
 
 |Key|Type|Value|
 |-|-|-|
-|`ApplicationRules`|Array of disctionaries|Required.|
+|`ApplicationRules`|Array of Dictionaries|Required.|
   
 
 Each entry in the `ApplicationRules` array must be a dictionary containing these keys:  

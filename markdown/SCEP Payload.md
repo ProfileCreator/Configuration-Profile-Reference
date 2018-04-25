@@ -14,9 +14,9 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`Name`|String|Optional. Any string that is understood by the SCEP server. For example, it could be a domain name like `example.org`. If a certificate authority has multiple CA certificates this field can be used to distinguish which is required.|
 |`Subject`|Array|Optional. The representation of a X.500 name represented as an array of OID and value. For example, `/C=US/O=Apple Inc./CN=foo/1.2.5.3=bar`, which would translate to:</br>`[ [ ["C", "US"] ], [ ["O", "Apple Inc."] ], ..., [ [ "1.2.5.3", "bar" ] ] ]`</br>OIDs can be represented as dotted numbers, with shortcuts for country (`C`), locality (`L`), state (`ST`), organization (`O`), organizational unit (`OU`), and common name (`CN`).|
 |`Challenge`|String|Optional. A pre-shared secret.|
-|`Keysize`|Number|Optional. The key size in bits, either 1024 or 2048.|
+|`Keysize`|Integer|Optional. The key size in bits, either 1024 or 2048.|
 |`KeyType`|String|Optional. Currently always "RSA".|
-|`KeyUsage`|Number|Optional. A bitmask indicating the use of the key. 1 is signing, 4 is encryption, 5 is both signing and encryption. Some certificate authorities, such as Windows CA, support only encryption or signing, but not both at the same time.</br>**Availability:** Available only in iOS 4 and later.|
+|`KeyUsage`|Integer|Optional. A bitmask indicating the use of the key. 1 is signing, 4 is encryption, 5 is both signing and encryption. Some certificate authorities, such as Windows CA, support only encryption or signing, but not both at the same time.</br>**Availability:** Available only in iOS 4 and later.|
 |`Retries`|Integer|Optional. The number of times the device should retry if the server sends a PENDING response. Defaults to 3.|
 |`RetryDelay`|Integer|Optional. The number of seconds to wait between subsequent retries. The first retry is attempted without this delay. Defaults to 10.|
 |`CAFingerprint`|Data|Optional. The fingerprint of the Certificate Authority certificate.|

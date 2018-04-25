@@ -35,7 +35,7 @@ The `Groups` key must contain an array of dictionaries with the following key-va
 
 |Key|Type|Value|
 |-|-|-|
-|`BeaconID`|Number|Required: unsigned 16 bit integer specifying this group’s unique beacon ID.|
+|`BeaconID`|Integer|Required: unsigned 16 bit integer specifying this group’s unique beacon ID.|
 |`Name`|String|Required: the display name of the group.|
 |`Description`|String|Optional: description of the group.|
 |`ImageURL`|String|**Deprecated in iOS 9.3.1 and later.** URL of an image for the group.|

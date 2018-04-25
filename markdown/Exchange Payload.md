@@ -19,7 +19,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |Available in iOS only|
 |`Certificate`|NSData blob|Optional. For accounts that allow authentication via certificate, a .p12 identity certificate in NSData blob format.|
 |`CertificateName`|String|Optional. Specifies the name or description of the certificate.|
-|`CertificatePassword`|data|Optional. The password necessary for the p12 identity certificate. Used with mandatory encryption of profiles.|
+|`CertificatePassword`|Data|Optional. The password necessary for the p12 identity certificate. Used with mandatory encryption of profiles.|
 |`PreventMove`|Boolean|Optional. Default `false`.</br>If set to `true`, messages may not be moved out of this email account into another account. Also prevents forwarding or replying from a different account than the message was originated from.</br>**Availability:** Available in iOS 5.0 and later.|
 |`PreventAppSheet`|Boolean|Optional. Default `false`. If set to `true`, this account will not be available for sending mail in any app other than the Apple Mail app.</br>**Availability:** Available in iOS 5.0 and later.|
 |`PayloadCertificateUUID`|String|UUID of the certificate payload to use for the identity credential. If this field is present, the `Certificate` field is not used.</br>**Availability:** Available in iOS 5.0 and later.|
@@ -34,11 +34,11 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`CommunicationServiceRules`|Dictionary|Optional. The communication service handler rules for this account. The `CommunicationServiceRules` dictionary currently contains only a `DefaultServiceHandlers` key; its value is a dictionary which contains an `AudioCall` key whose value is a string containing the bundle identifier for the default application that handles audio calls made to contacts from this account.|
 |Available in macOS Only|
 |`Path`|String|Optional.|
-|`Port`|Number|Optional.|
+|`Port`|Integer|Optional.|
 |`ExternalHost`|String|Optional.|
 |`ExternalSSL`|Boolean|Optional.|
 |`ExternalPath`|String|Optional.|
-|`ExternalPort`|Number|Optional.|
+|`ExternalPort`|Integer|Optional.|
   
 
 

@@ -16,7 +16,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`EmailAddress`|String|Designates the full email address for the account. If not present in the payload, the device prompts for this string during profile installation.|
 |`IncomingMailServerAuthentication`|String|Designates the authentication scheme for incoming mail. Allowed values are `EmailAuthPassword`, `EmailAuthCRAMMD5`, `EmailAuthNTLM`, `EmailAuthHTTPMD5`, and `EmailAuthNone`.|
 |`IncomingMailServerHostName`|String|Designates the incoming mail server host name (or IP address).|
-|`IncomingMailServerPortNumber`|Number|Optional. Designates the incoming mail server port number. If no port number is specified, the default port for a given protocol is used.|
+|`IncomingMailServerPortNumber`|Integer|Optional. Designates the incoming mail server port number. If no port number is specified, the default port for a given protocol is used.|
 |`IncomingMailServerUseSSL`|Boolean|Optional. Default `false`. Designates whether the incoming mail server uses SSL for authentication.|
 |`IncomingMailServerUsername`|String|Designates the user name for the email account, usually the same as the email address up to the @ character. If not present in the payload, and the account is set up to require authentication for incoming email, the device will prompt for this string during profile installation.|
 |`IncomingPassword`|String|Optional. Password for the Incoming Mail Server. Use only with encrypted profiles.|
@@ -24,7 +24,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`OutgoingPasswordSameAsIncomingPassword`|Boolean|Optional. If set, the user will be prompted for the password only once and it will be used for both outgoing and incoming mail.|
 |`OutgoingMailServerAuthentication`|String|Designates the authentication scheme for outgoing mail. Allowed values are `EmailAuthPassword`, `EmailAuthCRAMMD5`, `EmailAuthNTLM`, `EmailAuthHTTPMD5`, and `EmailAuthNone`.|
 |`OutgoingMailServerHostName`|String|Designates the outgoing mail server host name (or IP address).|
-|`OutgoingMailServerPortNumber`|Number|Optional. Designates the outgoing mail server port number. If no port number is specified, ports 25, 587 and 465 are used, in this order.|
+|`OutgoingMailServerPortNumber`|Integer|Optional. Designates the outgoing mail server port number. If no port number is specified, ports 25, 587 and 465 are used, in this order.|
 |`OutgoingMailServerUseSSL`|Boolean|Optional. Default `false`. Designates whether the outgoing mail server uses SSL for authentication.|
 |`OutgoingMailServerUsername`|String|Designates the user name for the email account, usually the same as the email address up to the @ character. If not present in the payload, and the account is set up to require authentication for outgoing email, the device prompts for this string during profile installation.|
 |`PreventMove`|Boolean|Optional. Default `false`.</br>If `true`, messages may not be moved out of this email account into another account. Also prevents forwarding or replying from a different account than the message was originated from.</br>**Availability:** Available only in iOS 5.0 and later.|

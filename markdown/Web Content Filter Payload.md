@@ -19,9 +19,9 @@ If `FilterType` is `BuiltIn`, this payload defines the following keys in additio
 |Key|Type|Value|
 |-|-|-|
 |`AutoFilterEnabled`|Boolean|Optional. If `true`, automatic filtering is enabled. This function evaluates each web page as it is loaded and attempts to identify and block content not suitable for children. The search algorithm is complex and may vary from release to release, but it is basically looking for adult language, i.e. swearing and sexually explicit language. The default value is `false`.|
-|`PermittedURLs`|Array of strings|Optional. Used only when `AutoFilterEnabled` is `true`. Otherwise, this field is ignored.</br>Each entry contains a URL that is accessible whether the automatic filter allows access or not.|
-|`WhitelistedBookmarks`|Array of dictionaries|Optional. If present, these URLs are added to the browser’s bookmarks, and the user is not allowed to visit any sites other than these. The number of these URLs should be limited to about 500.|
-|`BlacklistedURLs`|Array of strings|Optional. Access to the specified URLs is blocked. The number of these URLs should be limited to about 500.|
+|`PermittedURLs`|Array of Strings|Optional. Used only when `AutoFilterEnabled` is `true`. Otherwise, this field is ignored.</br>Each entry contains a URL that is accessible whether the automatic filter allows access or not.|
+|`WhitelistedBookmarks`|Array of Dictionaries|Optional. If present, these URLs are added to the browser’s bookmarks, and the user is not allowed to visit any sites other than these. The number of these URLs should be limited to about 500.|
+|`BlacklistedURLs`|Array of Strings|Optional. Access to the specified URLs is blocked. The number of these URLs should be limited to about 500.|
   
 
 Each entry in the `WhitelistedBookmarks` field contains a dictionary with the following keys:  

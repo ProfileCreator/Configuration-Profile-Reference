@@ -8,8 +8,8 @@ This payload is supported on iOS 7.0 and later and on macOS 10.10 and later.
 
 |Key|Type|Value|
 |-|-|-|
-|`Whitelist`|Array of dictionaries|Optional. Supervised only (ignored otherwise). If present, only AirPlay destinations present in this list are available to the device.</br>The dictionary format is described below.|
-|`Passwords`|Array of dictionaries|Optional. If present, sets passwords for known AirPlay destinations. The dictionary format is described below.|
+|`Whitelist`|Array of Dictionaries|Optional. Supervised only (ignored otherwise). If present, only AirPlay destinations present in this list are available to the device.</br>The dictionary format is described below.|
+|`Passwords`|Array of Dictionaries|Optional. If present, sets passwords for known AirPlay destinations. The dictionary format is described below.|
   
 
 Each entry in the `Whitelist` array is a dictionary that can contain the following fields:  
