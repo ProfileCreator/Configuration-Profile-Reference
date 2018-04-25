@@ -25,7 +25,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 
 The `Departments` key must contain an array of dictionaries with the following key-value pairs:  
 
-|Key|Type|Content|
+|Key|Type|Value|
 |-|-|-|
 |`Name`|String|Required: the display name of the department.|
 |`GroupBeaconIDs`|Array|Required: group beacon identifiers that are members of this department.|
@@ -33,7 +33,7 @@ The `Departments` key must contain an array of dictionaries with the following k
 
 The `Groups` key must contain an array of dictionaries with the following key-value pairs:  
 
-|Key|Type|Content|
+|Key|Type|Value|
 |-|-|-|
 |`BeaconID`|Number|Required: unsigned 16 bit integer specifying this group’s unique beacon ID.|
 |`Name`|String|Required: the display name of the group.|
@@ -47,7 +47,7 @@ The `Groups` key must contain an array of dictionaries with the following key-va
 
 The `Users` key must contain an array of dictionaries with the following key-value pairs:  
 
-|Key|Type|Content|
+|Key|Type|Value|
 |-|-|-|
 |`Identifier`|String|Required: uniquely identifies a user in the organization.|
 |`Name`|String|Required: will be displayed as the name of the user.|

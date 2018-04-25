@@ -27,6 +27,15 @@ In addition to the settings common to all payloads, this payload defines these k
 |`ShutDownDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Shut Down menu item will be disabled when the user is logged in.|
 |`RestartDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Restart menu item will be disabled when the user is logged in.|
 |`PowerOffDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Power Off menu item will be disabled when the user is logged in.|
+|`LogOutDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, this will disable the Log Out menu item when the user is logged in.</br>**Availability:** Available in macOS 10.13 and later.|
+|`DisableScreenLockImmediate`|Boolean|Optional. If set to `true`, the immediate Screen Lock functions will be disabled.</br>**Availability:** Available in macOS 10.13 and later.|
+  
+
+An older, separate, Loginwindow payload also exists and is designated by specifying `loginwindow` as the `PayloadType` value.  
+
+In addition to the settings common to all payloads, this payload defines these keys:  
+
+|Key|Type|Value|
+|-|-|-|
 |`DisableLoginItemsSuppression`|Boolean|Optional. If set to `true`, the user is prevented from disabling login item launching using the Shift key.|
-|`DisableScreenLockImmediate`|Boolean|Optional. If set to `true`, the immediate Screen Lock functions will be disabled.|
   

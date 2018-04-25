@@ -17,4 +17,6 @@ Each dictionary in the array can contain the following keys:
 |-|-|-|
 |`Identifier`|String|The app’s bundle ID.|
 |`VPNUUID`|String|The VPNUUID of the Per-App VPN defined in a Per-App VPN payload.|
+|`DesignatedRequirement`|String|The code signature designated requirement of the app that will use the per-app VPN. |
+|`SigningIdentifier`|String|The code signature signing identifier of the app that will use the per-app VPN. |
   

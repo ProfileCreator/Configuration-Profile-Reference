@@ -2,7 +2,7 @@
 
  [Configuration Profile Reference - ShareKit Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW642)  
 
-MacOS 10.9 or later only. The ShareKit Payload is designated by specifying `com.apple.com.apple.ShareKitHelper` as the `PayloadType` value. It can contain only one payload. It is supported on the User Channel.  
+MacOS 10.9 or later only. The ShareKit Payload is designated by specifying `com.apple.com.apple.ShareKitHelper` as the `PayloadType`. It can contain only one payload. It is supported on the User Channel.  
 
 The ShareKit Payload specifies which ShareKit plugin can be accessed on client.  Both allow and disallow lists can be specified.  
 

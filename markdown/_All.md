@@ -336,6 +336,23 @@ Each entry in the `Passwords` array is a dictionary that contains the following 
 |`Password`|String|The password for the AirPlay destination.|
   
 
+# AirPlay Security Payload  
+
+ [Configuration Profile Reference - AirPlay Security Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW56)  
+
+The AirPlay Security payload locks the Apple TV to a particular style of AirPlay Security. The AirPlay Security payload is designated by specifying `com.apple.airplay.security` as the `PayloadType` vaue.  
+
+This payload is supported on tvOS 11.0 and later.  
+
+In addition to the settings common to all payloads, this payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`SecurityType`|String|Required. Must be one of the defined values: `NONE`, `PASSCODE_ONCE`, `PASSCODE_ALWAYS`, or `PASSWORD`.</br>`NONE` will allow any incoming AirPlay connection without challenge. Only allowed if `AccessType` is `WIFI_ONLY`.</br>`PASSCODE_ONCE` will require an on-screen passcode to be entered upon the first connection.</br>`PASSCODE_ALWAYS` will require an on-screen passcode to be entered upon every AirPlay connection.</br>`PASSWORD` will require a passphrase to be entered as specified in the Password key. The Password key is required if this `SecurityType` is selected.|
+|`AccessType`|String|Required. Must be one of the defined values: `ANY` or `WIFI_ONLY`.</br>`ANY` allows connections from both Ethernet/WiFi and AWDL.</br>`WIFI_ONLY` allows connections only from devices on the same Ethernet/WiFi network as the Apple TV.|
+|`Password`|String|Optional. The AirPlay password. Required if `SecurityType` is `PASSWORD`.|
+  
+
 # AirPrint Payload  
 
  [Configuration Profile Reference - AirPrint Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW39)  
@@ -431,6 +448,8 @@ Each dictionary in the array can contain the following keys:
 |-|-|-|
 |`Identifier`|String|The app’s bundle ID.|
 |`VPNUUID`|String|The VPNUUID of the Per-App VPN defined in a Per-App VPN payload.|
+|`DesignatedRequirement`|String|The code signature designated requirement of the app that will use the per-app VPN. |
+|`SigningIdentifier`|String|The code signature signing identifier of the app that will use the per-app VPN. |
   
 
 # App Lock Payload  
@@ -699,6 +718,23 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`override-picture-path`|String|Optional. If supplied, it sets the path to the desktop picture.|
   
 
+# DNS Proxy Payload  
+
+ [Configuration Profile Reference - DNS Proxy Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW61)  
+
+The DNS Proxy payload is designated by specifying `com.apple.dnsProxy.managed` as the `PayloadType`.  
+
+This payload sets up iOS DNS Proxy settings. It is supported on iOS 11 and later.  
+
+In addition to the settings common to all payloads, this payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`AppBundleIdentifier`|String|Required. Bundle identifer of the app containing the DNS proxy network extension.|
+|`ProviderBundleIdentifier`|String|Optional. Bundle identifier of the DNS proxy network extension to use. Useful for apps that contain more than one DNS proxy extension.|
+|`ProviderConfiguration`|Dictionary|Optional. Dictionary of vendor-specific configuration items.|
+  
+
 # Dock Payload  
 
  [Configuration Profile Reference - Dock Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW327)  
@@ -780,7 +816,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 
 The `Departments` key must contain an array of dictionaries with the following key-value pairs:  
 
-|Key|Type|Content|
+|Key|Type|Value|
 |-|-|-|
 |`Name`|String|Required: the display name of the department.|
 |`GroupBeaconIDs`|Array|Required: group beacon identifiers that are members of this department.|
@@ -788,7 +824,7 @@ The `Departments` key must contain an array of dictionaries with the following k
 
 The `Groups` key must contain an array of dictionaries with the following key-value pairs:  
 
-|Key|Type|Content|
+|Key|Type|Value|
 |-|-|-|
 |`BeaconID`|Number|Required: unsigned 16 bit integer specifying this group’s unique beacon ID.|
 |`Name`|String|Required: the display name of the group.|
@@ -802,7 +838,7 @@ The `Groups` key must contain an array of dictionaries with the following key-va
 
 The `Users` key must contain an array of dictionaries with the following key-value pairs:  
 
-|Key|Type|Content|
+|Key|Type|Value|
 |-|-|-|
 |`Identifier`|String|Required: uniquely identifies a user in the organization.|
 |`Name`|String|Required: will be displayed as the name of the user.|
@@ -892,6 +928,15 @@ The 802.1x Ethernet payload is designated by specifying one of the following as 
 * `com.apple.thirdactiveethernet.managed`  
 
 * `com.apple.thirdethernet.managed`  
+
+* `com.apple.globalethernet.managed`  
+  
+
+In addition to the settings common to all payloads, this payload defines the following keys:   
+
+|Key|Type|Value|
+|-|-|-|
+|`Interface`|String|The `com.apple.globalethernet.managed` payload uses the value `AnyEthernet`. The values for the other payloads are derived from their name; for example the `com.apple.firstethernet.managed` value would be `FirstEthernet`.|
   
 
 Payloads with “active” in their name apply to Ethernet interfaces that are working at the time of profile installation. If there is no active Ethernet interface working, the `com.apple.firstactiveethernet.managed` payload will configure the interface with the highest service order priority.  
@@ -1252,8 +1297,17 @@ In addition to the settings common to all payloads, this payload defines these k
 |`ShutDownDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Shut Down menu item will be disabled when the user is logged in.|
 |`RestartDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Restart menu item will be disabled when the user is logged in.|
 |`PowerOffDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Power Off menu item will be disabled when the user is logged in.|
+|`LogOutDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, this will disable the Log Out menu item when the user is logged in.</br>**Availability:** Available in macOS 10.13 and later.|
+|`DisableScreenLockImmediate`|Boolean|Optional. If set to `true`, the immediate Screen Lock functions will be disabled.</br>**Availability:** Available in macOS 10.13 and later.|
+  
+
+An older, separate, Loginwindow payload also exists and is designated by specifying `loginwindow` as the `PayloadType` value.  
+
+In addition to the settings common to all payloads, this payload defines these keys:  
+
+|Key|Type|Value|
+|-|-|-|
 |`DisableLoginItemsSuppression`|Boolean|Optional. If set to `true`, the user is prevented from disabling login item launching using the Shift key.|
-|`DisableScreenLockImmediate`|Boolean|Optional. If set to `true`, the immediate Screen Lock functions will be disabled.|
   
 
 # Media Management  
@@ -1568,7 +1622,7 @@ Additional parental control functions can be found in the following payloads:
 
 * [System Policy Control Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW21)  
 
-* [Email](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW11)  
+* [Email Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW11)  
 
 * [Media Management](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW104)  
 
@@ -1783,11 +1837,37 @@ The values you specify depend on the CA you're using, but might include DNS name
 If you add a dictionary with the key `GetCACaps`, the device uses the strings you provide as the authoritative source of information about the capabilities of your CA. Otherwise, the device queries the CA for `GetCACaps` and uses the answer it gets in response.If the CA doesn't respond, the device defaults to `GET 3DES` and `SHA-1` requests. For more information, read *[Over-the-Air Profile Delivery and Configuration](https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/iPhoneOTAConfiguration/Introduction/Introduction.html#//apple_ref/doc/uid/TP40009505)*. This feature is not supported in macOS.  
   
 
+# Screensaver  
+
+ [Configuration Profile Reference - Screensaver](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW60)  
+
+The device level screensaver payload can be used to enable or disable the screen lock password function and one of the ways of disabling the option. Screensaver payloads are designated by specifying `com.apple.screensaver` as the `PayloadType`.  
+
+The Screensaver payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`askForPassword`|Boolean|Optional. If set to `true`, the user will be prompted for a password when the screensaver is unlocked or stopped.</br>**Availability:** Available in macOS 10.13 and later.|
+|`askForPasswordDelay`|Integer|Optional. Number of seconds to delay before the password will be required to unlock or stop the screen saver (the "grace period").   A value of 2147483647 (eg 0x7FFFFFFF) can be used to disable this requirement, and on 10.13, the payload is one of the only ways of disabling the feature.  Note that the `askForPassword` must still be set to `true` to use this option.</br>**Availability:** Available in macOS 10.13 and later. |
+|`loginWindowModulePath`|String|Optional. A full path to the screen saver module to be used. </br>**Availability:** Available in macOS 10.11 and later.|
+|`loginWindowIdleTime`|Integer|Optional. Number of seconds of inactivity before screensaver activates. (0=never activate).</br>**Availability:** Available in macOS 10.11 and later. |
+  
+
+The user level screensaver settings are specific to a user, instead of the device. The user level screensaver payloads are designated by specifying `com.apple.screensaver.user` as the `PayloadType`.  
+
+The Screensaver User payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`modulePath`|String|Optional. A full path to the screen saver module to be used. </br>**Availability:** Available in macOS 10.11 and later.|
+|`idleTime`|Integer|Optional. Number of seconds of inactivity before screensaver activates. (0=never activate).</br>**Availability:** Available in macOS 10.11 and later. |
+  
+
 # Shared Device Configuration Payload  
 
  [Configuration Profile Reference - Shared Device Configuration Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW602)  
 
-The Shared Device Configuration Payload is designated by specifying `com.apple.shareddeviceconfiguration` as the `PayloadType` value. It can contain only one payload, which must be supervised. It is not supported on the User Channel.  
+The Shared Device Configuration Payload is designated by specifying `com.apple.shareddeviceconfiguration` as the `PayloadType`. It can contain only one payload, which must be supervised. It is not supported on the User Channel.  
 
 The Shared Device Configuration Payload allows admins to specify optional text displayed on the login window and lock screen (i.e. a "If Lost, Return To" message and Asset Tag Information). It is supported on iOS 9.3 and later.  
 
@@ -1804,7 +1884,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 
  [Configuration Profile Reference - ShareKit Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW642)  
 
-MacOS 10.9 or later only. The ShareKit Payload is designated by specifying `com.apple.com.apple.ShareKitHelper` as the `PayloadType` value. It can contain only one payload. It is supported on the User Channel.  
+MacOS 10.9 or later only. The ShareKit Payload is designated by specifying `com.apple.com.apple.ShareKitHelper` as the `PayloadType`. It can contain only one payload. It is supported on the User Channel.  
 
 The ShareKit Payload specifies which ShareKit plugin can be accessed on client.  Both allow and disallow lists can be specified.  
 
@@ -2041,8 +2121,8 @@ The VPN payload is designated by specifying `com.apple.vpn.managed` as the `Payl
 |-|-|-|
 |`UserDefinedName`|String|Optional. Description of the VPN connection displayed on the device.|
 |`OverridePrimary`|Boolean|Specifies whether to send all traffic through the VPN interface. If `true`, all network traffic is sent over VPN. Defaults to `false`.|
-|`VPNType`|String|Determines the settings available in the payload for this type of VPN connection. It can have one of the following values:</br></br>* `L2TP`  </br></br>* `PPTP`  </br></br>* `IPSec` (Cisco)  </br></br>* `IKEv2` (see [IKEv2 Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW612))  </br></br>* `AlwaysOn` (see [AlwaysOn VPN Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW613))  </br></br>* `VPN` (solution uses a VPN plugin or `NetworkExtension`, so the `VPNSubType` key is required (see below)).  </br></br>* Cisco AnyConnect: `com.cisco.anyconnect.applevpn.plugin`  </br></br>* Juniper SSL: `net.juniper.sslvpn`  </br></br>* F5 SSL: `com.f5.F5-Edge-Client.vpnplugin`  </br></br>* SonicWALL Mobile Connect: `com.sonicwall.SonicWALL-SSLVPN.vpnplugin`  </br></br>* Aruba VIA: `com.arubanetworks.aruba-via.vpnplugin`  </br></br>|
-|`VPNSubType`|String|Optional. If `VPNType` is `VPN`, this field is required. If the configuration is targeted at a VPN solution that uses a VPN plugin, then this field contains the bundle identifier of the plugin. Here are some examples:</br></br>* `L2TP`  </br></br>* `PPTP`  </br></br>* `IPSec` (Cisco)  </br></br>* `IKEv2` (see [IKEv2 Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW612))  </br></br>* `AlwaysOn` (see [AlwaysOn VPN Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW613))  </br></br>* `VPN` (solution uses a VPN plugin or `NetworkExtension`, so the `VPNSubType` key is required (see below)).  </br></br>* Cisco AnyConnect: `com.cisco.anyconnect.applevpn.plugin`  </br></br>* Juniper SSL: `net.juniper.sslvpn`  </br></br>* F5 SSL: `com.f5.F5-Edge-Client.vpnplugin`  </br></br>* SonicWALL Mobile Connect: `com.sonicwall.SonicWALL-SSLVPN.vpnplugin`  </br></br>* Aruba VIA: `com.arubanetworks.aruba-via.vpnplugin`  </br></br></br>If the configuration is targeted at a VPN solution that uses a `NetworkExtension` provider, then this field contains the bundle identifier of the app that contains the provider. Contact the VPN solution vendor for the value of the identifier.</br>If `VPNType` is `IKEv2`, then the `VPNSubType` field is optional and is reserved for future use. If it is specified, it must contain the empty string.|
+|`VPNType`|String|Determines the settings available in the payload for this type of VPN connection. It can have one of the following values:</br></br>* `L2TP`  </br></br>* `PPTP`  </br></br>* `IPSec` (Cisco)  </br></br>* `IKEv2` (see [IKEv2 Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW612))  </br></br>* `AlwaysOn` (see [AlwaysOn Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW613))  </br></br>* `VPN` (solution uses a VPN plugin or `NetworkExtension`, so the `VPNSubType` key is required (see below)).  </br></br>* Cisco AnyConnect: `com.cisco.anyconnect.applevpn.plugin`  </br></br>* Juniper SSL: `net.juniper.sslvpn`  </br></br>* F5 SSL: `com.f5.F5-Edge-Client.vpnplugin`  </br></br>* SonicWALL Mobile Connect: `com.sonicwall.SonicWALL-SSLVPN.vpnplugin`  </br></br>* Aruba VIA: `com.arubanetworks.aruba-via.vpnplugin`  </br></br>|
+|`VPNSubType`|String|Optional. If `VPNType` is `VPN`, this field is required. If the configuration is targeted at a VPN solution that uses a VPN plugin, then this field contains the bundle identifier of the plugin. Here are some examples:</br></br>* `L2TP`  </br></br>* `PPTP`  </br></br>* `IPSec` (Cisco)  </br></br>* `IKEv2` (see [IKEv2 Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW612))  </br></br>* `AlwaysOn` (see [AlwaysOn Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW613))  </br></br>* `VPN` (solution uses a VPN plugin or `NetworkExtension`, so the `VPNSubType` key is required (see below)).  </br></br>* Cisco AnyConnect: `com.cisco.anyconnect.applevpn.plugin`  </br></br>* Juniper SSL: `net.juniper.sslvpn`  </br></br>* F5 SSL: `com.f5.F5-Edge-Client.vpnplugin`  </br></br>* SonicWALL Mobile Connect: `com.sonicwall.SonicWALL-SSLVPN.vpnplugin`  </br></br>* Aruba VIA: `com.arubanetworks.aruba-via.vpnplugin`  </br></br></br>If the configuration is targeted at a VPN solution that uses a `NetworkExtension` provider, then this field contains the bundle identifier of the app that contains the provider. Contact the VPN solution vendor for the value of the identifier.</br>If `VPNType` is `IKEv2`, then the `VPNSubType` field is optional and is reserved for future use. If it is specified, it must contain the empty string.|
 |`ProviderBundleIdentifier`|String|Optional. If the `VPNSubType` field contains the bundle identifier of an app that contains multiple VPN providers of the same type (`app-proxy` or `packet-tunnel`), then this field is used to specify which provider to use for this configuration.|
 |If `VPNType` is `VPN`, `IPSec`, or `IKEv2`, the following keys may be defined in the corresponding `VPN`, `IPSec`, or `IKEv2` dictionaries to configure VPN On Demand:|
 |`OnDemandEnabled`|Integer|`1` if the VPN connection should be brought up on demand, else `0`.|
@@ -2184,8 +2264,8 @@ If `VPNType` is `IKEv2`, the following keys may be provided in a dictionary:
 |`DeadPeerDetectionRate`|String|Optional. One of the following:</br></br>* `FQDN`  </br></br>* `UserFQDN`  </br></br>* `Address`  </br></br>* `ASN1DN`  </br></br>* `FQDN`  </br></br>* `UserFQDN`  </br></br>* `Address`  </br></br>* `ASN1DN`  </br></br>* `SharedSecret`  </br></br>* `Certificate`  </br></br>* `None`  </br></br>* `RSA` (Default)  </br></br>* `ECDSA256`  </br></br>* `ECDSA384`  </br></br>* `ECDSA521`  </br></br>* `None` (Disable)  </br></br>* `Low` (`keepalive` sent every 30 minutes)  </br></br>* `Medium` (`keepalive` sent every 10 minutes)  </br></br>* `High` (`keepalive` sent every 1 minute)  </br></br></br>Defaults to Medium.|
 |`ServerCertificateIssuerCommonName`|String|Optional. Common Name of the server certificate issuer. If set, this field will cause IKE to send a certificate request based on this certificate issuer to the server.</br>This key is required if both the `CertificateType` key is included and the `ExtendedAuthEnabled` key is set to 1.|
 |`ServerCertificateCommonName`|String|Optional. Common Name of the server certificate. This name is used to validate the certificate sent by the IKE server. If not set, the Remote Identifier will be used to validate the certificate.|
-|`TLSMinimumVersion`|String|Optional. The minimum TLS version to be used with EAP-TLS authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default minimum is 1.0. **Availability:** Available in iOS 11.0 and macOS 10.13 and later.|
-|`TLSMaximumVersion`|String|Optional. The maximum TLS version to be used with EAP-TLS authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default maximum is 1.2. **Availability:** Available in iOS 11.0 and macOS 10.13 and later.|
+|`TLSMinimumVersion`|String|Optional. The minimum TLS version to be used with EAP-TLS authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default minimum is 1.0. </br>**Availability:** Available in iOS 11.0 and macOS 10.13 and later.|
+|`TLSMaximumVersion`|String|Optional. The maximum TLS version to be used with EAP-TLS authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default maximum is 1.2. </br>**Availability:** Available in iOS 11.0 and macOS 10.13 and later.|
 |`NATKeepAliveOffloadEnable`|Integer|Optional. Set to 1 to enable or 0 to disable NAT Keepalive offload for Always On VPN IKEv2 connections. Keepalive packets are sent by the device to maintain NAT mappings for IKEv2 connections that have a NAT on the path. Keepalive packets are sent at regular interval when the device is awake. If `NATKeepAliveOffloadEnable` is set to 1, Keepalive packets will be offloaded to hardware while the device is asleep. NAT Keepalive offload has an impact on the battery life since extra workload is added during sleep. The default interval for the Keepalive offload packets is 20 seconds over WiFi and 110 seconds over Cellular interface. The default NAT Keepalive works well on networks with small NAT mapping timeouts but imposes a potential battery impact. If a network is known to have larger NAT mapping timeouts, larger Keepalive intervals may be safely used to minimize battery impact. The Keepalive interval can be modified by setting the `NATKeepAliveInterval` key. Default value for `NATKeepAliveOffloadEnable` is 1.|
 |`NATKeepAliveInterval`|Integer|Optional. NAT Keepalive interval for Always On VPN IKEv2 connections. This value controls the interval over which Keepalive offload packets are sent by the device. The minimum value is 20 seconds. If no key is specified, the default is 20 seconds over WiFi and 110 seconds over a Cellular interface.|
 |`EnablePFS`|Integer|Optional. Set to 1 to enable Perfect Forward Secrecy (PFS) for IKEv2 Connections. Default is 0. |
@@ -2455,8 +2535,11 @@ In addition to the standard encryption types, it is possible to specify an enter
 |`PayloadCertificateAnchorUUID`|Array of strings|Optional. Identifies the certificates to be trusted for this authentication. Each entry must contain the UUID of a certificate payload. Use this key to prevent the device from asking the user if the listed certificates are trusted.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless TLSAllowTrustExceptions is also specified with the value `true`.|
 |`TLSTrustedServerNames`|Array of strings|Optional. This is the list of server certificate common names that will be accepted. You can use wildcards to specify the name, such as wpa.*.example.com. If a server presents a certificate that isn't in this list, it won't be trusted.</br>Used alone or in combination with TLSTrustedCertificates, the property allows someone to carefully craft which certificates to trust for the given network, and avoid dynamically trusted certificates.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless TLSAllowTrustExceptions is also specified with the value `true`.|
 |`TLSAllowTrustExceptions`|Boolean|Optional. Allows/disallows a dynamic trust decision by the user. The dynamic trust is the certificate dialogue that appears when a certificate isn't trusted. If this is `false`, the authentication fails if the certificate isn't already trusted. See PayloadCertificateAnchorUUID and TLSTrustedNames above.</br>The default value of this property is `true` unless either PayloadCertificateAnchorUUID or TLSTrustedServerNames is supplied, in which case the default value is `false`.|
-|`TLSCertificateIsRequired`|`Boolean`|Optional. If `true`, allows for two-factor authentication for EAP-TTLS, PEAP, or EAP-FAST. If `false`, allows for zero-factor authentication for EAP-TLS. The default is `true` for EAP-TLS, and `false` for other EAP types.</br>**Availability:** Available in iOS 7.0 and later.|
-|`OuterIdentity`|`String`|Optional. This key is only relevant to TTLS, PEAP, and EAP-FAST.</br>This allows the user to hide his or her identity. The user's actual name appears only inside the encrypted tunnel. For example, it could be set to "anonymous" or "anon", or "anon@mycompany.net".</br>It can increase security because an attacker can't see the authenticating user's name in the clear.|
+|`TLSCertificateIsRequired`|Boolean|Optional. If `true`, allows for two-factor authentication for EAP-TTLS, PEAP, or EAP-FAST. If `false`, allows for zero-factor authentication for EAP-TLS. The default is `true` for EAP-TLS, and `false` for other EAP types.</br>**Availability:** Available in iOS 7.0 and later.|
+|`TLSMinimumVersion`|String|Optional. The minimum TLS version to be used with EAP authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default minimum is 1.0. </br>**Availability:** Available in iOS 11.0 and macOS 10.13 and later.|
+|`TLSMaximumVersion`|String|Optional. The maximum TLS version to be used with EAP authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default maximum is 1.2. </br>**Availability:** Available in iOS 11.0 and macOS 10.13 and later.
+|
+|`OuterIdentity`|String|Optional. This key is only relevant to TTLS, PEAP, and EAP-FAST.</br>This allows the user to hide his or her identity. The user's actual name appears only inside the encrypted tunnel. For example, it could be set to "anonymous" or "anon", or "anon@mycompany.net".</br>It can increase security because an attacker can't see the authenticating user's name in the clear.|
 |`TTLSInnerAuthentication`|String|Optional. Specifies the inner authentication used by the TTLS module. Possible values are PAP, CHAP, MSCHAP, MSCHAPv2, and EA. Defaults to MSCHAPv2.|
   
 
