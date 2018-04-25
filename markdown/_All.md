@@ -1792,7 +1792,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`URL`|String|The URL that the Web Clip should open when clicked. The URL must begin with HTTP or HTTPS or it won't work.|
 |`Label`|String|The name of the Web Clip as displayed on the Home screen.|
-|`Icon`|Data|Optional. A PNG icon to be shown on the Home screen. Should be 59 x 60 pixels in size. If not specified, a white square will be shown.|
+|`Icon`|Data|Optional. A PNG icon to be shown on the Home screen. See the “Graphics” chapter of *[iOS Human Interface Guidelines](https://developer.apple.com/ios/human-interface-guidelines/)* for current icon sizes. If not specified, a white square will be shown.|
 |`IsRemovable`|Boolean|Optional. If false, the web clip is unremovable. Defaults to true. Not available in macOS.|
   
 
