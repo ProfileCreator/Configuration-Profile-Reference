@@ -158,9 +158,9 @@ If `VPNType` is `IKEv2`, the following keys may be provided in a dictionary:
 |`NATKeepAliveOffloadEnable`|Integer|Optional. Set to 1 to enable or 0 to disable NAT Keepalive offload for Always On VPN IKEv2 connections. Keepalive packets are sent by the device to maintain NAT mappings for IKEv2 connections that have a NAT on the path. Keepalive packets are sent at regular interval when the device is awake. If `NATKeepAliveOffloadEnable` is set to 1, Keepalive packets will be offloaded to hardware while the device is asleep. NAT Keepalive offload has an impact on the battery life since extra workload is added during sleep. The default interval for the Keepalive offload packets is 20 seconds over WiFi and 110 seconds over Cellular interface. The default NAT Keepalive works well on networks with small NAT mapping timeouts but imposes a potential battery impact. If a network is known to have larger NAT mapping timeouts, larger Keepalive intervals may be safely used to minimize battery impact. The Keepalive interval can be modified by setting the `NATKeepAliveInterval` key. Default value for `NATKeepAliveOffloadEnable` is 1.|
 |`NATKeepAliveInterval`|Integer|Optional. NAT Keepalive interval for Always On VPN IKEv2 connections. This value controls the interval over which Keepalive offload packets are sent by the device. The minimum value is 20 seconds. If no key is specified, the default is 20 seconds over WiFi and 110 seconds over a Cellular interface.|
 |`EnablePFS`|Integer|Optional. Set to 1 to enable Perfect Forward Secrecy (PFS) for IKEv2 Connections. Default is 0. |
-|`EnableCertificate- RevocationCheck`|Integer|Optional. Set to 1 to enable a certificate revocation check for IKEv2 connections.  This is a best-effort revocation check; server response timeouts will not cause it to fail.</br>**Availability:** Available in iOS 9.0 and later.|
-|`IKESecurityAssociation- Parameters`|Dictionary|Optional. See table below. Applies to child Security Association unless `ChildSecurityAssociationParameters` is specified.|
-|`ChildSecurityAssociation- Parameters`|Dictionary|Optional. See table below.|
+|`EnableCertificateRevocationCheck`|Integer|Optional. Set to 1 to enable a certificate revocation check for IKEv2 connections.  This is a best-effort revocation check; server response timeouts will not cause it to fail.</br>**Availability:** Available in iOS 9.0 and later.|
+|`IKESecurityAssociationParameters`|Dictionary|Optional. See table below. Applies to child Security Association unless `ChildSecurityAssociationParameters` is specified.|
+|`ChildSecurityAssociationParameters`|Dictionary|Optional. See table below.|
   
 
 The `IKESecurityAssociationParameters` and `ChildSecurityAssociationParameters` dictionaries may contain the following keys:  
@@ -191,7 +191,7 @@ If `VPNType` is `IKEv2`, the following DNS keys may be provided:
 |`SearchDomains`|Array of Strings|Optional. A list of domain strings used to fully qualify single-label host names.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
 |`DomainName`|String|Optional. The primary domain of the tunnel.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
 |`SupplementalMatchDomains`|Array of Strings|Optional. A list of domain strings used to determine which DNS queries will use the DNS resolver settings contained in `ServerAddresses`. This key is used to create a split DNS configuration where only hosts in certain domains are resolved using the tunnel’s DNS resolver. Hosts not in one of the domains in this list are resolved using the system’s default resolver.</br>If `SupplementalMatchDomains` contains the empty string it becomes the default domain. This is how a split-tunnel configuration can direct all DNS queries first to the VPN DNS servers before the primary DNS servers. If the VPN tunnel becomes the network’s default route, the servers listed in `ServerAddresses` become the default resolver and the `SupplementalMatchDomains` list is ignored.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
-|`SupplementalMatch- DomainsNoSearch`|Integer|Optional. Whether (0) or not (1) the domains in the `SupplementalMatchDomains` list should be appended to the resolver’s list of search domains. Default is 0.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
+|`SupplementalMatchDomainsNoSearch`|Integer|Optional. Whether (0) or not (1) the domains in the `SupplementalMatchDomains` list should be appended to the resolver’s list of search domains. Default is 0.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
   
   
 
@@ -253,7 +253,7 @@ Each dictionary in a ServiceExceptions array may contain the following keys:
 
 |Key|Type|Value|
 |-|-|-|
-|`ServiceName`|String|Required. The name of a system service which is exempt from Always On VPN. Must be one of:</br></br>* `VoiceMail`  </br></br>* `AirPrint`  </br></br>* `Allow`  </br></br>* `Drop`  </br></br>|
-|`Action`|String|Required. One of the following:</br></br>* `VoiceMail`  </br></br>* `AirPrint`  </br></br>* `Allow`  </br></br>* `Drop`  </br></br>|
+|`ServiceName`|String|Required. The name of a system service which is exempt from Always On VPN. Must be one of:</br></br>* `VoiceMail`  </br></br>* `AirPrint`  </br></br>* `CellularServices` (Available in iOS 11.3 and later.)  </br></br>* `Allow`  </br></br>* `Drop`  </br></br>|
+|`Action`|String|Required. One of the following:</br></br>* `VoiceMail`  </br></br>* `AirPrint`  </br></br>* `CellularServices` (Available in iOS 11.3 and later.)  </br></br>* `Allow`  </br></br>* `Drop`  </br></br>|
   
   

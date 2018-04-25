@@ -349,7 +349,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 
 |Key|Type|Value|
 |-|-|-|
-|`SecurityType`|String|Required. Must be one of the defined values: `NONE`, `PASSCODE_ONCE`, `PASSCODE_ALWAYS`, or `PASSWORD`.</br>`NONE` will allow any incoming AirPlay connection without challenge. Only allowed if `AccessType` is `WIFI_ONLY`.</br>`PASSCODE_ONCE` will require an on-screen passcode to be entered upon the first connection.</br>`PASSCODE_ALWAYS` will require an on-screen passcode to be entered upon every AirPlay connection.</br>`PASSWORD` will require a passphrase to be entered as specified in the Password key. The Password key is required if this `SecurityType` is selected.|
+|`SecurityType`|String|Required. Must be one of the defined values: `PASSCODE_ONCE`, `PASSCODE_ALWAYS`, or `PASSWORD`.</br>`PASSCODE_ONCE` will require an on-screen passcode to be entered on the first connection from a device. Subsequent connections from the same device will not be prompted.</br>`PASSCODE_ALWAYS` will require an on-screen passcode to be entered upon every AirPlay connection.</br>`PASSWORD` will require a passphrase to be entered as specified in the Password key. The Password key is required if this `SecurityType` is selected.</br>`NONE` was deprecated in tvOS 11.3. Existing profiles using `NONE` will get the `PASSWORD_ONCE` behavior.|
 |`AccessType`|String|Required. Must be one of the defined values: `ANY` or `WIFI_ONLY`.</br>`ANY` allows connections from both Ethernet/WiFi and AWDL.</br>`WIFI_ONLY` allows connections only from devices on the same Ethernet/WiFi network as the Apple TV.|
 |`Password`|String|Optional. The AirPlay password. Required if `SecurityType` is `PASSWORD`.|
   
@@ -464,7 +464,7 @@ The `UserEnabledOptions` dictionary, if present, can contain the following keys 
 
  [Configuration Profile Reference - AppStore Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW197)  
 
-The AppStore payload is designated by specifying `com.apple.app.appstore` as the `PayloadType` value.   
+The AppStore payload is designated by specifying `com.apple.appstore` as the `PayloadType` value.   
 
 It establishes macOS AppStore restrictions and is supported on the User channel.  
 
@@ -476,7 +476,7 @@ The payload contains the following keys:
 |`restrict-store-softwareupdate-only`|Boolean|Optional. Restrict app installations to software updates only. Available on macOS 10.10 and later.|
 |`restrict-store-disable-app-adoption`|Boolean|Optional. Disable App Adoption by users. Available on macOS 10.10 and later.|
 |`DisableSoftwareUpdateNotifications`|Boolean|Optional. Disable software update notifications. Available on macOS 10.10 and later.|
-|`restrict-store-mdm-install -softwareupdate-only`|Boolean|Optional. Restrict app installations to MDM-installed apps and software updates. Available on macOS 10.11 and later.|
+|`restrict-store-mdm-install-softwareupdate-only`|Boolean|Optional. Restrict app installations to MDM-installed apps and software updates. Available on macOS 10.11 and later.|
   
 
 # Autonomous Single App Mode  
@@ -750,7 +750,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 
  [Configuration Profile Reference - DNS Proxy Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW61)  
 
-The DNS Proxy payload is designated by specifying `com.apple.dnsProxy.managed` as the `PayloadType`.  
+The DNS Proxy payload is designated by specifying `com.apple.dnsProxy.managed` as the `PayloadType`. This payload can be installed only on a Supervised device.  
 
 This payload sets up iOS DNS Proxy settings. It is supported on iOS 11 and later.  
 
@@ -780,7 +780,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`autohide`|Boolean|Optional. If `true`, automatically hide and show the dock.	|
 |`autohide-immutable`|Boolean|Optional. If `true`, the Automatically Hide checkbox is disabled.|
 |`minimize-to-application`|Boolean|Optional. If `true`, enable the minimize-to-application feature.|
-|`minimize-to-application -immutable`|Boolean|Optional. If `true`, the minimize-to-application checkbox is disabled.|
+|`minimize-to-application-immutable`|Boolean|Optional. If `true`, the minimize-to-application checkbox is disabled.|
 |`magnification`|Boolean|Optional. If `true`, magnification is active.|
 |`magnify-immutable`|Boolean|Optional. If `true`, the magnification checkbox is disabled.|
 |`largesize`|Integer|Optional. The size of the largest magnification. Values must be in range 16 to 128.|
@@ -839,7 +839,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`Groups`|Array|Required. Shared: An array of dictionaries that define groups that the user can select in the login window.</br>Leader: An array of dictionaries that define the groups that the user can control.</br>Member: An array of dictionaries that define the groups of which the user is a member.|
 |`Users`|Array|Required. Shared: An array of dictionaries that define the users that are shown in the iOS login window.</br>Leader: An array of dictionaries that define users that are members of the leader’s groups.</br>Member: An array of a dictionaries that must contain the definition of the user specified in the `UserIdentifier` key.</br>With one-to-one member devices, this key should include only the device user and the leader but not other class members.|
 |`DeviceGroups`|Array|Optional. Leader: An array of dictionaries that define the device groups to which the leader can assign devices. This key is not included in member payloads.|
-|`ScreenObservation- PermissionModification- Allowed`|Boolean|Optional. If set to `true`, students enrolled in managed classes can modify their teacher’s permissions for screen observation on this device. Defaults to `false`.|
+|`ScreenObservationPermissionModificationAllowed`|Boolean|Optional. If set to `true`, students enrolled in managed classes can modify their teacher’s permissions for screen observation on this device. Defaults to `false`.|
   
 
 The `Departments` key must contain an array of dictionaries with the following key-value pairs:  
@@ -1041,7 +1041,7 @@ In macOS 10.9, you can use FileVault 2 to perform full XTS-AES 128 encryption on
 |`Username`|String|User name of the Open Directory user that will be added to FileVault.|
 |`Password`|String|User password of the Open Directory user that will be added to FileVault. Use the `UserEntersMissingInfo` key if you want to prompt for this information.|
 |`UseKeychain`|Boolean|If set to `true` and no certificate information is provided in this payload, the keychain already created at /Library/Keychains/FileVaultMaster.keychain will be used when the institutional recovery key is added.|
-|`DeferForceAtUserLogin- MaxBypassAttempts`|Integer|When using the `Defer` option you can optionally set this key to the maximum number of times the user can bypass enabling FileVault before it will require that it be enabled before the user can log in. If set to 0, it will always prompt to enable FileVault until it is enabled, though it will allow you to bypass enabling it. Setting this key to –1 will disable this feature.</br>**Availability:** Available in macOS 10.10 and later.|
+|`DeferForceAtUserLoginMaxBypassAttempts`|Integer|When using the `Defer` option you can optionally set this key to the maximum number of times the user can bypass enabling FileVault before it will require that it be enabled before the user can log in. If set to 0, it will always prompt to enable FileVault until it is enabled, though it will allow you to bypass enabling it. Setting this key to –1 will disable this feature.</br>**Availability:** Available in macOS 10.10 and later.|
 |`DeferDontAskAtUserLogout`|Boolean|When using the `Defer` option, set this key to `true` to not request enabling FileVault at user logout time.</br>**Availability:** Available in macOS 10.10 and later.|
   
 
@@ -1199,10 +1199,10 @@ In addition to the settings common to all payloads, this payload defines the fol
 
 |Key|Type|Value|
 |-|-|-|
-|`AccountDescription`|String|Optional. A user-visible description of the Google account, shown in the Mail and Settings apps.|
-|`AccountName`|String|Optional. The user’s full name for the Google account. This name will appear in sent messages.|
-|`EmailAddress`|String|Required. The full Google email address for the account.|
-|`CommunicationServiceRules`|Dictionary|Optional. The communication service handler rules for this account. The `CommunicationServiceRules` dictionary currently contains only a `DefaultServiceHandlers` key; its value is a dictionary which contains an `AudioCall` key whose value is a string containing the bundle identifier for the default application that handles audio calls made to contacts from this account.|
+|`AccountDescription`|String|Optional. A user-visible description of the Google account, shown in the Mail and Settings apps.</br>**Availability:** Available in iOS 9.3 and later.|
+|`AccountName`|String|Optional. The user’s full name for the Google account. This name will appear in sent messages.</br>**Availability:** Available in iOS 9.3 and later.|
+|`EmailAddress`|String|Required. The full Google email address for the account.</br>**Availability:** Available in iOS 9.3 and later.|
+|`CommunicationServiceRules`|Dictionary|Optional. The communication service handler rules for this account. The `CommunicationServiceRules` dictionary currently contains only a `DefaultServiceHandlers` key; its value is a dictionary which contains an `AudioCall` key whose value is a string containing the bundle identifier for the default application that handles audio calls made to contacts from this account.</br>**Availability:** Available in iOS 10 and later.|
   
 
 # Home Screen Layout Payload  
@@ -1483,6 +1483,25 @@ Each entry in the NotificationSettings field contains the following dictionary:
 |`SoundsEnabled`|Boolean|Optional. Whether sounds are allowed for this app. Default is `true`.|
   
 
+# NSExtension Management  
+
+ [Configuration Profile Reference - NSExtension Management](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW70)  
+
+The NSExtension payload is designated by specifying `com.apple.NSExtension` as the `PayloadType`.  
+
+This payload specifies which NSExtensions are allowed or disallowed on a system. Extensions can be managed by bundleID in whitelists and blacklists or by a blacklist of extension points.  
+
+It is supported on macOS 10.13 and later.  
+
+In addition to the settings common to all payloads, this payload defines these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`AllowedExtensions`|Array|Optional. Array of extension identifiers for extensions that are allowed to run on the system.|
+|`DeniedExtensions`|Array|Optional. Array of extension identifiers for extensions that are not allowed to run on the system.|
+|`DeniedExtensionPoints`|Array|Optional. Array of NSExtension extension points for extensions that are not allowed to run on the system.|
+  
+
 # Parental Controls Payload  
 
  [Configuration Profile Reference - Parental Controls Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW103)  
@@ -1761,13 +1780,11 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowAssistant`|Boolean|Optional. When `false`, disables Siri. Defaults to `true`.|
 |`allowAssistantUserGeneratedContent`|Boolean|Optional. Supervised only. When `false`, prevents Siri from querying user-generated content from the web.</br>**Availability:** Available in iOS 7 and later.|
 |`allowAssistantWhileLocked`|Boolean|Optional. When `false`, the user is unable to use Siri when the device is locked. Defaults to `true`. This restriction is ignored if the device does not have a passcode set.</br>**Availability:** Available only in iOS 5.1 and later.|
-|`allowBookstore`|Boolean|Optional. Supervised only. If set to `false`, iBookstore will be disabled. This will default to `true`.</br>**Availability:** Available in iOS 6.0 and later.|
-|`allowBookstoreErotica`|Boolean|Optional. Supervised only prior to iOS 6.1. If set to `false`, the user will not be able to download media from the iBookstore that has been tagged as erotica. This will default to `true`.</br>**Availability:** Available in iOS 6.0 and later.|
+|`allowBookstore`|Boolean|Optional. Supervised only. If set to `false`, the iBooks Store will be disabled. This will default to `true`.</br>**Availability:** Available in iOS 6.0 and later.|
+|`allowBookstoreErotica`|Boolean|Optional. Supervised only prior to iOS 6.1. If set to `false`, the user will not be able to download media from the iBooks Store that has been tagged as erotica. This will default to `true`.</br>**Availability:** Available in iOS and in tvOS 11.3 and later.|
 |`allowCamera`|Boolean|Optional. When `false`, the camera is completely disabled and its icon is removed from the Home screen. Users are unable to take photographs.</br>**Availability:** Available in iOS and in macOS 10.11 and later.|
 |`allowChat`|Boolean|Optional. When `false`, disables the use of the Messages app with supervised devices.</br>**Availability:** Available in iOS 6.0 and later.|
 |`allowCloudBackup`|Boolean|Optional. When `false`, disables backing up the device to iCloud.</br>**Availability:** Available in iOS 5.0 and later.|
-|`allowCloudBTMM`|Boolean|Optional. When `false`, disallows macOS Back to My Mac iCloud service.</br>**Availability:** Available in macOS 10.12 and later.|
-|`allowCloudFMM`|Boolean|Optional. When `false`, disallows macOS Find My Mac iCloud service.</br>**Availability:** Available in macOS 10.12 and later.|
 |`allowCloudBookmarks`|Boolean|Optional. When `false`, disallows macOS iCloud Bookmark sync.</br>**Availability:** Available in macOS 10.12 and later.|
 |`allowCloudMail`|Boolean|Optional. When `false`, disallows macOS Mail iCloud services.</br>**Availability:** Available in macOS 10.12 and later.|
 |`allowCloudCalendar`|Boolean|Optional. When `false`, disallows macOS iCloud Calendar services.</br>**Availability:** Available in macOS 10.12 and later.|
@@ -1778,7 +1795,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowCloudKeychainSync`|Boolean|Optional. When `false`, disables iCloud keychain synchronization. Default is `true`.</br>**Availability:** Available in iOS 7.0 and later and macOS 10.12 and later.|
 |`allowContentCaching`|Boolean|Optional. When `false`, this disallows content caching. Defaults to `true`.</br>**Availability:** Available only in macOS 10.13 and later.|
 |`allowDiagnosticSubmission`|Boolean|Optional. When `false`, this prevents the device from automatically submitting diagnostic reports to Apple. Defaults to `true`.</br>**Availability:** Available only in iOS 6.0 and later.|
-|`allowExplicitContent`|Boolean|Optional. When `false`, explicit music or video content purchased from the iTunes Store is hidden. Explicit content is marked as such by content providers, such as record labels, when sold through the iTunes Store. This key is deprecated on unsupervised devices.|
+|`allowExplicitContent`|Boolean|Optional. When `false`, explicit music or video content purchased from the iTunes Store is hidden. Explicit content is marked as such by content providers, such as record labels, when sold through the iTunes Store. This key is deprecated on unsupervised devices.</br>**Availability:** Available in iOS and in tvOS 11.3 and later.|
 |`allowFindMyFriendsModification`|Boolean|Optional. Supervised only. If set to `false`, changes to Find My Friends are disabled.</br>**Availability:** Available only in iOS 7.0 and later.|
 |`allowFingerprintForUnlock`|Boolean|Optional. If `false`, prevents Touch ID from unlocking a device.</br>**Availability:** Available in iOS 7 and later and in macOS 10.12.4 and later.|
 |`allowGameCenter`|Boolean|Optional. Supervised only. When `false`, Game Center is disabled and its icon is removed from the Home screen. Default is `true`.</br>**Availability:** Available only in iOS 6.0 and later.|
@@ -1799,7 +1816,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`safariForceFraudWarning`|Boolean|Optional. When `true`, Safari fraud warning is enabled. Defaults to `false`.|
 |`safariAllowJavaScript`|Boolean|Optional. When `false`, Safari will not execute JavaScript. Defaults to `true`.|
 |`safariAllowPopups`|Boolean|Optional. When `false`, Safari will not allow pop-up tabs. Defaults to `true`.|
-|`safariAcceptCookies`|Real|Optional. Determines conditions under which the device will accept cookies. </br>The user facing settings changed in iOS 11, though the possible values remain the same:</br></br>* 0: Prevent Cross-Site Tracking and Block All Cookies are enabled and the user can’t disable either setting.  </br></br>* 1 or 1.5: Prevent Cross-Site Tracking is enabled and the user can’t disable it. Block All Cookies is not enabled, though the user can enable it.  </br></br>* 2: Prevent Cross-Site Tracking is enabled and Block All Cookies is not enabled. The user can toggle either setting. (Default)  </br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always (Default)  </br></br></br>These are the allowed values and settings in iOS 10 and earlier:</br></br>* 0: Prevent Cross-Site Tracking and Block All Cookies are enabled and the user can’t disable either setting.  </br></br>* 1 or 1.5: Prevent Cross-Site Tracking is enabled and the user can’t disable it. Block All Cookies is not enabled, though the user can enable it.  </br></br>* 2: Prevent Cross-Site Tracking is enabled and Block All Cookies is not enabled. The user can toggle either setting. (Default)  </br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always (Default)  </br></br></br>In iOS 10 and earlier, users can always pick an option that is more restrictive than the payload policy, but not a less restrictive policy. For example, with a payload value of 1.5, a user could switch to Never, but not Always Allow.|
+|`safariAcceptCookies`|Real|Optional. Determines conditions under which the device will accept cookies. </br>The user facing settings changed in iOS 11, though the possible values remain the same:</br></br>* 0: Prevent Cross-Site Tracking and Block All Cookies are enabled and the user can’t disable either setting.  </br></br>* 1 or 1.5: Prevent Cross-Site Tracking is enabled and the user can’t disable it. Block All Cookies is not enabled, though the user can enable it.  </br></br>* 2: Prevent Cross-Site Tracking is enabled and Block All Cookies is not enabled. The user can toggle either setting. (Default)  </br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always (Default)  </br></br>* au: Australia  </br></br>* ca: Canada  </br></br>* fr: France  </br></br>* de: Germany   </br></br>* ie: Ireland  </br></br>* jp: Japan  </br></br>* nz: New Zealand  </br></br>* gb: United Kingdom  </br></br>* us: United States  </br></br>* 1000: All  </br></br>* 500: NC-17  </br></br>* 400: R  </br></br>* 300: PG-13  </br></br>* 200: PG  </br></br>* 100: G  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: TV-MA  </br></br>* 500: TV-14  </br></br>* 400: TV-PG  </br></br>* 300: TV-G  </br></br>* 200: TV-Y7  </br></br>* 100: TV-Y  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: 17+  </br></br>* 300: 12+  </br></br>* 200: 9+  </br></br>* 100: 4+  </br></br>* 0: None  </br></br></br>These are the allowed values and settings in iOS 10 and earlier:</br></br>* 0: Prevent Cross-Site Tracking and Block All Cookies are enabled and the user can’t disable either setting.  </br></br>* 1 or 1.5: Prevent Cross-Site Tracking is enabled and the user can’t disable it. Block All Cookies is not enabled, though the user can enable it.  </br></br>* 2: Prevent Cross-Site Tracking is enabled and Block All Cookies is not enabled. The user can toggle either setting. (Default)  </br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always (Default)  </br></br>* au: Australia  </br></br>* ca: Canada  </br></br>* fr: France  </br></br>* de: Germany   </br></br>* ie: Ireland  </br></br>* jp: Japan  </br></br>* nz: New Zealand  </br></br>* gb: United Kingdom  </br></br>* us: United States  </br></br>* 1000: All  </br></br>* 500: NC-17  </br></br>* 400: R  </br></br>* 300: PG-13  </br></br>* 200: PG  </br></br>* 100: G  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: TV-MA  </br></br>* 500: TV-14  </br></br>* 400: TV-PG  </br></br>* 300: TV-G  </br></br>* 200: TV-Y7  </br></br>* 100: TV-Y  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: 17+  </br></br>* 300: 12+  </br></br>* 200: 9+  </br></br>* 100: 4+  </br></br>* 0: None  </br></br></br>In iOS 10 and earlier, users can always pick an option that is more restrictive than the payload policy, but not a less restrictive policy. For example, with a payload value of 1.5, a user could switch to Never, but not Always Allow.|
 |`allowSharedStream`|Boolean|Optional. If set to `false`, Shared Photo Stream will be disabled. This will default to `true`.</br>**Availability:** Available in iOS 6.0 and later.|
 |`allowUIConfigurationProfileInstallation`|Boolean|Optional. Supervised only. If set to `false`, the user is prohibited from installing configuration profiles and certificates interactively. This will default to `true`.</br>**Availability:** Available in iOS 6.0 and later.|
 |`allowUntrustedTLSPrompt`|Boolean|Optional. When `false`, automatically rejects untrusted HTTPS certificates without prompting the user.</br>**Availability:** Available in iOS 5.0 and later.|
@@ -1845,26 +1862,32 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`blacklistedAppBundleIDs`|Array of Strings|Supervised only. If present, prevents bundle IDs listed in the array from being shown or launchable.</br>**Availability:** Available in iOS 9.3 and later.|
 |`whitelistedAppBundleIDs`|Array of Strings|Supervised only. If present, allows only bundle IDs listed in the array from being shown or launchable.</br>**Availability:** Available in iOS 9.3 and later.|
 |`allowNotificationsModification`|Boolean|Supervised only. If set to `false`, notification settings cannot be modified. Defaults to `true`.</br>**Availability:** Available in iOS 9.3 and later.|
-|`allowRemoteScreenObservation`|Boolean|Supervised only. If set to `false`, remote screen observation by the Classroom app is disabled. Defaults to `true`.</br>This key should be nested beneath `allowScreenShot` as a sub-restriction. If `allowScreenShot` is set to `false`, it also prevents the Classroom app from observing remote screens.</br>**Availability:** Available in iOS 9.3 and later.|
+|`allowRemoteScreenObservation`|Boolean|If set to `false`, remote screen observation by the Classroom app is disabled. Defaults to `true`.</br>This key should be nested beneath `allowScreenShot` as a sub-restriction. If `allowScreenShot` is set to `false`, it also prevents the Classroom app from observing remote screens.</br>**Availability:** Available in iOS 9.3 and later.|
 |`allowDiagnosticSubmissionModification`|Boolean|Supervised only. If set to `false`, the diagnostic submission and app analytics settings in the Diagnostics & Usage pane in Settings cannot be modified. Defaults to `true`.</br>**Availability:** Available in iOS 9.3.2 and later.|
 |`allowBluetoothModification`|Boolean|Supervised only. If set to `false`, prevents modification of Bluetooth settings. Defaults to `true`.</br>**Availability:** Available in iOS 10.0 and later.|
 |`allowAutoUnlock`|Boolean|If set to `false`, disallows macOS auto unlock. Defaults to `true`.</br>**Availability:** Available only in macOS 10.12 and later.|
 |`allowCloudDesktopAndDocuments`|Boolean|If set to `false`, disallows macOS cloud desktop and document services. Defaults to `true`.</br>**Availability:** Available only in macOS 10.12.4 and later.|
 |`allowDictation`|Boolean|Supervised only. If set to `false`, disallows dictation input. Defaults to `true`.</br>**Availability:** Available only in iOS 10.3 and later.|
 |`forceWiFiWhitelisting`|Boolean|Optional. Supervised only. If set to `true`, the device can join Wi-Fi networks only if they were set up through a configuration profile. Defaults to `false`.</br>**Availability:** Available only in iOS 10.3 and later.|
-|`forceUnpromptedManaged- ClassroomScreenObservation`|Boolean|Deprecated in iOS 11. Use `forceClassroomUnpromptedScreenObservation` instead. |
-|`allowAirPrint`|Boolean|Supervised only. If set to `false`, disallow AirPrint. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and macOS 10.13 and later.|
+|`forceUnpromptedManagedClassroomScreenObservation`|Boolean|Deprecated in iOS 11. Use `forceClassroomUnpromptedScreenObservation` instead. |
+|`allowAirPrint`|Boolean|Supervised only. If set to `false`, disallow AirPrint. Defaults to `true`.</br>**Availability:** Available in iOS 11.0 and later and macOS 10.13 and later.|
 |`allowAirPrintCredentialsStorage`|Boolean|Supervised only. If set to `false`, disallows keychain storage of username and password for Airprint. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and later.|
-|`forceAirPrintTrustedTLSRequirement`|Boolean|Supervised only. If set to `true`, requires trusted certificates for TLS printing communication. Defaults to `false`.</br>**Availability:** Available only in iOS 11.0 and macOS 10.13 and later.|
-|`allowAirPrintiBeaconDiscovery`|Boolean|Supervised only. If set to `false`, disables iBeacon discovery of AirPrint printers. This prevents spurious AirPrint Bluetooth beacons from phishing for network traffic. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and macOS 10.13 and later.|
+|`forceAirPrintTrustedTLSRequirement`|Boolean|Supervised only. If set to `true`, requires trusted certificates for TLS printing communication. Defaults to `false`.</br>**Availability:** Available in iOS 11.0 and later and macOS 10.13 and later.|
+|`allowAirPrintiBeaconDiscovery`|Boolean|Supervised only. If set to `false`, disables iBeacon discovery of AirPrint printers. This prevents spurious AirPrint Bluetooth beacons from phishing for network traffic. Defaults to `true`.</br>**Availability:** Available in iOS 11.0 and later and macOS 10.13 and later.|
 |`allowProximitySetupToNewDevice`|Boolean|Supervised only. If set to `false`, disables the prompt to setup new devices that are nearby. Defaults to `true`. </br>**Availability:** Available only in iOS 11.0 and later.|
 |`allowSystemAppRemoval`|Boolean|Supervised only. If set to `false`, disables the removal of system apps from the device. Defaults to `true`. </br>**Availability:** Available only in iOS 11.0 and later.|
 |`allowVPNCreation`|Boolean|Supervised only. If set to `false`, disallow the creation of VPN configurations. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and later.|
-|`enforcedSoftwareUpdateDelay`|Integer|Supervised only. This restriction allows the admin to set how many days a software update on the device will be delayed. With this restriction in place, the user will not see a software update until the specified number of days after the software update release date.</br>The max is 90 days and the default value is 30.</br>**Availability:** Available only in iOS 11.3 and later and macOS 10.13.4 and later.|
+|`forceDelayedSoftwareUpdates`|Boolean|Supervised only. If set to `true`, delays user visibility of Software Updates. Defaults to `false`.</br>**Availability:** Available in iOS 11.3 and later and macOS 10.13 and later.|
+|`enforcedSoftwareUpdateDelay`|Integer|Supervised only. This restriction allows the admin to set how many days a software update on the device will be delayed. With this restriction in place, the user will not see a software update until the specified number of days after the software update release date.</br>The max is 90 days and the default value is 30.</br>**Availability:** Available in iOS 11.3 and later and macOS 10.13 and later.|
+|`forceAuthenticationBeforeAutoFill`|Boolean|Optional. Supervised only. If set to `true`, the uer will have to authenticate before passwords or credit card information can be autofilled in Safari and Apps. If this restriction is not enforced, the user can toggle this feature in settings.</br>Only supported on devices with FaceID.</br>Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and later.|
 |`forceClassroomAutomaticallyJoinClasses`|Boolean|Optional. Supervised only. If set to `true`, automatically give permission to the teacher’s requests without prompting the student. Defaults to `false`.</br>**Availability:** Available only in iOS 11.0 and later.|
 |`forceClassroomRequestPermissionToLeaveClasses`|Boolean|Optional. Supervised only. If set to `true`, a student enrolled in an unmanaged course via Classroom will request permission from the teacher when attempting to leave the course. Defaults to `false`.</br>**Availability:** Available only in iOS 11.3 and later.|
 |`forceClassroomUnpromptedAppAndDeviceLock`|Boolean|Optional. Supervised only. If set to `true`, allow the teacher to lock apps or the device without prompting the student. Defaults to `false`.</br>**Availability:** Available only in iOS 11.0 and later.|
 |`forceClassroomUnpromptedScreenObservation`|Boolean|Optional. Supervised only. If set to `true`, and `ScreenObservationPermissionModificationAllowed` is also `true` in the Education payload, a student enrolled in a managed course via the Classroom app will automatically give permission to that course's teacher’s requests to observe the student’s screen without prompting the student.  Defaults to `false`.</br>**Availability:** Available only in iOS 11.0 and later.|
+|`ratingRegion`|String|This 2-letter key is used by profile tools to display the proper ratings for given region.</br>Possible values:</br></br>* 0: Prevent Cross-Site Tracking and Block All Cookies are enabled and the user can’t disable either setting.  </br></br>* 1 or 1.5: Prevent Cross-Site Tracking is enabled and the user can’t disable it. Block All Cookies is not enabled, though the user can enable it.  </br></br>* 2: Prevent Cross-Site Tracking is enabled and Block All Cookies is not enabled. The user can toggle either setting. (Default)  </br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always (Default)  </br></br>* au: Australia  </br></br>* ca: Canada  </br></br>* fr: France  </br></br>* de: Germany   </br></br>* ie: Ireland  </br></br>* jp: Japan  </br></br>* nz: New Zealand  </br></br>* gb: United Kingdom  </br></br>* us: United States  </br></br>* 1000: All  </br></br>* 500: NC-17  </br></br>* 400: R  </br></br>* 300: PG-13  </br></br>* 200: PG  </br></br>* 100: G  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: TV-MA  </br></br>* 500: TV-14  </br></br>* 400: TV-PG  </br></br>* 300: TV-G  </br></br>* 200: TV-Y7  </br></br>* 100: TV-Y  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: 17+  </br></br>* 300: 12+  </br></br>* 200: 9+  </br></br>* 100: 4+  </br></br>* 0: None  </br></br></br>**Availability:** Available in iOS and tvOS 11.3 and later.|
+|`ratingMovies`|Integer|This value defines the maximum level of movie content that is allowed on the device. </br>Possible values (with the US description of the rating level):</br></br>* 0: Prevent Cross-Site Tracking and Block All Cookies are enabled and the user can’t disable either setting.  </br></br>* 1 or 1.5: Prevent Cross-Site Tracking is enabled and the user can’t disable it. Block All Cookies is not enabled, though the user can enable it.  </br></br>* 2: Prevent Cross-Site Tracking is enabled and Block All Cookies is not enabled. The user can toggle either setting. (Default)  </br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always (Default)  </br></br>* au: Australia  </br></br>* ca: Canada  </br></br>* fr: France  </br></br>* de: Germany   </br></br>* ie: Ireland  </br></br>* jp: Japan  </br></br>* nz: New Zealand  </br></br>* gb: United Kingdom  </br></br>* us: United States  </br></br>* 1000: All  </br></br>* 500: NC-17  </br></br>* 400: R  </br></br>* 300: PG-13  </br></br>* 200: PG  </br></br>* 100: G  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: TV-MA  </br></br>* 500: TV-14  </br></br>* 400: TV-PG  </br></br>* 300: TV-G  </br></br>* 200: TV-Y7  </br></br>* 100: TV-Y  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: 17+  </br></br>* 300: 12+  </br></br>* 200: 9+  </br></br>* 100: 4+  </br></br>* 0: None  </br></br></br>**Availability:** Available only in iOS and tvOS 11.3 and later.|
+|`ratingTVShows`|Integer|This value defines the maximum level of TV content that is allowed on the device. </br>Possible values (with the US description of the rating level):</br></br>* 0: Prevent Cross-Site Tracking and Block All Cookies are enabled and the user can’t disable either setting.  </br></br>* 1 or 1.5: Prevent Cross-Site Tracking is enabled and the user can’t disable it. Block All Cookies is not enabled, though the user can enable it.  </br></br>* 2: Prevent Cross-Site Tracking is enabled and Block All Cookies is not enabled. The user can toggle either setting. (Default)  </br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always (Default)  </br></br>* au: Australia  </br></br>* ca: Canada  </br></br>* fr: France  </br></br>* de: Germany   </br></br>* ie: Ireland  </br></br>* jp: Japan  </br></br>* nz: New Zealand  </br></br>* gb: United Kingdom  </br></br>* us: United States  </br></br>* 1000: All  </br></br>* 500: NC-17  </br></br>* 400: R  </br></br>* 300: PG-13  </br></br>* 200: PG  </br></br>* 100: G  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: TV-MA  </br></br>* 500: TV-14  </br></br>* 400: TV-PG  </br></br>* 300: TV-G  </br></br>* 200: TV-Y7  </br></br>* 100: TV-Y  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: 17+  </br></br>* 300: 12+  </br></br>* 200: 9+  </br></br>* 100: 4+  </br></br>* 0: None  </br></br></br>**Availability:** Available only in iOS and tvOS 11.3 and later.|
+|`ratingApps`|Integer|This value defines the maximum level of app content that is allowed on the device. </br>Possible values (with the US description of the rating level):</br></br>* 0: Prevent Cross-Site Tracking and Block All Cookies are enabled and the user can’t disable either setting.  </br></br>* 1 or 1.5: Prevent Cross-Site Tracking is enabled and the user can’t disable it. Block All Cookies is not enabled, though the user can enable it.  </br></br>* 2: Prevent Cross-Site Tracking is enabled and Block All Cookies is not enabled. The user can toggle either setting. (Default)  </br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always (Default)  </br></br>* au: Australia  </br></br>* ca: Canada  </br></br>* fr: France  </br></br>* de: Germany   </br></br>* ie: Ireland  </br></br>* jp: Japan  </br></br>* nz: New Zealand  </br></br>* gb: United Kingdom  </br></br>* us: United States  </br></br>* 1000: All  </br></br>* 500: NC-17  </br></br>* 400: R  </br></br>* 300: PG-13  </br></br>* 200: PG  </br></br>* 100: G  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: TV-MA  </br></br>* 500: TV-14  </br></br>* 400: TV-PG  </br></br>* 300: TV-G  </br></br>* 200: TV-Y7  </br></br>* 100: TV-Y  </br></br>* 0: None  </br></br>* 1000: All  </br></br>* 600: 17+  </br></br>* 300: 12+  </br></br>* 200: 9+  </br></br>* 100: 4+  </br></br>* 0: None  </br></br></br>**Availability:** Available only in iOS 5 and tvOS 11.3 and later.|
   
 
 # SCEP Payload  
@@ -1889,6 +1912,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`Retries`|Integer|Optional. The number of times the device should retry if the server sends a PENDING response. Defaults to 3.|
 |`RetryDelay`|Integer|Optional. The number of seconds to wait between subsequent retries. The first retry is attempted without this delay. Defaults to 10.|
 |`CAFingerprint`|Data|Optional. The fingerprint of the Certificate Authority certificate.|
+|`KeyIsExtractable`|Boolean|Optional. If `false`, the private key cannot be exported from the keychain. Default is `true`.|
   
 
 ### SubjectAltName Dictionary Keys  
@@ -1913,7 +1937,7 @@ If you add a dictionary with the key `GetCACaps`, the device uses the strings yo
 
 Screensaver payloads are designated by specifying `com.apple.screensaver` as the `PayloadType`.  
 
-The device level screensaver payload can be used to enable or disable the screen lock password function and one of the ways of disabling the option.   
+The device level screensaver payload can be used to customize the screensaver and enable or disable the screen lock password function.  
 
 The Screensaver payload defines the following keys:  
 
@@ -2078,15 +2102,11 @@ In addition to the settings common to all payloads, this payload defines the fol
 
 The Software Update payload is designated by specifying `com.apple.SoftwareUpdate` as the `PayloadType`.  
 
-This payload controls software update catalog options on macOS v10.13 and later.  
-
-In addition to the settings common to all payloads, this payload defines the following keys:  
+In addition to the settings common to all payloads, this payload defines the following key:  
 
 |Key|Type|Value|
 |-|-|-|
 |`CatalogURL`|String|Optional. The URL of the software update catalog.|
-|`forceDelayedSoftwareUpdates`|Boolean|Optional. If `true`, software updates will be delayed by the duration defined by `ManagedDeferredInstallDelay`. Default is `false`.|
-|`ManagedDeferredInstallDelay`|Integer|Optional. The duration, in days, that software updates will be delayed, if `forcedDelayedSoftwareUpdates` is set to `true`.  Default is `30`.</br>**Availability:** Available in macOS 10.13.4 and later.|
   
 
 # System Migration Payload  
@@ -2217,6 +2237,38 @@ In addition to the settings common to all payloads, this payload defines the fol
 |Key|Type|Value|
 |-|-|-|
 |`DisableOverride`|Boolean|Optional. If YES, the Finder’s contextual menu item will be disabled.|
+  
+
+# TV Remote Payload  
+
+ [Configuration Profile Reference - TV Remote Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW69)  
+
+The TV Remote payload is designated by specifying `com.apple.tvremote` as the `PayloadType` value.   
+
+This payload allows restricting the connections from the Apple TV Remote app to an Apple TV and restricting the available Apple TV devices in the Apple TV Remote app.  
+
+To lock specific Apple TVs to specific devices running Apple TV Remote app, both the Apple TVs and remote devices can be specified in the same payload.  
+
+In addition to the settings common to all payload types, the TV Remote payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`AllowedRemotes`|Array of Dictionaries|If present, the Apple TV will only connect with the Apple TV Remote app from the devices specified.</br>If not present, or the list is empty, any device will be allowed to connect.</br>**Availability:** Available in tvOS 11.3 and later.|
+|`AllowedTVs`|Array of Dictionaries|If present, the Apple TV Remote app will only connect to the specified Apple TVs.</br>If not present, or the list is empty, the device will be able to connect to any Apple TV.</br>**Availability:** Available in iOS 11.3 and later.|
+  
+
+Each entry in the `AllowedRemotes` array is a dictionary that can contain the following key:  
+
+|Key|Type|Value|
+|-|-|-|
+|`RemoteDeviceID`|String|The MAC address of a permitted iOS device that can control this Apple TV. </br>Use the format “xx:xx:xx:xx:xx:xx”. The field is not case sensitive.</br>**Availability:** Available in tvOS 11.3 and later.|
+  
+
+Each entry in the `AllowedTVs` array is a dictionary that can contain the following key:  
+
+|Key|Type|Value|
+|-|-|-|
+|`TVDeviceID`|String|The MAC address of an Apple TV device that this iOS device is permitted to control. </br>Use the format “xx:xx:xx:xx:xx:xx”. The field is not case sensitive.</br>**Availability:** Available in iOS 11.3 and later.|
   
 
 # VPN Payload  
@@ -2379,9 +2431,9 @@ If `VPNType` is `IKEv2`, the following keys may be provided in a dictionary:
 |`NATKeepAliveOffloadEnable`|Integer|Optional. Set to 1 to enable or 0 to disable NAT Keepalive offload for Always On VPN IKEv2 connections. Keepalive packets are sent by the device to maintain NAT mappings for IKEv2 connections that have a NAT on the path. Keepalive packets are sent at regular interval when the device is awake. If `NATKeepAliveOffloadEnable` is set to 1, Keepalive packets will be offloaded to hardware while the device is asleep. NAT Keepalive offload has an impact on the battery life since extra workload is added during sleep. The default interval for the Keepalive offload packets is 20 seconds over WiFi and 110 seconds over Cellular interface. The default NAT Keepalive works well on networks with small NAT mapping timeouts but imposes a potential battery impact. If a network is known to have larger NAT mapping timeouts, larger Keepalive intervals may be safely used to minimize battery impact. The Keepalive interval can be modified by setting the `NATKeepAliveInterval` key. Default value for `NATKeepAliveOffloadEnable` is 1.|
 |`NATKeepAliveInterval`|Integer|Optional. NAT Keepalive interval for Always On VPN IKEv2 connections. This value controls the interval over which Keepalive offload packets are sent by the device. The minimum value is 20 seconds. If no key is specified, the default is 20 seconds over WiFi and 110 seconds over a Cellular interface.|
 |`EnablePFS`|Integer|Optional. Set to 1 to enable Perfect Forward Secrecy (PFS) for IKEv2 Connections. Default is 0. |
-|`EnableCertificate- RevocationCheck`|Integer|Optional. Set to 1 to enable a certificate revocation check for IKEv2 connections.  This is a best-effort revocation check; server response timeouts will not cause it to fail.</br>**Availability:** Available in iOS 9.0 and later.|
-|`IKESecurityAssociation- Parameters`|Dictionary|Optional. See table below. Applies to child Security Association unless `ChildSecurityAssociationParameters` is specified.|
-|`ChildSecurityAssociation- Parameters`|Dictionary|Optional. See table below.|
+|`EnableCertificateRevocationCheck`|Integer|Optional. Set to 1 to enable a certificate revocation check for IKEv2 connections.  This is a best-effort revocation check; server response timeouts will not cause it to fail.</br>**Availability:** Available in iOS 9.0 and later.|
+|`IKESecurityAssociationParameters`|Dictionary|Optional. See table below. Applies to child Security Association unless `ChildSecurityAssociationParameters` is specified.|
+|`ChildSecurityAssociationParameters`|Dictionary|Optional. See table below.|
   
 
 The `IKESecurityAssociationParameters` and `ChildSecurityAssociationParameters` dictionaries may contain the following keys:  
@@ -2412,7 +2464,7 @@ If `VPNType` is `IKEv2`, the following DNS keys may be provided:
 |`SearchDomains`|Array of Strings|Optional. A list of domain strings used to fully qualify single-label host names.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
 |`DomainName`|String|Optional. The primary domain of the tunnel.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
 |`SupplementalMatchDomains`|Array of Strings|Optional. A list of domain strings used to determine which DNS queries will use the DNS resolver settings contained in `ServerAddresses`. This key is used to create a split DNS configuration where only hosts in certain domains are resolved using the tunnel’s DNS resolver. Hosts not in one of the domains in this list are resolved using the system’s default resolver.</br>If `SupplementalMatchDomains` contains the empty string it becomes the default domain. This is how a split-tunnel configuration can direct all DNS queries first to the VPN DNS servers before the primary DNS servers. If the VPN tunnel becomes the network’s default route, the servers listed in `ServerAddresses` become the default resolver and the `SupplementalMatchDomains` list is ignored.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
-|`SupplementalMatch- DomainsNoSearch`|Integer|Optional. Whether (0) or not (1) the domains in the `SupplementalMatchDomains` list should be appended to the resolver’s list of search domains. Default is 0.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
+|`SupplementalMatchDomainsNoSearch`|Integer|Optional. Whether (0) or not (1) the domains in the `SupplementalMatchDomains` list should be appended to the resolver’s list of search domains. Default is 0.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
   
   
 
@@ -2474,8 +2526,8 @@ Each dictionary in a ServiceExceptions array may contain the following keys:
 
 |Key|Type|Value|
 |-|-|-|
-|`ServiceName`|String|Required. The name of a system service which is exempt from Always On VPN. Must be one of:</br></br>* `VoiceMail`  </br></br>* `AirPrint`  </br></br>* `Allow`  </br></br>* `Drop`  </br></br>|
-|`Action`|String|Required. One of the following:</br></br>* `VoiceMail`  </br></br>* `AirPrint`  </br></br>* `Allow`  </br></br>* `Drop`  </br></br>|
+|`ServiceName`|String|Required. The name of a system service which is exempt from Always On VPN. Must be one of:</br></br>* `VoiceMail`  </br></br>* `AirPrint`  </br></br>* `CellularServices` (Available in iOS 11.3 and later.)  </br></br>* `Allow`  </br></br>* `Drop`  </br></br>|
+|`Action`|String|Required. One of the following:</br></br>* `VoiceMail`  </br></br>* `AirPrint`  </br></br>* `CellularServices` (Available in iOS 11.3 and later.)  </br></br>* `Allow`  </br></br>* `Drop`  </br></br>|
   
   
 

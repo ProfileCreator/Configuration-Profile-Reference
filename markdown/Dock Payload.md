@@ -15,7 +15,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`autohide`|Boolean|Optional. If `true`, automatically hide and show the dock.	|
 |`autohide-immutable`|Boolean|Optional. If `true`, the Automatically Hide checkbox is disabled.|
 |`minimize-to-application`|Boolean|Optional. If `true`, enable the minimize-to-application feature.|
-|`minimize-to-application -immutable`|Boolean|Optional. If `true`, the minimize-to-application checkbox is disabled.|
+|`minimize-to-application-immutable`|Boolean|Optional. If `true`, the minimize-to-application checkbox is disabled.|
 |`magnification`|Boolean|Optional. If `true`, magnification is active.|
 |`magnify-immutable`|Boolean|Optional. If `true`, the magnification checkbox is disabled.|
 |`largesize`|Integer|Optional. The size of the largest magnification. Values must be in range 16 to 128.|

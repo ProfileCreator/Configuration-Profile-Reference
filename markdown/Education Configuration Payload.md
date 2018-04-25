@@ -20,7 +20,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`Groups`|Array|Required. Shared: An array of dictionaries that define groups that the user can select in the login window.</br>Leader: An array of dictionaries that define the groups that the user can control.</br>Member: An array of dictionaries that define the groups of which the user is a member.|
 |`Users`|Array|Required. Shared: An array of dictionaries that define the users that are shown in the iOS login window.</br>Leader: An array of dictionaries that define users that are members of the leader’s groups.</br>Member: An array of a dictionaries that must contain the definition of the user specified in the `UserIdentifier` key.</br>With one-to-one member devices, this key should include only the device user and the leader but not other class members.|
 |`DeviceGroups`|Array|Optional. Leader: An array of dictionaries that define the device groups to which the leader can assign devices. This key is not included in member payloads.|
-|`ScreenObservation- PermissionModification- Allowed`|Boolean|Optional. If set to `true`, students enrolled in managed classes can modify their teacher’s permissions for screen observation on this device. Defaults to `false`.|
+|`ScreenObservationPermissionModificationAllowed`|Boolean|Optional. If set to `true`, students enrolled in managed classes can modify their teacher’s permissions for screen observation on this device. Defaults to `false`.|
   
 
 The `Departments` key must contain an array of dictionaries with the following key-value pairs:  

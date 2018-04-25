@@ -2,7 +2,7 @@
 
  [Configuration Profile Reference - DNS Proxy Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW61)  
 
-The DNS Proxy payload is designated by specifying `com.apple.dnsProxy.managed` as the `PayloadType`.  
+The DNS Proxy payload is designated by specifying `com.apple.dnsProxy.managed` as the `PayloadType`. This payload can be installed only on a Supervised device.  
 
 This payload sets up iOS DNS Proxy settings. It is supported on iOS 11 and later.  
 

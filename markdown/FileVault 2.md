@@ -17,7 +17,7 @@ In macOS 10.9, you can use FileVault 2 to perform full XTS-AES 128 encryption on
 |`Username`|String|User name of the Open Directory user that will be added to FileVault.|
 |`Password`|String|User password of the Open Directory user that will be added to FileVault. Use the `UserEntersMissingInfo` key if you want to prompt for this information.|
 |`UseKeychain`|Boolean|If set to `true` and no certificate information is provided in this payload, the keychain already created at /Library/Keychains/FileVaultMaster.keychain will be used when the institutional recovery key is added.|
-|`DeferForceAtUserLogin- MaxBypassAttempts`|Integer|When using the `Defer` option you can optionally set this key to the maximum number of times the user can bypass enabling FileVault before it will require that it be enabled before the user can log in. If set to 0, it will always prompt to enable FileVault until it is enabled, though it will allow you to bypass enabling it. Setting this key to –1 will disable this feature.</br>**Availability:** Available in macOS 10.10 and later.|
+|`DeferForceAtUserLoginMaxBypassAttempts`|Integer|When using the `Defer` option you can optionally set this key to the maximum number of times the user can bypass enabling FileVault before it will require that it be enabled before the user can log in. If set to 0, it will always prompt to enable FileVault until it is enabled, though it will allow you to bypass enabling it. Setting this key to –1 will disable this feature.</br>**Availability:** Available in macOS 10.10 and later.|
 |`DeferDontAskAtUserLogout`|Boolean|When using the `Defer` option, set this key to `true` to not request enabling FileVault at user logout time.</br>**Availability:** Available in macOS 10.10 and later.|
   
 

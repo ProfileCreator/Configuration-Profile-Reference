@@ -10,8 +10,8 @@ In addition to the settings common to all payloads, this payload defines the fol
 
 |Key|Type|Value|
 |-|-|-|
-|`AccountDescription`|String|Optional. A user-visible description of the Google account, shown in the Mail and Settings apps.|
-|`AccountName`|String|Optional. The user’s full name for the Google account. This name will appear in sent messages.|
-|`EmailAddress`|String|Required. The full Google email address for the account.|
-|`CommunicationServiceRules`|Dictionary|Optional. The communication service handler rules for this account. The `CommunicationServiceRules` dictionary currently contains only a `DefaultServiceHandlers` key; its value is a dictionary which contains an `AudioCall` key whose value is a string containing the bundle identifier for the default application that handles audio calls made to contacts from this account.|
+|`AccountDescription`|String|Optional. A user-visible description of the Google account, shown in the Mail and Settings apps.</br>**Availability:** Available in iOS 9.3 and later.|
+|`AccountName`|String|Optional. The user’s full name for the Google account. This name will appear in sent messages.</br>**Availability:** Available in iOS 9.3 and later.|
+|`EmailAddress`|String|Required. The full Google email address for the account.</br>**Availability:** Available in iOS 9.3 and later.|
+|`CommunicationServiceRules`|Dictionary|Optional. The communication service handler rules for this account. The `CommunicationServiceRules` dictionary currently contains only a `DefaultServiceHandlers` key; its value is a dictionary which contains an `AudioCall` key whose value is a string containing the bundle identifier for the default application that handles audio calls made to contacts from this account.</br>**Availability:** Available in iOS 10 and later.|
   

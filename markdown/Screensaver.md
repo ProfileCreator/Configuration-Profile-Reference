@@ -4,7 +4,7 @@
 
 Screensaver payloads are designated by specifying `com.apple.screensaver` as the `PayloadType`.  
 
-The device level screensaver payload can be used to enable or disable the screen lock password function and one of the ways of disabling the option.   
+The device level screensaver payload can be used to customize the screensaver and enable or disable the screen lock password function.  
 
 The Screensaver payload defines the following keys:  
 
