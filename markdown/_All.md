@@ -679,6 +679,10 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`Message`|String|Optional. A custom message displayed on the screen in Conference Room Display mode.|
   
 
+
+> **Note:** When Conference Room Display mode and Single App mode are both enabled, Conference Room Display mode is active and the user can’t access the app.  
+  
+
 # Desktop Payload  
 
  [Configuration Profile Reference - Desktop Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW326)  
@@ -938,7 +942,7 @@ In addition to the settings common to all payloads, this payload defines the fol
   
 
 
-> **Note:** Note: As with VPN and Wi-Fi configurations, it is possible to associate an SCEP credential with an Exchange configuration via the `PayloadCertificateUUID` key.  
+> **Note:** As with VPN and Wi-Fi configurations, it is possible to associate an SCEP credential with an Exchange configuration via the `PayloadCertificateUUID` key.  
   
 
 # FileVault 2  
@@ -1245,6 +1249,7 @@ In addition to the settings common to all payloads, this payload defines these k
 |`RestartDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Restart menu item will be disabled when the user is logged in.|
 |`PowerOffDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Power Off menu item will be disabled when the user is logged in.|
 |`DisableLoginItemsSuppression`|Boolean|Optional. If set to `true`, the user is prevented from disabling login item launching using the Shift key.|
+|`DisableScreenLockImmediate`|Boolean|Optional. If set to `true`, the immediate Screen Lock functions will be disabled.|
   
 
 # Media Management  
@@ -1592,6 +1597,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`pinHistory`|Number|Optional. When the user changes the passcode, it has to be unique within the last N entries in the history. Minimum value is 1, maximum value is 50.|
 |`maxGracePeriod`|Number|Optional. The maximum grace period, in minutes, to unlock the phone without entering a passcode. Default is 0, that is no grace period, which requires a passcode immediately.</br>In macOS, this will be translated to screensaver settings.|
 |`allowFingerprintModification`|Boolean|Optional. Supervised only. Not supported on macOS. Allows the user to modify Touch ID. Default NO.|
+|`changeAtNextAuth`|Boolean|Optional. On macOS, setting this to `true` will cause a password reset to occur the next time the user tries to authenticate.  If this key is set in a device profile, the setting takes effect for all users, and admin authentications may fail until the admin user password is also reset.</br>**Availability:** Available in macOS 10.13 and later.|
   
 
 # Profile Removal Password Payload  
@@ -1679,6 +1685,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowVoiceDialing`|Boolean|Optional. When `false`, disables voice dialing if the device is locked with a passcode. Default is `true`.|
 |`allowYouTube`|Boolean|Optional. When `false`, the YouTube application is disabled and its icon is removed from the Home screen.</br>This key is ignored in iOS 6 and later because the YouTube app is not provided.|
 |`allowiTunes`|Boolean|Optional. When `false`, the iTunes Music Store is disabled and its icon is removed from the Home screen. Users cannot preview, purchase, or download content. This key is deprecated on unsupervised devices.|
+|`allowiTunesFileSharing`|Boolean|Optional. When `false`, iTunes application file sharing services are disabled. </br>**Availability:** Available in macOS 10.13 and later.|
 |`autonomousSingleAppModePermittedAppIDs`|Array of strings|Optional. Supervised only. If present, allows apps identified by the bundle IDs listed in the array to autonomously enter Single App Mode.</br>**Availability:** Available only in iOS 7.0 and later.|
 |`forceAssistantProfanityFilter`|Boolean|Optional. Supervised only. When `true`, forces the use of the profanity filter assistant.|
 |`forceEncryptedBackup`|Boolean|Optional. When `true`, encrypts all backups.|
@@ -1728,6 +1735,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowAirPrintCredentialsStorage`|Boolean|Supervised only. If set to `false`, disallows keychain storage of username and password for Airprint. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and later.|
 |`forceAirPrintTrustedTLSRequirement`|Boolean|Supervised only. If set to `true`, requires trusted certificates for TLS printing communication. Defaults to `false`.</br>**Availability:** Available only in iOS 11.0 and macOS 10.13 and later.|
 |`allowAirPrintiBeaconDiscovery`|Boolean|Supervised only. If set to `false`, disables iBeacon discovery of AirPrint printers. This prevents spurious AirPrint Bluetooth beacons from phishing for network traffic. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and macOS 10.13 and later.|
+|`allowSystemAppRemoval`|Boolean|Supervised only. If set to `false`, disables the removal of system apps from the device. Defaults to `true`. </br>**Availability:** Available only in iOS 11.0 and later.|
 |`allowVPNCreation`|Boolean|Supervised only. If set to `false`, disallow the creation of VPN configurations. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and later.|
   
 

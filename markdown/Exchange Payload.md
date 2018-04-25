@@ -40,5 +40,5 @@ In addition to the settings common to all payloads, this payload defines the fol
   
 
 
-> **Note:** Note: As with VPN and Wi-Fi configurations, it is possible to associate an SCEP credential with an Exchange configuration via the `PayloadCertificateUUID` key.  
+> **Note:** As with VPN and Wi-Fi configurations, it is possible to associate an SCEP credential with an Exchange configuration via the `PayloadCertificateUUID` key.  
   

@@ -12,3 +12,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`Message`|String|Optional. A custom message displayed on the screen in Conference Room Display mode.|
   
+
+
+> **Note:** When Conference Room Display mode and Single App mode are both enabled, Conference Room Display mode is active and the user can’t access the app.  
+  

@@ -21,4 +21,5 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`pinHistory`|Number|Optional. When the user changes the passcode, it has to be unique within the last N entries in the history. Minimum value is 1, maximum value is 50.|
 |`maxGracePeriod`|Number|Optional. The maximum grace period, in minutes, to unlock the phone without entering a passcode. Default is 0, that is no grace period, which requires a passcode immediately.</br>In macOS, this will be translated to screensaver settings.|
 |`allowFingerprintModification`|Boolean|Optional. Supervised only. Not supported on macOS. Allows the user to modify Touch ID. Default NO.|
+|`changeAtNextAuth`|Boolean|Optional. On macOS, setting this to `true` will cause a password reset to occur the next time the user tries to authenticate.  If this key is set in a device profile, the setting takes effect for all users, and admin authentications may fail until the admin user password is also reset.</br>**Availability:** Available in macOS 10.13 and later.|
   

@@ -28,4 +28,5 @@ In addition to the settings common to all payloads, this payload defines these k
 |`RestartDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Restart menu item will be disabled when the user is logged in.|
 |`PowerOffDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Power Off menu item will be disabled when the user is logged in.|
 |`DisableLoginItemsSuppression`|Boolean|Optional. If set to `true`, the user is prevented from disabling login item launching using the Shift key.|
+|`DisableScreenLockImmediate`|Boolean|Optional. If set to `true`, the immediate Screen Lock functions will be disabled.|
   
