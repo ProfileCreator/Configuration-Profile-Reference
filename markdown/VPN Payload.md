@@ -9,7 +9,6 @@ The VPN payload is designated by specifying `com.apple.vpn.managed` as the `Payl
 |Key|Type|Value|
 |-|-|-|
 |`UserDefinedName`|String|Optional. Description of the VPN connection displayed on the device.|
-|`OverridePrimary`|Boolean|Specifies whether to send all traffic through the VPN interface. If `true`, all network traffic is sent over VPN. Defaults to `false`.|
 |`VPNType`|String|Determines the settings available in the payload for this type of VPN connection. It can have one of the following values:</br></br>* `L2TP`  </br></br>* `PPTP`  </br></br>* `IPSec` (Cisco)  </br></br>* `IKEv2` (see [IKEv2 Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW612))  </br></br>* `AlwaysOn` (see [AlwaysOn Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW613))  </br></br>* `VPN` (solution uses a VPN plugin or `NetworkExtension`, so the `VPNSubType` key is required (see below)).  </br></br>* Cisco AnyConnect: `com.cisco.anyconnect.applevpn.plugin`  </br></br>* Juniper SSL: `net.juniper.sslvpn`  </br></br>* F5 SSL: `com.f5.F5-Edge-Client.vpnplugin`  </br></br>* SonicWALL Mobile Connect: `com.sonicwall.SonicWALL-SSLVPN.vpnplugin`  </br></br>* Aruba VIA: `com.arubanetworks.aruba-via.vpnplugin`  </br></br>|
 |`VPNSubType`|String|Optional. If `VPNType` is `VPN`, this field is required. If the configuration is targeted at a VPN solution that uses a VPN plugin, then this field contains the bundle identifier of the plugin. Here are some examples:</br></br>* `L2TP`  </br></br>* `PPTP`  </br></br>* `IPSec` (Cisco)  </br></br>* `IKEv2` (see [IKEv2 Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW612))  </br></br>* `AlwaysOn` (see [AlwaysOn Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW613))  </br></br>* `VPN` (solution uses a VPN plugin or `NetworkExtension`, so the `VPNSubType` key is required (see below)).  </br></br>* Cisco AnyConnect: `com.cisco.anyconnect.applevpn.plugin`  </br></br>* Juniper SSL: `net.juniper.sslvpn`  </br></br>* F5 SSL: `com.f5.F5-Edge-Client.vpnplugin`  </br></br>* SonicWALL Mobile Connect: `com.sonicwall.SonicWALL-SSLVPN.vpnplugin`  </br></br>* Aruba VIA: `com.arubanetworks.aruba-via.vpnplugin`  </br></br></br>If the configuration is targeted at a VPN solution that uses a `NetworkExtension` provider, then this field contains the bundle identifier of the app that contains the provider. Contact the VPN solution vendor for the value of the identifier.</br>If `VPNType` is `IKEv2`, then the `VPNSubType` field is optional and is reserved for future use. If it is specified, it must contain the empty string.|
 |`ProviderBundleIdentifier`|String|Optional. If the `VPNSubType` field contains the bundle identifier of an app that contains multiple VPN providers of the same type (`app-proxy` or `packet-tunnel`), then this field is used to specify which provider to use for this configuration.|
@@ -42,6 +41,18 @@ The following elements are for VPN payloads of type PPP.
 |`CCPMPPE40Enabled`|Boolean|See discussion under `CCPEnabled`. Used for PPTP.|
 |`CCPMPPE128Enabled`|Boolean|See discussion under `CCPEnabled`. Used for PPTP.|
 |`CCPEnabled`|Boolean|Enables encryption on the connection. If this key and `CCPMPPE40Enabled` are `true`, represents automatic encryption level; if this key and `CCPMPPE128Enabled` are `true`, represents maximum encryption level. If no encryption is used, then none of the CCP keys are `true`. Used for PPTP.|
+  
+  
+
+### IPv4 Dictionary Keys  
+
+ [Configuration Profile Reference - IPv4 Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW27)  
+
+The following element is for VPN payloads of type L2TP or PPTP   
+
+|Key|Type|Value|
+|-|-|-|
+|`OverridePrimary`|Boolean|Specifies whether to send all traffic through the VPN interface. If `true`, all network traffic is sent over VPN. Defaults to `false`.|
   
   
 

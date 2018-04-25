@@ -16,16 +16,16 @@ In addition to the settings common to all payloads, this payload defines the fol
 |Key|Type|Value|
 |-|-|-|
 |`Dock`|Array|Optional. An array of dictionaries, each of which must conform to the icon dictionary format.|
-|`Pages`|Array|Required. An array of dictionaries, each of which must conform to the icon dictionary format.|
+|`Pages`|Array|Required. An array of arrays of dictionaries, each of which must conform to the icon dictionary format.|
   
 
 Icon format dictionaries are defined as follows:  
 
 |Key|Type|Value|
 |-|-|-|
-|`Type`|String|Required. Must be one of the following:</br></br>* Application  </br></br>* Folder  </br></br>* WebClip  </br></br>|
-|`DisplayName`|String|Optional. Human-readable string to be shown to the user.|
-|`BundleID`|String|Required if App type. The bundle identifier of the app.|
-|`Pages`|Array|Optional. Array of arrays of dictionaries. Each of the dictionaries complies to the icon dictionary format. Only valid for Folder types.|
-|`URL`|String|Required if WebClip type. URL of the WebClip being referenced. If more than one WebClip exists with the same URL, the behavior is undefined.</br>**Availability:** Available in iOS 11.3 and later. |
+|`Type`|String|Required. Must be one of the following:</br></br>* `Application`  </br></br>* `Folder`  </br></br>* `WebClip`  </br></br>|
+|`DisplayName`|String|Optional. Human-readable string to be shown to the user. Valid only if `Folder` type.|
+|`BundleID`|String|Required if `Application` type. The bundle identifier of the app.|
+|`Pages`|Array|Optional.  An array of arrays of dictionaries, each of which must conform to the icon dictionary format. Valid only if `Folder` type.|
+|`URL`|String|Required if `WebClip` type. URL of the WebClip being referenced. If more than one WebClip exists with the same URL, the behavior is undefined.</br>**Availability:** Available in iOS 11.3 and later. |
   

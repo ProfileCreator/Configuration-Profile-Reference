@@ -616,7 +616,7 @@ Each `APN` dictionary contains the following keys:
 |`Username`|String|Optional. A user name used for authentication.|
 |`Password`|String|Optional. A password used for authentication.|
 |`ProxyServer`|String|Optional. The proxy server's network address.|
-|`ProxyServerPort`|Integer|Optional. The proxy server's port.|
+|`ProxyPort`|Integer|Optional. The proxy server's port.|
 |`DefaultProtocolMask`|Integer|**Deprecated.** Default Internet Protocol versions. Set to the same value as `AllowedProtocolMask`. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
 |`AllowedProtocolMask`|Integer|Optional. Supported Internet Protocol versions. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
 |`AllowedProtocolMaskInRoaming`|Integer|Optional. Supported Internet Protocol versions while roaming. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
@@ -1223,18 +1223,18 @@ In addition to the settings common to all payloads, this payload defines the fol
 |Key|Type|Value|
 |-|-|-|
 |`Dock`|Array|Optional. An array of dictionaries, each of which must conform to the icon dictionary format.|
-|`Pages`|Array|Required. An array of dictionaries, each of which must conform to the icon dictionary format.|
+|`Pages`|Array|Required. An array of arrays of dictionaries, each of which must conform to the icon dictionary format.|
   
 
 Icon format dictionaries are defined as follows:  
 
 |Key|Type|Value|
 |-|-|-|
-|`Type`|String|Required. Must be one of the following:</br></br>* Application  </br></br>* Folder  </br></br>* WebClip  </br></br>|
-|`DisplayName`|String|Optional. Human-readable string to be shown to the user.|
-|`BundleID`|String|Required if App type. The bundle identifier of the app.|
-|`Pages`|Array|Optional. Array of arrays of dictionaries. Each of the dictionaries complies to the icon dictionary format. Only valid for Folder types.|
-|`URL`|String|Required if WebClip type. URL of the WebClip being referenced. If more than one WebClip exists with the same URL, the behavior is undefined.</br>**Availability:** Available in iOS 11.3 and later. |
+|`Type`|String|Required. Must be one of the following:</br></br>* `Application`  </br></br>* `Folder`  </br></br>* `WebClip`  </br></br>|
+|`DisplayName`|String|Optional. Human-readable string to be shown to the user. Valid only if `Folder` type.|
+|`BundleID`|String|Required if `Application` type. The bundle identifier of the app.|
+|`Pages`|Array|Optional.  An array of arrays of dictionaries, each of which must conform to the icon dictionary format. Valid only if `Folder` type.|
+|`URL`|String|Required if `WebClip` type. URL of the WebClip being referenced. If more than one WebClip exists with the same URL, the behavior is undefined.</br>**Availability:** Available in iOS 11.3 and later. |
   
 
 # Identification Payload  
@@ -1831,7 +1831,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`forceITunesStorePasswordEntry`|Boolean|Optional. When `true`, forces user to enter their iTunes password for each transaction.</br>**Availability:** Available in iOS 5.0 and later.|
 |`forceLimitAdTracking`|Boolean|Optional. If `true`, limits ad tracking. Default is `false`.</br>**Availability:** Available only in iOS 7.0 and later.|
 |`forceAirPlayOutgoingRequestsPairingPassword`|Boolean|Optional. If set to `true`, forces all devices receiving AirPlay requests from this device to use a pairing password. Default is `false`.</br>**Availability:** Available only in iOS 7.1 and later.|
-|`forceAirPlayIncomingRequestsPairingPassword`|Boolean|Optional. If set to `true`, forces all devices sending AirPlay requests to this device to use a pairing password. Default is `false`.</br>**Availability:** Available only in Apple TV 6.1 and later.|
+|`forceAirPlayIncomingRequestsPairingPassword`|Boolean|Optional. If set to `true`, forces all devices sending AirPlay requests to this device to use a pairing password. Default is `false`.</br>**Availability:** Available only in Apple TV 6.1 to tvOS 10.1. It is recommended to use the [AirPlay Security Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW56). </br>|
 |`allowManagedAppsCloudSync`|Boolean|Optional. If set to `false`, prevents managed applications from using iCloud sync.|
 |`allowEraseContentAndSettings`|Boolean|Supervised only. If set to `false`, disables the “Erase All Content And Settings” option in the Reset UI.|
 |`allowSpotlightInternetResults`|Boolean|Supervised only. If set to `false`, Spotlight will not return Internet search results.</br>**Availability:** Available in iOS and in macOS 10.11 and later.|
@@ -1878,7 +1878,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowSystemAppRemoval`|Boolean|Supervised only. If set to `false`, disables the removal of system apps from the device. Defaults to `true`. </br>**Availability:** Available only in iOS 11.0 and later.|
 |`allowVPNCreation`|Boolean|Supervised only. If set to `false`, disallow the creation of VPN configurations. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and later.|
 |`forceDelayedSoftwareUpdates`|Boolean|Supervised only. If set to `true`, delays user visibility of Software Updates. Defaults to `false`.</br>**Availability:** Available in iOS 11.3 and later and macOS 10.13 and later.|
-|`enforcedSoftwareUpdateDelay`|Integer|Supervised only. This restriction allows the admin to set how many days a software update on the device will be delayed. With this restriction in place, the user will not see a software update until the specified number of days after the software update release date.</br>The max is 90 days and the default value is 30.</br>**Availability:** Available in iOS 11.3 and later and macOS 10.13 and later.|
+|`enforcedSoftwareUpdateDelay`|Integer|Supervised only. This restriction allows the admin to set how many days a software update on the device will be delayed. With this restriction in place, the user will not see a software update until the specified number of days after the software update release date.</br>The max is 90 days and the default value is 30.</br>**Availability:** Available in iOS 11.3 and later and macOS 10.13.4 and later.|
 |`forceAuthenticationBeforeAutoFill`|Boolean|Optional. Supervised only. If set to `true`, the uer will have to authenticate before passwords or credit card information can be autofilled in Safari and Apps. If this restriction is not enforced, the user can toggle this feature in settings.</br>Only supported on devices with FaceID.</br>Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and later.|
 |`forceClassroomAutomaticallyJoinClasses`|Boolean|Optional. Supervised only. If set to `true`, automatically give permission to the teacher’s requests without prompting the student. Defaults to `false`.</br>**Availability:** Available only in iOS 11.0 and later.|
 |`forceClassroomRequestPermissionToLeaveClasses`|Boolean|Optional. Supervised only. If set to `true`, a student enrolled in an unmanaged course via Classroom will request permission from the teacher when attempting to leave the course. Defaults to `false`.</br>**Availability:** Available only in iOS 11.3 and later.|
@@ -2282,7 +2282,6 @@ The VPN payload is designated by specifying `com.apple.vpn.managed` as the `Payl
 |Key|Type|Value|
 |-|-|-|
 |`UserDefinedName`|String|Optional. Description of the VPN connection displayed on the device.|
-|`OverridePrimary`|Boolean|Specifies whether to send all traffic through the VPN interface. If `true`, all network traffic is sent over VPN. Defaults to `false`.|
 |`VPNType`|String|Determines the settings available in the payload for this type of VPN connection. It can have one of the following values:</br></br>* `L2TP`  </br></br>* `PPTP`  </br></br>* `IPSec` (Cisco)  </br></br>* `IKEv2` (see [IKEv2 Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW612))  </br></br>* `AlwaysOn` (see [AlwaysOn Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW613))  </br></br>* `VPN` (solution uses a VPN plugin or `NetworkExtension`, so the `VPNSubType` key is required (see below)).  </br></br>* Cisco AnyConnect: `com.cisco.anyconnect.applevpn.plugin`  </br></br>* Juniper SSL: `net.juniper.sslvpn`  </br></br>* F5 SSL: `com.f5.F5-Edge-Client.vpnplugin`  </br></br>* SonicWALL Mobile Connect: `com.sonicwall.SonicWALL-SSLVPN.vpnplugin`  </br></br>* Aruba VIA: `com.arubanetworks.aruba-via.vpnplugin`  </br></br>|
 |`VPNSubType`|String|Optional. If `VPNType` is `VPN`, this field is required. If the configuration is targeted at a VPN solution that uses a VPN plugin, then this field contains the bundle identifier of the plugin. Here are some examples:</br></br>* `L2TP`  </br></br>* `PPTP`  </br></br>* `IPSec` (Cisco)  </br></br>* `IKEv2` (see [IKEv2 Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW612))  </br></br>* `AlwaysOn` (see [AlwaysOn Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW613))  </br></br>* `VPN` (solution uses a VPN plugin or `NetworkExtension`, so the `VPNSubType` key is required (see below)).  </br></br>* Cisco AnyConnect: `com.cisco.anyconnect.applevpn.plugin`  </br></br>* Juniper SSL: `net.juniper.sslvpn`  </br></br>* F5 SSL: `com.f5.F5-Edge-Client.vpnplugin`  </br></br>* SonicWALL Mobile Connect: `com.sonicwall.SonicWALL-SSLVPN.vpnplugin`  </br></br>* Aruba VIA: `com.arubanetworks.aruba-via.vpnplugin`  </br></br></br>If the configuration is targeted at a VPN solution that uses a `NetworkExtension` provider, then this field contains the bundle identifier of the app that contains the provider. Contact the VPN solution vendor for the value of the identifier.</br>If `VPNType` is `IKEv2`, then the `VPNSubType` field is optional and is reserved for future use. If it is specified, it must contain the empty string.|
 |`ProviderBundleIdentifier`|String|Optional. If the `VPNSubType` field contains the bundle identifier of an app that contains multiple VPN providers of the same type (`app-proxy` or `packet-tunnel`), then this field is used to specify which provider to use for this configuration.|
@@ -2315,6 +2314,18 @@ The following elements are for VPN payloads of type PPP.
 |`CCPMPPE40Enabled`|Boolean|See discussion under `CCPEnabled`. Used for PPTP.|
 |`CCPMPPE128Enabled`|Boolean|See discussion under `CCPEnabled`. Used for PPTP.|
 |`CCPEnabled`|Boolean|Enables encryption on the connection. If this key and `CCPMPPE40Enabled` are `true`, represents automatic encryption level; if this key and `CCPMPPE128Enabled` are `true`, represents maximum encryption level. If no encryption is used, then none of the CCP keys are `true`. Used for PPTP.|
+  
+  
+
+### IPv4 Dictionary Keys  
+
+ [Configuration Profile Reference - IPv4 Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW27)  
+
+The following element is for VPN payloads of type L2TP or PPTP   
+
+|Key|Type|Value|
+|-|-|-|
+|`OverridePrimary`|Boolean|Specifies whether to send all traffic through the VPN interface. If `true`, all network traffic is sent over VPN. Defaults to `false`.|
   
   
 
@@ -2737,7 +2748,7 @@ In addition to the standard encryption types, it is possible to specify an enter
 |`OneTimePassword`|Boolean|Optional. If `true`, the user will be prompted for a password each time they connect to the network. Defaults to `false`.|
 |`PayloadCertificateAnchorUUID`|Array of Strings|Optional. Identifies the certificates to be trusted for this authentication. Each entry must contain the UUID of a certificate payload. Use this key to prevent the device from asking the user if the listed certificates are trusted.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless `TLSAllowTrustExceptions` is also specified with the value `true`.|
 |`TLSTrustedServerNames`|Array of Strings|Optional. This is the list of server certificate common names that will be accepted. You can use wildcards to specify the name, such as wpa.*.example.com. If a server presents a certificate that isn't in this list, it won't be trusted.</br>Used alone or in combination with `PayloadCertificateAnchorUUID`, the property allows someone to carefully craft which certificates to trust for the given network, and avoid dynamically trusted certificates.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless `TLSAllowTrustExceptions` is also specified with the value `true`.|
-|`TLSAllowTrustExceptions`|Boolean|Optional. Allows/disallows a dynamic trust decision by the user. The dynamic trust is the certificate dialogue that appears when a certificate isn't trusted. If this is `false`, the authentication fails if the certificate isn't already trusted. See `PayloadCertificateAnchorUUID` and `TLSTrustedNames` above.</br>The default value of this property is `true` unless either `PayloadCertificateAnchorUUID` or `TLSTrustedServerNames` is supplied, in which case the default value is `false`.</br>**Availability:** Deprecated and ignored in iOS 11.0 and later.|
+|`TLSAllowTrustExceptions`|Boolean|Optional. Allows/disallows a dynamic trust decision by the user. The dynamic trust is the certificate dialogue that appears when a certificate isn't trusted. If this is `false`, the authentication fails if the certificate isn't already trusted. See `PayloadCertificateAnchorUUID` and `TLSTrustedNames` above.</br>The default value of this property is `true` unless either `PayloadCertificateAnchorUUID` or `TLSTrustedServerNames` is supplied, in which case the default value is `false`.</br>**Availability:** Deprecated and ignored in iOS 8.0 and later.|
 |`TLSCertificateIsRequired`|Boolean|Optional. If `true`, allows for two-factor authentication for EAP-TTLS, PEAP, or EAP-FAST. If `false`, allows for zero-factor authentication for EAP-TLS. The default is `true` for EAP-TLS, and `false` for other EAP types.</br>**Availability:** Available in iOS 7.0 and later.|
 |`TLSMinimumVersion`|String|Optional. The minimum TLS version to be used with EAP authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default minimum is 1.0. </br>**Availability:** Available in iOS 11.0 and macOS 10.13 and later.|
 |`TLSMaximumVersion`|String|Optional. The maximum TLS version to be used with EAP authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default maximum is 1.2. </br>**Availability:** Available in iOS 11.0 and macOS 10.13 and later.
