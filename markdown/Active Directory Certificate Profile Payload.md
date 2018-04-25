@@ -21,4 +21,5 @@ This payload includes the following unique keys:
 |`KeyIsExtractable`|Boolean|If `true`, the private key can be exported.|
 |`PromptForCredentials`|Boolean|This key applies only to user certificates where Manual Download is the chosen method of profile delivery. If `true`, the user will be prompted for credentials when the profile is installed. Omit this key for computer certificates.|
 |`Keysize`|Integer|Optional; defaults to 2048. The RSA key size for the Certificate Signing Request (CSR).</br>**Availability:** Available in macOS 10.11 and later.|
+|`EnableAutoRenewal`|Boolean|Optional. If set to `true`, the certificate obtained with this payload will attempt auto-renewal. Only applies to device Active Directory certificate payloads.</br>**Availability:** Available in macOS 10.13.4 and later.|
   

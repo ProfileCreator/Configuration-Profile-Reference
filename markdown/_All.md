@@ -304,6 +304,7 @@ This payload includes the following unique keys:
 |`KeyIsExtractable`|Boolean|If `true`, the private key can be exported.|
 |`PromptForCredentials`|Boolean|This key applies only to user certificates where Manual Download is the chosen method of profile delivery. If `true`, the user will be prompted for credentials when the profile is installed. Omit this key for computer certificates.|
 |`Keysize`|Integer|Optional; defaults to 2048. The RSA key size for the Certificate Signing Request (CSR).</br>**Availability:** Available in macOS 10.11 and later.|
+|`EnableAutoRenewal`|Boolean|Optional. If set to `true`, the certificate obtained with this payload will attempt auto-renewal. Only applies to device Active Directory certificate payloads.</br>**Availability:** Available in macOS 10.13.4 and later.|
   
 
 # AirPlay Payload  
@@ -463,7 +464,9 @@ The `UserEnabledOptions` dictionary, if present, can contain the following keys 
 
  [Configuration Profile Reference - AppStore Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW197)  
 
-The AppStore payload is designated by specifying `com.apple.app.appstore` as the `PayloadType` value. It establishes macOS AppStore restrictions and is supported on the User channel.  
+The AppStore payload is designated by specifying `com.apple.app.appstore` as the `PayloadType` value.   
+
+It establishes macOS AppStore restrictions and is supported on the User channel.  
 
 The payload contains the following keys:  
 
@@ -476,13 +479,44 @@ The payload contains the following keys:
 |`restrict-store-mdm-install -softwareupdate-only`|Boolean|Optional. Restrict app installations to MDM-installed apps and software updates. Available on macOS 10.11 and later.|
   
 
+# Autonomous Single App Mode  
+
+ [Configuration Profile Reference - Autonomous Single App Mode](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW65)  
+
+The payload is designated by specifying `com.apple.asam` as the `PayloadType`.  
+
+This payload grants Autonomous Single App Mode capabilities for specific applications. Available in macOS 10.13.4 and later.  
+
+It must be installed as a device profile. Only one payload of this type can be installed on a system. This payload can only be installed via a “user approved” MDM server.  
+
+
+> **Note:** Applications listed in this payload will have low-level access to the system, including, but not limited to, key logging and user interface manipulation outside of the application's context.  
+  
+
+In addition to the settings common to all payloads, this payload defines the following key:  
+
+|Key|Type|Value|
+|-|-|-|
+|`AllowedApplications`|Array|Array of dictionaries that specify applications that are to be granted access to Assessment APIs.|
+  
+
+Each dictionary in the `AllowedApplications` array consists of:  
+
+|Key|Type|Value|
+|-|-|-|
+|`BundleIdentifier`|String|The application’s bundle identifier. `BundleIdentifier` must be unique. If two dictionaries contain the same `BundleIdentifier` but different `TeamIdentifiers`, this will be considered a hard error and the payload will not be installed.|
+|`TeamIdentifier`|String|The developer’s team identifier used to sign the application.|
+  
+
+To be granted access, applications must be signed with the specified bundle identifier and team identifier using an Apple-issued production developer certificate. Applications must specify the `com.apple.developer.assessment` entitlement with a value of `true`.  
+
 # CalDAV Payload  
 
  [Configuration Profile Reference - CalDAV Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW16)  
 
-This payload configures a CalDAV account.  
-
 The payload is designated by specifying `com.apple.caldav.account` as the `PayloadType`.  
+
+This payload configures a CalDAV account.  
 
 In addition to the settings common to all payloads, this payload defines the following keys:  
 
@@ -621,7 +655,11 @@ Because the password string is stored in the clear in the profile, it is recomme
 
  [Configuration Profile Reference - Certificate Preference Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW143)  
 
-Available in MacOS 10.12 and later. A Certificate Preference payload lets you identify a Certificate Preference item in the user's keychain that references a certificate payload included in the same profile. It can only appear in a user profile, not a device profile. You can include multiple Certificate Preference payloads as needed. Certificate Preference payloads are designated by specifying `com.apple.security.certificatepreference` as the `PayloadType` value. See also [Identity Preference Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW243) for setting up identity preferences.  
+Certificate Preference payloads are designated by specifying `com.apple.security.certificatepreference` as the `PayloadType` value. See also [Identity Preference Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW243) for setting up identity preferences.  
+
+A Certificate Preference payload lets you identify a Certificate Preference item in the user's keychain that references a certificate payload included in the same profile. It can only appear in a user profile, not a device profile. You can include multiple Certificate Preference payloads as needed.   
+
+Available in MacOS 10.12 and later.   
 
 In addition to the settings common to all payloads, this payload defines the following keys:  
 
@@ -648,6 +686,48 @@ In addition to the settings common to all payloads, this payload defines the fol
 
 
 > **Note:** When Conference Room Display mode and Single App mode are both enabled, Conference Room Display mode is active and the user can’t access the app.  
+  
+
+# Content Caching Payload  
+
+ [Configuration Profile Reference - Content Caching Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW64)  
+
+The Content Caching payload is designated by specifying `com.apple.AssetCache.managed` as the `PayloadType`.  
+
+It configures the Content Caching service.  
+
+In addition to the settings common to all payloads, this payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`AllowPersonalCaching`|Boolean|Optional. If set to `true`, caches the user’s iCloud data. Clients may take some time (hours, days) to react to changes to this setting; it does not have an immediate effect. Default is `true`.</br>At least one of the `AllowPersonalCaching` or `AllowSharedCaching` keys must be `true`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`AllowSharedCaching`|Boolean|Optional. If set to `true`, caches non-iCloud content, such as apps and software updates. Clients may take some time (hours, days) to react to changes to this setting; it does not have an immediate effect. Default is `true`.</br>At least one of the `AllowPersonalCaching` or `AllowSharedCaching` keys must be `true`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`AutoActivation`|Boolean|Optional. If set to `true`, automatically activate the Content Cache when possible and prevent disabling of the Content Cache. Default is `false`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`CacheLimit`|Integer|Optional. Defines the maximum number of bytes of disk space that will be used for the Content Cache. A `CacheLimit` of 0 means unlimited disk space. Default is `0`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`DataPath`|String|Optional. The path to the directory used to store Cached Content.  Changing this setting manually does not automatically move cached content from the old to the new location. To move content automatically, use the Sharing preference's Content Caching pane.  </br>The value must be, or end with, `/Library/Application Support/Apple/AssetCache/Data`.  A directory (and its intermediates) will be created for the given `DataPath` if it does not already exist.  The directory will be owned by `_assetcache:_assetcache` and have mode 0750.  Its immediate parent directory (`.../Library/Application Support/Apple/AssetCache`) will be owned by `_assetcache:_assetcache` and have mode 0755. </br>Default is `/Library/Application Support/Apple/AssetCache/Data`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`DenyTetheredCaching`|Boolean|Optional. If set to `true`, tethered caching is disabled. Default is `false`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`ListenRanges`|Array of Dictionaries|Optional. Array of dictionaries describing a range of client IP addresses to serve.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`ListenRangesOnly`|Boolean|Optional. If set to `true`, the Content Cache provides content only to clients in the ranges specified by the `ListenRanges` key. To use the `ListenRangesOnly` key, the `ListenRanges` key must also be specified. Default is `false`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`ListenWithPeersAndParents`|Boolean|Optional. If set to `true`, the Content Cache provides content to the clients in the union of the ListenRanges, PeerListenRanges and Parents ranges. Default is `true`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`LocalSubnetsOnly`|Boolean|Optional. If set to `true`, the Content Cache offers content to clients only on the same immediate local network as the Content Cache. No content would be offered to clients on other networks reachable by the Content Cache. Default is `true`.</br>If `LocalSubnetsOnly` is set to true, `ListenRanges` will be ignored.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`LogClientIdentity`|Boolean|Optional. If set to `true`, the Content Cache will log the IP address and port number of the clients that request content. Default is `false`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`Parents`|Array of Strings|Optional. Array of the local IP addresses of other Content Caches that this cache should download from or upload to, instead of downloading from or uploading to Apple directly. Invalid addresses and addresses of computers that are not Content Caches are ignored. </br>Parent caches that become unavailable are skipped. If all parent Content Caches become unavailable, the Content Cache will download from or upload to Apple directly until a parent Content Cache becomes available again.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`ParentSelectionPolicy`|String|Optional. The policy to use when choosing among more than one configured parent Content Cache. With every policy, parent caches that are temporarily unavailable are skipped.
+</br></br>* `first-available`: Always use the first parent in the Parents list that is available.  This is useful for designating permanent primary, secondary, and subsequent parents.  </br></br>* `url-path-hash`: Hash the path part of the requested URL so that the same parent is always used for the same URL.  This is useful for maximizing the size of the combined caches of the parents.  </br></br>* `random`: Choose a parent at random.  This is useful for load balancing.  </br></br>* `round-robin`: Rotate through the parents in order.  This is useful for load balancing.  </br></br>* `sticky-available`: Starting with the first parent in the Parents list, always use the first parent that is available. Use that parent until it becomes unavailable, then advance to the next one.  This is useful for designating floating primary, secondary, and subsequent parents.  </br></br></br>Default is `round-robin`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`PeerFilterRanges`|Array of Dictionaries|Optional. Array of dictionaries describing a range of peer IP addresses that the Content Cache will use to filter its list of peers to query for content.  The Content Cache only queries peers that are in the `PeerFilterRanges`.  When `PeerFilterRanges` is an empty array the Content Cache will not query any peers.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`PeerListenRanges`|Array of Dictionaries|Optional. Array of dictionaries describing a range of peer IP addresses the Content Cache will respond to peer cache queries from. When `PeerListenRanges` is an empty array, the Content Cache will respond with an error to all cache queries.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`PeerLocalSubnetsOnly`|Boolean|Optional. If set to `true`, the Content Cache will only peer with other Content Caches on the same immediate local network, rather than with Content Caches that use the same public IP address as the device. When `PeerLocalSubnetsOnly` is true, it overrides the configuration of `PeerFilterRanges` and `PeerListenRanges`. If the network changes, the local network peering restrictions update appropriately.</br>If set to `false`, the Content Cache defers to `PeerFilterRanges` and `PeerListenRanges` for configuring the peering restrictions.</br>Default is `true`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`Port`|Integer|Optional. The TCP port number on which the Content Cache accepts requests for uploads or downloads.  Port set to 0 picks a random, available port. Default is `0`.</br>**Availability:** Available in macOS 10.13.4 and later.|
+|`PublicRanges`|Array of Dictionaries|Optional. Array of dictionaries describing a range of public IP addresses that the cloud servers should use for matching clients to Content Caches.</br>**Availability:** Available in macOS 10.13.4 and later.|
+  
+
+The dictionary used to define ranges used by the Content Cache uses the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`type`|String|Optional. The IP address type (`IPv4` or `IPv6`). Default is `IPv4`.|
+|`first`|String|Required. First IP address in the range.|
+|`last`|String|Required. Last IP address in the range.|
   
 
 # Desktop Payload  
@@ -1150,10 +1230,11 @@ Icon format dictionaries are defined as follows:
 
 |Key|Type|Value|
 |-|-|-|
-|`Type`|String|Required. Must be one of the following:</br></br>* Application  </br></br>* Folder  </br></br>|
+|`Type`|String|Required. Must be one of the following:</br></br>* Application  </br></br>* Folder  </br></br>* WebClip  </br></br>|
 |`DisplayName`|String|Optional. Human-readable string to be shown to the user.|
 |`BundleID`|String|Required if App type. The bundle identifier of the app.|
-|`Pages`|Array|Optional. Array of arrays of dictionaries. Each of the dictionaries complies to the icon dictionary format.|
+|`Pages`|Array|Optional. Array of arrays of dictionaries. Each of the dictionaries complies to the icon dictionary format. Only valid for Folder types.|
+|`URL`|String|Required if WebClip type. URL of the WebClip being referenced. If more than one WebClip exists with the same URL, the behavior is undefined.</br>**Availability:** Available in iOS 11.3 and later. |
   
 
 # Identification Payload  
@@ -1195,7 +1276,7 @@ An Identity Preference payload contains the following keys:
 
 # Kernel Extension Policy  
 
- [Configuration Profile Reference - Kernel Extension Policy](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-DontLinkElementID_1)  
+ [Configuration Profile Reference - Kernel Extension Policy](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW63)  
 
 The Kernel Extension Policy payload is designated by specifying `com.apple.syspolicy.kernel-extension-policy` as the `PayloadType` value. It is supported on macOS 10.13.2 and later.  
 
@@ -1771,13 +1852,19 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowCloudDesktopAndDocuments`|Boolean|If set to `false`, disallows macOS cloud desktop and document services. Defaults to `true`.</br>**Availability:** Available only in macOS 10.12.4 and later.|
 |`allowDictation`|Boolean|Supervised only. If set to `false`, disallows dictation input. Defaults to `true`.</br>**Availability:** Available only in iOS 10.3 and later.|
 |`forceWiFiWhitelisting`|Boolean|Optional. Supervised only. If set to `true`, the device can join Wi-Fi networks only if they were set up through a configuration profile. Defaults to `false`.</br>**Availability:** Available only in iOS 10.3 and later.|
-|`forceUnpromptedManaged- ClassroomScreenObservation`|Boolean|Optional. Supervised only. If set to `true`, and `ScreenObservationPermissionModificationAllowed` is also `true` in the Education payload, a student enrolled in a managed course via the Classroom app will automatically give permission to that course's teacher’s requests to observe the student’s screen without prompting the student.  Defaults to `false`.</br>**Availability:** Available only in iOS 10.3 and later.|
+|`forceUnpromptedManaged- ClassroomScreenObservation`|Boolean|Deprecated in iOS 11. Use `forceClassroomUnpromptedScreenObservation` instead. |
 |`allowAirPrint`|Boolean|Supervised only. If set to `false`, disallow AirPrint. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and macOS 10.13 and later.|
 |`allowAirPrintCredentialsStorage`|Boolean|Supervised only. If set to `false`, disallows keychain storage of username and password for Airprint. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and later.|
 |`forceAirPrintTrustedTLSRequirement`|Boolean|Supervised only. If set to `true`, requires trusted certificates for TLS printing communication. Defaults to `false`.</br>**Availability:** Available only in iOS 11.0 and macOS 10.13 and later.|
 |`allowAirPrintiBeaconDiscovery`|Boolean|Supervised only. If set to `false`, disables iBeacon discovery of AirPrint printers. This prevents spurious AirPrint Bluetooth beacons from phishing for network traffic. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and macOS 10.13 and later.|
+|`allowProximitySetupToNewDevice`|Boolean|Supervised only. If set to `false`, disables the prompt to setup new devices that are nearby. Defaults to `true`. </br>**Availability:** Available only in iOS 11.0 and later.|
 |`allowSystemAppRemoval`|Boolean|Supervised only. If set to `false`, disables the removal of system apps from the device. Defaults to `true`. </br>**Availability:** Available only in iOS 11.0 and later.|
 |`allowVPNCreation`|Boolean|Supervised only. If set to `false`, disallow the creation of VPN configurations. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and later.|
+|`enforcedSoftwareUpdateDelay`|Integer|Supervised only. This restriction allows the admin to set how many days a software update on the device will be delayed. With this restriction in place, the user will not see a software update until the specified number of days after the software update release date.</br>The max is 90 days and the default value is 30.</br>**Availability:** Available only in iOS 11.3 and later and macOS 10.13.4 and later.|
+|`forceClassroomAutomaticallyJoinClasses`|Boolean|Optional. Supervised only. If set to `true`, automatically give permission to the teacher’s requests without prompting the student. Defaults to `false`.</br>**Availability:** Available only in iOS 11.0 and later.|
+|`forceClassroomRequestPermissionToLeaveClasses`|Boolean|Optional. Supervised only. If set to `true`, a student enrolled in an unmanaged course via Classroom will request permission from the teacher when attempting to leave the course. Defaults to `false`.</br>**Availability:** Available only in iOS 11.3 and later.|
+|`forceClassroomUnpromptedAppAndDeviceLock`|Boolean|Optional. Supervised only. If set to `true`, allow the teacher to lock apps or the device without prompting the student. Defaults to `false`.</br>**Availability:** Available only in iOS 11.0 and later.|
+|`forceClassroomUnpromptedScreenObservation`|Boolean|Optional. Supervised only. If set to `true`, and `ScreenObservationPermissionModificationAllowed` is also `true` in the Education payload, a student enrolled in a managed course via the Classroom app will automatically give permission to that course's teacher’s requests to observe the student’s screen without prompting the student.  Defaults to `false`.</br>**Availability:** Available only in iOS 11.0 and later.|
   
 
 # SCEP Payload  
@@ -1824,19 +1911,23 @@ If you add a dictionary with the key `GetCACaps`, the device uses the strings yo
 
  [Configuration Profile Reference - Screensaver](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW60)  
 
-The device level screensaver payload can be used to enable or disable the screen lock password function and one of the ways of disabling the option. Screensaver payloads are designated by specifying `com.apple.screensaver` as the `PayloadType`.  
+Screensaver payloads are designated by specifying `com.apple.screensaver` as the `PayloadType`.  
+
+The device level screensaver payload can be used to enable or disable the screen lock password function and one of the ways of disabling the option.   
 
 The Screensaver payload defines the following keys:  
 
 |Key|Type|Value|
 |-|-|-|
-|`askForPassword`|Boolean|Optional. If set to `true`, the user will be prompted for a password when the screensaver is unlocked or stopped.</br>**Availability:** Available in macOS 10.13 and later.|
-|`askForPasswordDelay`|Integer|Optional. Number of seconds to delay before the password will be required to unlock or stop the screen saver (the "grace period").   A value of 2147483647 (eg 0x7FFFFFFF) can be used to disable this requirement, and on 10.13, the payload is one of the only ways of disabling the feature.  Note that the `askForPassword` must still be set to `true` to use this option.</br>**Availability:** Available in macOS 10.13 and later. |
+|`askForPassword`|Boolean|Optional. If `true`, the user will be prompted for a password when the screensaver is unlocked or stopped. When using this prompt, `askForPasswordDelay` must also be provided.</br>**Availability:** Available in macOS 10.13 and later.|
+|`askForPasswordDelay`|Integer|Optional. Number of seconds to delay before the password will be required to unlock or stop the screen saver (the "grace period").  A value of 2147483647 (eg 0x7FFFFFFF) can be used to disable this requirement, and on 10.13, the payload is one of the only ways of disabling the feature.  Note that `askForPassword` must be set to `true` to use this option.</br>**Availability:** Available in macOS 10.13 and later. |
 |`loginWindowModulePath`|String|Optional. A full path to the screen saver module to be used. </br>**Availability:** Available in macOS 10.11 and later.|
 |`loginWindowIdleTime`|Integer|Optional. Number of seconds of inactivity before screensaver activates. (0=never activate).</br>**Availability:** Available in macOS 10.11 and later. |
   
 
-The user level screensaver settings are specific to a user, instead of the device. The user level screensaver payloads are designated by specifying `com.apple.screensaver.user` as the `PayloadType`.  
+User level screensaver payloads are designated by specifying `com.apple.screensaver.user` as the `PayloadType`.  
+
+The user level screensaver settings are specific to a user, instead of the device.   
 
 The Screensaver User payload defines the following keys:  
 
@@ -1844,6 +1935,24 @@ The Screensaver User payload defines the following keys:
 |-|-|-|
 |`modulePath`|String|Optional. A full path to the screen saver module to be used. </br>**Availability:** Available in macOS 10.11 and later.|
 |`idleTime`|Integer|Optional. Number of seconds of inactivity before screensaver activates. (0=never activate).</br>**Availability:** Available in macOS 10.11 and later. |
+  
+
+# Setup Assistant  
+
+ [Configuration Profile Reference - Setup Assistant](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW67)  
+
+The Setup Assistant Payload is designated by specifying `com.apple.SetupAssistant.managed` as the `PayloadType`.  
+
+On macOS, this payload specifies Setup Assistant options for either the system or particular users.  
+
+In addition to the settings common to all payloads, this payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`SkipCloudSetup`|Boolean|Optional. If `true`, skip the Apple ID setup window.</br>**Availability:** Available in macOS 10.12 and later. |
+|`SkipSiriSetup`|Boolean|Optional. If `true`, skip the Siri setup window.</br>**Availability:** Available in macOS 10.12 and later. |
+|`SkipPrivacySetup`|Boolean|Optional. If `true`, skip the Privacy consent window.</br>**Availability:** Available in macOS 10.13.4 and later. |
+|`SkipiCloudStorageSetup`|Boolean|Optional. If `true`, skip the iCloud Storage window.</br>**Availability:** Available in macOS 10.13.4 and later. |
   
 
 # Shared Device Configuration Payload  
@@ -1958,9 +2067,26 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`UserPairing`|Boolean|Optional. If `false`, users will not get the pairing dialog, although existing pairings will still work. Default is `true`.|
 |`allowSmartCard`|Boolean|Optional. If `false`, the SmartCard is disabled for logins, authorizations, and screensaver unlocking. It is still allowed for other functions, such as signing emails and web access. A restart is required for a change of setting to take effect. Default is `true`.|
-|`checkCertificateTrust`|Boolean|Optional. If `true`, certificates on the card must be valid in these ways: its issuer is system-trusted, the certificate is not expired, its "valid-after" date is in the past, and it passes CRL and OCSP checking. User overrides are not allowed. Usually this key is set to `true` for SmartCard use in corporate environments. Default is `false`.|
+|`checkCertificateTrust`|Integer|Optional. Valid values are 0-3:</br></br>* 0: certificate trust check is turned off  </br></br>* 1: certificate trust check is turned on. Standard validity check is being performed but this does not include additional revocation checks.  </br></br>* 2: certificate trust check is turned on, plus a soft revocation check is performed. Until the certificate is explicitly rejected by CRL/OCSP, it is considered as valid. This implies that unavailable/unreachable CRL/OCSP allows this check to succeed.  </br></br>* 3: certificate trust check is turned on, plus a hard revocation check is performed. Unless CRL/OCSP explicitly says “this certificate is OK”, the certificate is considered as invalid. The is the most secure option.  </br></br></br> Default is `0`.|
 |`oneCardPerUser`|Boolean|Optional. If `true`, a user can pair with only one SmartCard, although existing pairings will be allowed if already set up. Default is `false`.|
 |`enforceSmartCard`|Boolean|Optional. If `true`, a user can only login or authenticate with a SmartCard. Default is `false`.|
+  
+
+# Software Update  
+
+ [Configuration Profile Reference - Software Update](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW68)  
+
+The Software Update payload is designated by specifying `com.apple.SoftwareUpdate` as the `PayloadType`.  
+
+This payload controls software update catalog options on macOS v10.13 and later.  
+
+In addition to the settings common to all payloads, this payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`CatalogURL`|String|Optional. The URL of the software update catalog.|
+|`forceDelayedSoftwareUpdates`|Boolean|Optional. If `true`, software updates will be delayed by the duration defined by `ManagedDeferredInstallDelay`. Default is `false`.|
+|`ManagedDeferredInstallDelay`|Integer|Optional. The duration, in days, that software updates will be delayed, if `forcedDelayedSoftwareUpdates` is set to `true`.  Default is `30`.</br>**Availability:** Available in macOS 10.13.4 and later.|
   
 
 # System Migration Payload  
@@ -2504,7 +2630,7 @@ In addition to the settings common to all payload types, the payload defines the
 |`DisplayedOperatorName`|String|</br>The operator name to display when connected to this network. Used only with Wi-Fi Hotspot 2.0 access points. **Availability:** Available in iOS 7.0 and later and in macOS 10.9 and later.|
 |`ProxyType`|String|Optional. Valid values are `None`, `Manual`, and `Auto`.</br>**Availability:** Available in iOS 5.0 and later and on all versions of macOS.|
 |`CaptiveBypass`|Boolean|Optional. If set to `true`, Captive Network detection will be bypassed when the device connects to the network. Defaults to `false`.</br>**Availability:** Available in iOS 10.0 and later.|
-|`QoSMarkingPolicy`|Dictionary|Optional. When this dictionary is not present for a Wi-Fi network, all apps are whitelisted to use L2 and L3 marking when the Wi-Fi network supports Cisco QoS fast lane. When present in the Wi-Fi payload, the `QoSMarkingPolicy` dictionary should contain the list of apps that are allowed to benefit from L2 and L3 marking. For dictionary keys, see the table below.</br>**Availability:** Available in iOS 10.0 and later. Not supported in macOS.|
+|`QoSMarkingPolicy`|Dictionary|Optional. When this dictionary is not present for a Wi-Fi network, all apps are whitelisted to use L2 and L3 marking when the Wi-Fi network supports Cisco QoS fast lane. When present in the Wi-Fi payload, the `QoSMarkingPolicy` dictionary should contain the list of apps that are allowed to benefit from L2 and L3 marking. For dictionary keys, see the table below.</br>**Availability:** Available in iOS 10.0 and later and in macOS 10.13 and later.|
   
 
 The `QoSMarkingPolicy` dictionary contains these keys:  
@@ -2557,9 +2683,9 @@ In addition to the standard encryption types, it is possible to specify an enter
 |`AcceptEAPTypes`|Array of Integers|The following EAP types are accepted:</br>13 = TLS</br>17 = LEAP</br>18 = EAP-SIM</br>21 = TTLS</br>23 = EAP-AKA</br>25 = PEAP</br>43 = EAP-FAST|
 |`UserPassword`|String|Optional. User password. If not provided, the user may be prompted during login.|
 |`OneTimePassword`|Boolean|Optional. If `true`, the user will be prompted for a password each time they connect to the network. Defaults to `false`.|
-|`PayloadCertificateAnchorUUID`|Array of Strings|Optional. Identifies the certificates to be trusted for this authentication. Each entry must contain the UUID of a certificate payload. Use this key to prevent the device from asking the user if the listed certificates are trusted.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless TLSAllowTrustExceptions is also specified with the value `true`.|
-|`TLSTrustedServerNames`|Array of Strings|Optional. This is the list of server certificate common names that will be accepted. You can use wildcards to specify the name, such as wpa.*.example.com. If a server presents a certificate that isn't in this list, it won't be trusted.</br>Used alone or in combination with TLSTrustedCertificates, the property allows someone to carefully craft which certificates to trust for the given network, and avoid dynamically trusted certificates.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless TLSAllowTrustExceptions is also specified with the value `true`.|
-|`TLSAllowTrustExceptions`|Boolean|Optional. Allows/disallows a dynamic trust decision by the user. The dynamic trust is the certificate dialogue that appears when a certificate isn't trusted. If this is `false`, the authentication fails if the certificate isn't already trusted. See PayloadCertificateAnchorUUID and TLSTrustedNames above.</br>The default value of this property is `true` unless either PayloadCertificateAnchorUUID or TLSTrustedServerNames is supplied, in which case the default value is `false`.|
+|`PayloadCertificateAnchorUUID`|Array of Strings|Optional. Identifies the certificates to be trusted for this authentication. Each entry must contain the UUID of a certificate payload. Use this key to prevent the device from asking the user if the listed certificates are trusted.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless `TLSAllowTrustExceptions` is also specified with the value `true`.|
+|`TLSTrustedServerNames`|Array of Strings|Optional. This is the list of server certificate common names that will be accepted. You can use wildcards to specify the name, such as wpa.*.example.com. If a server presents a certificate that isn't in this list, it won't be trusted.</br>Used alone or in combination with `PayloadCertificateAnchorUUID`, the property allows someone to carefully craft which certificates to trust for the given network, and avoid dynamically trusted certificates.</br>Dynamic trust (the certificate dialogue) is disabled if this property is specified, unless `TLSAllowTrustExceptions` is also specified with the value `true`.|
+|`TLSAllowTrustExceptions`|Boolean|Optional. Allows/disallows a dynamic trust decision by the user. The dynamic trust is the certificate dialogue that appears when a certificate isn't trusted. If this is `false`, the authentication fails if the certificate isn't already trusted. See `PayloadCertificateAnchorUUID` and `TLSTrustedNames` above.</br>The default value of this property is `true` unless either `PayloadCertificateAnchorUUID` or `TLSTrustedServerNames` is supplied, in which case the default value is `false`.</br>**Availability:** Deprecated and ignored in iOS 11.0 and later.|
 |`TLSCertificateIsRequired`|Boolean|Optional. If `true`, allows for two-factor authentication for EAP-TTLS, PEAP, or EAP-FAST. If `false`, allows for zero-factor authentication for EAP-TLS. The default is `true` for EAP-TLS, and `false` for other EAP types.</br>**Availability:** Available in iOS 7.0 and later.|
 |`TLSMinimumVersion`|String|Optional. The minimum TLS version to be used with EAP authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default minimum is 1.0. </br>**Availability:** Available in iOS 11.0 and macOS 10.13 and later.|
 |`TLSMaximumVersion`|String|Optional. The maximum TLS version to be used with EAP authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default maximum is 1.2. </br>**Availability:** Available in iOS 11.0 and macOS 10.13 and later.

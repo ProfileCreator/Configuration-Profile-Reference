@@ -2,9 +2,9 @@
 
  [Configuration Profile Reference - CalDAV Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW16)  
 
-This payload configures a CalDAV account.  
-
 The payload is designated by specifying `com.apple.caldav.account` as the `PayloadType`.  
+
+This payload configures a CalDAV account.  
 
 In addition to the settings common to all payloads, this payload defines the following keys:  
 

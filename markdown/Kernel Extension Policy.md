@@ -1,6 +1,6 @@
 # Kernel Extension Policy  
 
- [Configuration Profile Reference - Kernel Extension Policy](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-DontLinkElementID_1)  
+ [Configuration Profile Reference - Kernel Extension Policy](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW63)  
 
 The Kernel Extension Policy payload is designated by specifying `com.apple.syspolicy.kernel-extension-policy` as the `PayloadType` value. It is supported on macOS 10.13.2 and later.  
 

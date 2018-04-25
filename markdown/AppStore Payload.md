@@ -2,7 +2,9 @@
 
  [Configuration Profile Reference - AppStore Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW197)  
 
-The AppStore payload is designated by specifying `com.apple.app.appstore` as the `PayloadType` value. It establishes macOS AppStore restrictions and is supported on the User channel.  
+The AppStore payload is designated by specifying `com.apple.app.appstore` as the `PayloadType` value.   
+
+It establishes macOS AppStore restrictions and is supported on the User channel.  
 
 The payload contains the following keys:  
 
