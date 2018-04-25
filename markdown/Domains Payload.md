@@ -25,7 +25,7 @@ Opening a document originating from a managed Safari web domain causes iOS to tr
 |Key|Type|Value|
 |-|-|-|
 |`WebDomains`|Array|Optional. An array of URL strings. URLs matching the patterns listed here will be considered managed. Not supported in macOS|
-|`SafariPasswordAutoFillDomains`|Array|Optional. An array of URL strings. Supported in iOS 9.3 and later; not supported in macOS.</br>Users can save passwords in Safari only from URLs matching the patterns listed here.</br>Regardless of the iCloud account that the user is using, if the device is not supervised, there can be no whitelist. If the device is supervised, there may be a whitelist, but if there is still no whitelist, note these two cases:</br></br>* If the device is configured as ephemeral multi-user, no password can be saved.  </br></br>* If the device is not configured as ephemeral multi-user, all passwords can be saved.  </br></br>|
+|`SafariPasswordAutoFillDomains`|Array|Optional. An array of URL strings. Supported in iOS 9.3 and later; not supported in macOS.</br>Users can save passwords in Safari only from URLs matching the patterns listed here.</br>Regardless of the iCloud account that the user is using, if the device is not supervised, there can be no whitelist. If the device is supervised, there may be a whitelist, but if there is still no whitelist, note these two cases:</br></br>* If the device is configured as Shared iPad, no password can be saved.  </br></br>* If the device is not configured as Shared iPad, all passwords can be saved.  </br></br>|
   
 
 The `WebDomains` and `SafariPasswordAutoFillDomains` arrays may contain strings using any of the following matching patterns:  

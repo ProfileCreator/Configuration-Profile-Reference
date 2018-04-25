@@ -9,7 +9,7 @@ At the top level, a profile property list contains the following keys:
 |`PayloadContent`|Array|Optional. Array of payload dictionaries. Not present if IsEncrypted is `true`.|
 |`PayloadDescription`|String|Optional. A description of the profile, shown on the Detail screen for the profile. This should be descriptive enough to help the user decide whether to install the profile.|
 |`PayloadDisplayName`|String|Optional. A human-readable name for the profile. This value is displayed on the Detail screen. It does not have to be unique.|
-|`PayloadExpirationDate`|Date|Optional. A date on which a profile is considered to have expired and can be  updated over the air. This key is only used if the profile is delivered via Over The Air profile delivery.|
+|`PayloadExpirationDate`|Date|Optional. A date on which a profile is considered to have expired and can be  updated over the air. This key is only used if the profile is delivered via over-the-air profile delivery.|
 |`PayloadIdentifier`|String|A reverse-DNS style identifier (com.example.myprofile, for example) that identifies the profile. This string is used to determine whether a new profile should replace an existing one or should be added.|
 |`PayloadOrganization`|String|Optional. A human-readable string containing the name of the organization that provided the profile.|
 |`PayloadUUID`|String|A globally unique identifier for the profile. The actual content is unimportant, but it must be globally unique. In macOS, you can use `uuidgen` to generate reasonable UUIDs.|

@@ -18,10 +18,10 @@ Each entry in the NotificationSettings field contains the following dictionary:
 |Key|Type|Value|
 |-|-|-|
 |`BundleIdentifier`|String|Required. Bundle identifier of app to which to apply these notification settings.|
-|`NotificationsEnabled`|Boolean|Optional. Whether notifications are allowed for this app. Default is true.|
-|`ShowInNotificationCenter`|Boolean|Optional. Whether notifications can be shown in notification center. Default is true.|
-|`ShowInLockScreen`|Boolean|Optional. Whether notifications can be shown in the lock screen. Default is true.|
+|`NotificationsEnabled`|Boolean|Optional. Whether notifications are allowed for this app. Default is `true`.|
+|`ShowInNotificationCenter`|Boolean|Optional. Whether notifications can be shown in notification center. Default is `true`.|
+|`ShowInLockScreen`|Boolean|Optional. Whether notifications can be shown in the lock screen. Default is `true`.|
 |`AlertType`|Integer|Optional. The type of alert for notifications for this app:</br></br>* 0: None  </br></br>* 1: Banner  </br></br>* 2: Modal Alert  </br></br></br>Default is 1.|
-|`BadgesEnabled`|Boolean|Optional. Whether badges are allowed for this app. Default is true.|
-|`SoundsEnabled`|Boolean|Optional. Whether sounds are allowed for this app. Default is true.|
+|`BadgesEnabled`|Boolean|Optional. Whether badges are allowed for this app. Default is `true`.|
+|`SoundsEnabled`|Boolean|Optional. Whether sounds are allowed for this app. Default is `true`.|
   

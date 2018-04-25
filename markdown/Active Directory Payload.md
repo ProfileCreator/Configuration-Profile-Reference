@@ -5,7 +5,7 @@
 In macOS 10.9 and later, a configuration profile can be used to configure macOS to join an Active Directory (AD) domain. Advanced AD options available via Directory Utility or the `dsconfigad` command line tool can also be set using a configuration profile, following this procedure:  
 
 
-1 Start with an macOS Directory payload, created in Profile Manager.  
+1 Start with a macOS Directory payload, created in Profile Manager.  
 
 2 Save and download the profile so you can edit it manually.  
   

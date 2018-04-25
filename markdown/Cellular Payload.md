@@ -42,4 +42,8 @@ Each `APN` dictionary contains the following keys:
 |`Password`|String|Optional. A password used for authentication.|
 |`ProxyServer`|String|Optional. The proxy server's network address.|
 |`ProxyServerPort`|Number|Optional. The proxy server's port.|
+|`DefaultProtocolMask`|Number|**Deprecated.** Default Internet Protocol versions. Set to the same value as `AllowedProtocolMask`. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
+|`AllowedProtocolMask`|Number|Optional. Supported Internet Protocol versions. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
+|`AllowedProtocolMaskInRoaming`|Number|Optional. Supported Internet Protocol versions while roaming. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
+|`AllowedProtocolMaskInDomesticRoaming`|Number|Optional. Supported Internet Protocol versions while domestic roaming. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
   

@@ -10,7 +10,7 @@ At the top level, a profile property list contains the following keys:
 |`PayloadContent`|Array|Optional. Array of payload dictionaries. Not present if IsEncrypted is `true`.|
 |`PayloadDescription`|String|Optional. A description of the profile, shown on the Detail screen for the profile. This should be descriptive enough to help the user decide whether to install the profile.|
 |`PayloadDisplayName`|String|Optional. A human-readable name for the profile. This value is displayed on the Detail screen. It does not have to be unique.|
-|`PayloadExpirationDate`|Date|Optional. A date on which a profile is considered to have expired and can be  updated over the air. This key is only used if the profile is delivered via Over The Air profile delivery.|
+|`PayloadExpirationDate`|Date|Optional. A date on which a profile is considered to have expired and can be  updated over the air. This key is only used if the profile is delivered via over-the-air profile delivery.|
 |`PayloadIdentifier`|String|A reverse-DNS style identifier (com.example.myprofile, for example) that identifies the profile. This string is used to determine whether a new profile should replace an existing one or should be added.|
 |`PayloadOrganization`|String|Optional. A human-readable string containing the name of the organization that provided the profile.|
 |`PayloadUUID`|String|A globally unique identifier for the profile. The actual content is unimportant, but it must be globally unique. In macOS, you can use `uuidgen` to generate reasonable UUIDs.|
@@ -75,7 +75,7 @@ Opening a document originating from a managed Safari web domain causes iOS to tr
 |Key|Type|Value|
 |-|-|-|
 |`WebDomains`|Array|Optional. An array of URL strings. URLs matching the patterns listed here will be considered managed. Not supported in macOS|
-|`SafariPasswordAutoFillDomains`|Array|Optional. An array of URL strings. Supported in iOS 9.3 and later; not supported in macOS.</br>Users can save passwords in Safari only from URLs matching the patterns listed here.</br>Regardless of the iCloud account that the user is using, if the device is not supervised, there can be no whitelist. If the device is supervised, there may be a whitelist, but if there is still no whitelist, note these two cases:</br></br>* If the device is configured as ephemeral multi-user, no password can be saved.  </br></br>* If the device is not configured as ephemeral multi-user, all passwords can be saved.  </br></br>|
+|`SafariPasswordAutoFillDomains`|Array|Optional. An array of URL strings. Supported in iOS 9.3 and later; not supported in macOS.</br>Users can save passwords in Safari only from URLs matching the patterns listed here.</br>Regardless of the iCloud account that the user is using, if the device is not supervised, there can be no whitelist. If the device is supervised, there may be a whitelist, but if there is still no whitelist, note these two cases:</br></br>* If the device is configured as Shared iPad, no password can be saved.  </br></br>* If the device is not configured as Shared iPad, all passwords can be saved.  </br></br>|
   
 
 The `WebDomains` and `SafariPasswordAutoFillDomains` arrays may contain strings using any of the following matching patterns:  
@@ -106,7 +106,7 @@ Managed Safari Web Domain definitions are cumulative. Patterns defined by all Ma
 
  [Configuration Profile Reference - macOS Server Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW152)  
 
-This payload defines an macOS Server account. This payload is designated by the `com.apple.osxserver.account` PayloadType value.  
+This payload defines a macOS Server account. This payload is designated by the `com.apple.osxserver.account` PayloadType value.  
 
 |Key|Type|Value|
 |-|-|-|
@@ -137,7 +137,7 @@ The following `ConfiguredAccounts` dictionary is currently supported:
 In macOS 10.9 and later, a configuration profile can be used to configure macOS to join an Active Directory (AD) domain. Advanced AD options available via Directory Utility or the `dsconfigad` command line tool can also be set using a configuration profile, following this procedure:  
 
 
-1 Start with an macOS Directory payload, created in Profile Manager.  
+1 Start with a macOS Directory payload, created in Profile Manager.  
 
 2 Save and download the profile so you can edit it manually.  
   
@@ -355,6 +355,8 @@ Each dictionary in the `AirPrint` array must contain the following keys and valu
 |-|-|-|
 |`IPAddress`|String|The IP Address of the AirPrint destination.|
 |`ResourcePath`|String|The Resource Path associated with the printer. This corresponds to the `rp` parameter of the `_ipps.tcp` Bonjour record. For example:</br></br>* `printers/Canon_MG5300_series`  </br></br>* `printers/Xerox_Phaser_7600`  </br></br>* `ipp/print`  </br></br>* `Epson_IPP_Printer`  </br></br>|
+|`Port`|Number|Listening port of the AirPrint destination. If this key is not specified AirPrint will use the default port.</br>**Availability:** Available only in iOS 11.0 and later.|
+|`ForceTLS`|Boolean|If `true` AirPrint connections are secured by Transport Layer Security (TLS). Default is `false`.</br>**Availability:** Available only in iOS 11.0 and later.|
   
 
 # APN Payload  
@@ -439,6 +441,11 @@ The App Lock payload is designated by specifying `com.apple.app.lock` as the `Pa
 
 By installing an app lock payload, the device is locked to a single application until the payload is removed. The home button is disabled, and the device returns to the specified application automatically upon wake or reboot.  
 
+
+> **Note:** 
+You can’t update any app while the device is locked in Single App Mode. You need to exit Single App Mode long enough to update apps as needed. During that time you should restrict the visible apps as much as possible, except for Settings and Phone and any other apps that cannot be blacklisted.  
+  
+
 This payload is supported only in iOS 6.0 and later.  
 
 The payload contains the following key:  
@@ -461,15 +468,15 @@ The `Options` dictionary, if present, can contain the following keys (in iOS 7.0
 
 |Key|Type|Value|
 |-|-|-|
-|`DisableTouch`|Boolean|Optional. If `true`, the touch screen is disabled. Default is `false`.|
+|`DisableTouch`|Boolean|Optional. If `true`, the touch screen is disabled. Default is `false`. Available in tvOS 10.2 and later.|
 |`DisableDeviceRotation`|Boolean|Optional. If `true`, device rotation sensing is disabled. Default is `false`.|
 |`DisableVolumeButtons`|Boolean|Optional. If `true`, the volume buttons are disabled. Default to `false`.|
 |`DisableRingerSwitch`|Boolean|Optional. If `true`, the ringer switch is disabled. Default is `false`.</br>When disabled, the ringer behavior depends on what position the switch was in when it was first disabled.|
 |`DisableSleepWakeButton`|Boolean|Optional. If `true`, the sleep/wake button is disabled. Default is `false`.|
-|`DisableAutoLock`|Boolean|Optional. If `true`, the device will not automatically go to sleep after an idle period.|
-|`EnableVoiceOver`|Boolean|Optional. If `true`, VoiceOver is turned on. Default is `false`.|
-|`EnableZoom`|Boolean|Optional. If `true`, Zoom is turned on. Default is `false`.|
-|`EnableInvertColors`|Boolean|Optional. If `true`, Invert Colors is turned on. Default is `false`.|
+|`DisableAutoLock`|Boolean|Optional. If `true`, the device will not automatically go to sleep after an idle period. Available in tvOS 10.2 and later.|
+|`EnableVoiceOver`|Boolean|Optional. If `true`, VoiceOver is turned on. Default is `false`. Available in tvOS 10.2 and later.|
+|`EnableZoom`|Boolean|Optional. If `true`, Zoom is turned on. Default is `false`. Available in tvOS 10.2 and later.|
+|`EnableInvertColors`|Boolean|Optional. If `true`, Invert Colors is turned on. Default is `false`. Available in tvOS 10.2 and later.|
 |`EnableAssistiveTouch`|Boolean|Optional. If `true`, AssistiveTouch is turned on. Default is `false`.|
 |`EnableSpeakSelection`|Boolean|Optional. If `true`, Speak Selection is turned on. Default is `false`.|
 |`EnableMonoAudio`|Boolean|Optional. If `true`, Mono Audio is turned on. Default is `false`.|
@@ -485,13 +492,30 @@ The `UserEnabledOptions` dictionary, if present, can contain the following keys 
 |`AssistiveTouch`|Boolean|Optional. If `true`, allow AssistiveTouch adjustment. Default is `false`.|
   
 
+# AppStore Payload  
+
+ [Configuration Profile Reference - AppStore Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW197)  
+
+The AppStore payload is designated by specifying `com.apple.app.appstore` as the `PayloadType` value. It establishes macOS AppStore restrictions and is supported on the User channel.  
+
+The payload contains the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`restrict-store-require-admin-to-install`|Boolean|Optional. Restrict app installations to admin users. Available on macOS 10.9 and later.|
+|`restrict-store-softwareupdate-only`|Boolean|Optional. Restrict app installations to software updates only. Available on macOS 10.10 and later.|
+|`restrict-store-disable-app-adoption`|Boolean|Optional. Disable App Adoption by users. Available on macOS 10.10 and later.|
+|`DisableSoftwareUpdateNotifications`|Boolean|Optional. Disable software update notifications. Available on macOS 10.10 and later.|
+|`restrict-store-mdm-install -softwareupdate-only`|Boolean|Optional. Restrict app installations to MDM-installed apps and software updates. Available on macOS 10.11 and later.|
+  
+
 # CalDAV Payload  
 
  [Configuration Profile Reference - CalDAV Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW16)  
 
 This payload configures a CalDAV account.  
 
-The payload is designated by specifying `com.apple.caldav.account` as the `PayloadType`  
+The payload is designated by specifying `com.apple.caldav.account` as the `PayloadType`.  
 
 In addition to the settings common to all payloads, this payload defines the following keys:  
 
@@ -500,7 +524,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`CalDAVAccountDescription`|String|Optional. The description of the account.|
 |`CalDAVHostName`|String|The server address.</br>In macOS, this key is required.|
 |`CalDAVUsername`|String|The user's login name.</br>In macOS, this key is required.|
-|`CalDAVPassword`|String|Optional. The user's password|
+|`CalDAVPassword`|String|Optional. The user's password.|
 |`CalDAVUseSSL`|Boolean|Whether or not to use SSL.</br>In macOS, this key is optional.|
 |`CalDAVPort`|Number|Optional. The port on which to connect to the server.|
 |`CalDAVPrincipalURL`|String|Optional. The base URL to the user’s calendar. In macOS this URL is required if the user doesn’t provide a password, because auto-discovery of the service will fail and the account won’t be created.|
@@ -522,7 +546,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`SubCalAccountDescription`|String|Optional. Description of the account.|
 |`SubCalAccountHostName`|String|The server address.|
-|`SubCalAccountUsername`|String|The user's login name|
+|`SubCalAccountUsername`|String|The user's login name.|
 |`SubCalAccountPassword`|String|The user's password.|
 |`SubCalAccountUseSSL`|Boolean|Whether or not to use SSL.|
   
@@ -542,7 +566,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`CardDAVAccountDescription`|String|Optional. The description of the account.|
 |`CardDAVHostName`|String|The server address.|
 |`CardDAVUsername`|String|The user's login name.|
-|`CardDAVPassword`|String|Optional. The user's password|
+|`CardDAVPassword`|String|Optional. The user's password.|
 |`CardDAVUseSSL`|Boolean|Optional. Whether or not to use SSL.|
 |`CardDAVPort`|Number|Optional. The port on which to connect to the server.|
 |`CardDAVPrincipalURL`|String|Optional. Not supported on macOS. The base URL to the user’s address book.|
@@ -592,6 +616,10 @@ Each `APN` dictionary contains the following keys:
 |`Password`|String|Optional. A password used for authentication.|
 |`ProxyServer`|String|Optional. The proxy server's network address.|
 |`ProxyServerPort`|Number|Optional. The proxy server's port.|
+|`DefaultProtocolMask`|Number|**Deprecated.** Default Internet Protocol versions. Set to the same value as `AllowedProtocolMask`. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
+|`AllowedProtocolMask`|Number|Optional. Supported Internet Protocol versions. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
+|`AllowedProtocolMaskInRoaming`|Number|Optional. Supported Internet Protocol versions while roaming. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
+|`AllowedProtocolMaskInDomesticRoaming`|Number|Optional. Supported Internet Protocol versions while domestic roaming. Possible values are: 1 = IPv4, 2 = IPv6, and 3 = Both.</br>**Availability:** Available in iOS 10.3 and later.|
   
 
 # Certificate Payload  
@@ -613,7 +641,7 @@ In addition to the settings common to all payloads, all Certificate payloads def
 |Key|Type|Value|
 |-|-|-|
 |`PayloadCertificateFileName`|String|Optional. The file name of the enclosed certificate.|
-|`PayloadContent`|Data|Mandatory. The binary representation of the payload.|
+|`PayloadContent`|Data|Mandatory. The base64 representation of the payload with a line length of 52.|
 |`Password`|String|Optional. For PKCS#12 certificates, contains the password to the identity.|
   
 
@@ -634,6 +662,91 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`Name`|String|Required. An email address (RFC822) or other name for which a preferred certificate is requested.|
 |`PayloadCertificateUUID`|String|The UUID of another payload within the same profile that installed the certificate; for example, a 'com.apple.security.root' payload.|
+  
+
+# Conference Room Display Payload  
+
+ [Configuration Profile Reference - Conference Room Display Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW325)  
+
+The Conference Room Display payload is designated by specifying `com.apple.conferenceroomdisplay` as the `PayloadType`.  
+
+It configures an Apple TV to enter Conference Room Display mode and restricts exit from that mode. It is supported on supervised devices running tvOS 10.2 or later.  
+
+In addition to the settings common to all payloads, this payload defines the following key:  
+
+|Key|Type|Value|
+|-|-|-|
+|`Message`|String|Optional. A custom message displayed on the screen in Conference Room Display mode.|
+  
+
+# Desktop Payload  
+
+ [Configuration Profile Reference - Desktop Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW326)  
+
+The Desktop payload is designated by specifying `com.apple.desktop` as the `PayloadType`.  
+
+This payload sets up macOS Desktop settings and restrictions. It is supported on the user channel and on macOS 10.10 and later.  
+
+In addition to the settings common to all payloads, this payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`locked`|Boolean|Optional. If `true`, the desktop picture is locked. Default is `false`.|
+|`override-picture-path`|String|Optional. If supplied, it sets the path to the desktop picture.|
+  
+
+# Dock Payload  
+
+ [Configuration Profile Reference - Dock Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW327)  
+
+The Dock payload is designated by specifying `com.apple.dock` as the `PayloadType`.  
+
+The Dock payload is supported on the user channel and, except for `AllowDockFixupOverride`, on all version of macOS. The key `AllowDockFixupOverride` is supported on macOS 10.12 and later.  
+
+In addition to the settings common to all payloads, this payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`orientation`|String|Optional. Orientation of the dock. Values may be `bottom`, `left`, or `right`.|
+|`position-immutable`|Boolean|Optional. If `true`, the position is locked.|
+|`autohide`|Boolean|Optional. If `true`, automatically hide and show the dock.	|
+|`autohide-immutable`|Boolean|Optional. If `true`, the Automatically Hide checkbox is disabled.|
+|`minimize-to-application`|Boolean|Optional. If `true`, enable the minimize-to-application feature.|
+|`minimize-to-application -immutable`|Boolean|Optional. If `true`, the minimize-to-application checkbox is disabled.|
+|`magnification`|Boolean|Optional. If `true`, magnification is active.|
+|`magnify-immutable`|Boolean|Optional. If `true`, the magnification checkbox is disabled.|
+|`largesize`|Number|Optional. The size of the largest magnification. Values must be in range 16 to 128.|
+|`magsize-immutable`|Boolean|Optional. If `true`, the magnify slider is disabled.|
+|`show-process-indicators`|Boolean|Optional. If `true`, show the process indicator.|
+|`launchanim`|Boolean|Optional. If `true`, animate opening applications.|
+|`launchanim-immutable`|Boolean|Optional. If `true`, the Animate Opening Applications checkbox is disabled.|
+|`mineffect`|String|Optional. Set minimize effect. Values may be `genie` or `scale`.|
+|`mineffect-immutable`|Boolean|Optional. If `true`, the Minimize Using popup is disabled.|
+|`tilesize`|Number|Optional. The tile size. Values must be in range 16 to 128.|
+|`size-immutable`|Boolean|Optional. If `true`, the size slider will be disabled.|
+|`MCXDockSpecialFolders`|Array of Strings|Optional. One or more special folders that may be created at user login time and placed in the dock. Values may be `AddDockMCXMyApplicationsFolder`,  `AddDockMCXDocumentsFolder`,  `AddDockMCXSharedFolder`,  or  `AddDockMCXOriginalNetworkHomeFolder`. The "My Applications" item is only used for Simple Finder environments. The "Original Network Home" item is only used for mobile account users.|
+|`AllowDockFixupOverride`|Boolean|Optional. If `true`, use the file in `/Library/Preferences/ com.apple.dockfixup.plist` when a new user or migrated user logs in. The format of this file currently has no documentation. This option has no effect for existing users.|
+|`static-only`|Boolean|Optional. If `true`, the device will use the static-apps and static-others dictionaries for the dock and ignore any items in the persistent-apps and persistent-others dictionaries. If `false`, the contents will be merged with the `static` items listed first.|
+|`static-others`|Array of Dictionaries|Optional. Dock items in the Documents side that cannot be removed from the dock.|
+|`static-apps`|Array of Dictionaries|Optional. Dock items in the Applications side that cannot be removed from the dock.|
+|`contents-immutable`|Boolean|Optional. If `true`,  the user cannot remove any item from or add any item to the dock.|
+  
+
+The `static-others` and `static-apps` dictionaries define the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`tile-data`|Dictionary|Required. Information about a dock item.|
+|`tile-type`|String|Required. The type of the tile. Values may be `file-tile`, `directory-tile`, or `url-tile`. If you are unsure whether the file item is a file or a directory, set this key to `file-tile`.|
+  
+
+The `tile-data` dictionary defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`label`|String|Required. Label of a dock item.|
+|`url`|String|Optional. For URL tiles, the URL string.|
+|`file-type`|Number|Required. The type of the tile expressed as a number. 3 = `directory`, 0 = `URL`, 1 = `file`.|
   
 
 # Education Configuration Payload  
@@ -658,6 +771,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`Groups`|Array|Required. Shared: An array of dictionaries that define groups that the user can select in the login window.</br>Leader: An array of dictionaries that define the groups that the user can control.</br>Member: An array of dictionaries that define the groups of which the user is a member.|
 |`Users`|Array|Required. Shared: An array of dictionaries that define the users that are shown in the iOS login window.</br>Leader: An array of dictionaries that define users that are members of the leader’s groups.</br>Member: An array of a dictionaries that must contain the definition of the user specified in the `UserIdentifier` key.</br>With one-to-one member devices, this key should include only the device user and the leader but not other class members.|
 |`DeviceGroups`|Array|Optional. Leader: An array of dictionaries that define the device groups to which the leader can assign devices. This key is not included in member payloads.|
+|`ScreenObservation- PermissionModification- Allowed`|Boolean|Optional. If set to `true`, students enrolled in managed classes can modify their teacher’s permissions for screen observation on this device. Defaults to `false`.|
   
 
 The `Departments` key must contain an array of dictionaries with the following key-value pairs:  
@@ -701,7 +815,7 @@ The `DeviceGroups` key must contain an array of dictionaries with the following 
 |Key|Type|Content|
 |-|-|-|
 |`Identifier`|String|Required: uniquely identifies the device group in the organization.|
-|`Name`|String|Required: will be displayed as the name of the device group.|
+|`Name`|String|Required: will be displayed as the name of the device group, which must be unique in the organization.|
 |`SerialNumbers`|Array|Required: strings containing the serial numbers of the devices in the group.|
   
 
@@ -836,49 +950,56 @@ In macOS 10.9, you can use FileVault 2 to perform full XTS-AES 128 encryption on
 |Key|Type|Value|
 |-|-|-|
 |`Enable`|String|Set to 'On' to enable FileVault.  Set to 'Off' to disable FileVault. This value is required.|
-|`Defer`|Boolean|Set to true to defer enabling FileVault until the designated user logs out. For details, see *fdesetup(8)*. The person enabling FileVault must be either a local user or a mobile account user.|
-|`UserEntersMissingInfo`|Boolean|Set to true for manual profile installs to prompt for missing user name or password fields.|
-|`UseRecoveryKey`|Boolean|Set to true to create a personal recovery key. Defaults to true.|
-|`ShowRecoveryKey`|Boolean|Set to false to not display the personal recovery key to the user after FileVault is enabled. Defaults to true.|
+|`Defer`|Boolean|Set to `true` to defer enabling FileVault until the designated user logs out. For details, see *fdesetup(8)*. The person enabling FileVault must be either a local user or a mobile account user.|
+|`UserEntersMissingInfo`|Boolean|Set to `true` for manual profile installs to prompt for missing user name or password fields.|
+|`UseRecoveryKey`|Boolean|Set to `true` to create a personal recovery key. Defaults to `true`.|
+|`ShowRecoveryKey`|Boolean|Set to `false` to not display the personal recovery key to the user after FileVault is enabled. Defaults to `true`.|
 |`OutputPath`|String|Path to the location where the recovery key and computer information plist will be stored.|
 |`Certificate`|Data|DER-encoded certificate data if an institutional recovery key will be added.|
 |`PayloadCertificateUUID`|String|UUID of the payload containing the asymmetric recovery key certificate payload.|
 |`Username`|String|User name of the Open Directory user that will be added to FileVault.|
 |`Password`|String|User password of the Open Directory user that will be added to FileVault. Use the `UserEntersMissingInfo` key if you want to prompt for this information.|
-|`UseKeychain`|Boolean|If set to true and no certificate information is provided in this payload, the keychain already created at /Library/Keychains/FileVaultMaster.keychain will be used when the institutional recovery key is added.|
+|`UseKeychain`|Boolean|If set to `true` and no certificate information is provided in this payload, the keychain already created at /Library/Keychains/FileVaultMaster.keychain will be used when the institutional recovery key is added.|
 |`DeferForceAtUserLogin- MaxBypassAttempts`|Integer|When using the `Defer` option you can optionally set this key to the maximum number of times the user can bypass enabling FileVault before it will require that it be enabled before the user can log in. If set to 0, it will always prompt to enable FileVault until it is enabled, though it will allow you to bypass enabling it. Setting this key to –1 will disable this feature.</br>**Availability:** Available in macOS 10.10 and later.|
-|`DeferDontAskAtUserLogout`|Boolean|When using the `Defer` option, set this key to true to not request enabling FileVault at user logout time.</br>**Availability:** Available in macOS 10.10 and later.|
+|`DeferDontAskAtUserLogout`|Boolean|When using the `Defer` option, set this key to `true` to not request enabling FileVault at user logout time.</br>**Availability:** Available in macOS 10.10 and later.|
   
 
-A personal recovery user will normally be created unless the `UseRecoveryKey` key value is false. An institutional recovery key will be created only if either there is certificate data available in the `Certificate` key value, a specific certificate payload is referenced, or the `UseKeychain` key value is set to true and a valid `FileVaultMaster.keychain` file was created. In all cases, the certificate information must be set up properly for FileVault or it will be ignored and no institutional recovery key will be set up.  
+A personal recovery user will normally be created unless the `UseRecoveryKey` key value is `false`. An institutional recovery key will be created only if either there is certificate data available in the `Certificate` key value, a specific certificate payload is referenced, or the `UseKeychain` key value is set to `true` and a valid `FileVaultMaster.keychain` file was created. In all cases, the certificate information must be set up properly for FileVault or it will be ignored and no institutional recovery key will be set up.  
 
-### FileVault Recovery Key Redirection Payload  
+# FDE Recovery Key Escrow Payload  
 
- [Configuration Profile Reference - FileVault Recovery Key Redirection Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW842)  
+ [Configuration Profile Reference - FDE Recovery Key Escrow Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW42)  
 
-FileVault full-volume encryption (FDE) recovery keys are, by default, sent to Apple if the user requests it. With this key, you can redirect those recovery keys to a corporate server. FileVault Recovery Key Redirection payloads are designated by specifying `com.apple.security.FDERecoveryRedirect` as the `PayloadType` value. Only one payload of this type is allowed per system.  
+FileVault Full Disk Encryption (FDE) recovery keys are, by default, sent to Apple if the user requests it. Starting with macOS 10.13, recovery key escrow payloads are designated by specifying `com.apple.security.FDERecoveryKeyEscrow` as the `PayloadType` value. Only one payload of this type is allowed per system.  
 
-A site providing support for archiving the recovery key must implement its own HTTPS server. The client issues a POST request to the server with XML data in the request body containing the recovery key and serial number of the client computer. The server must respond with XML data echoing the device's serial number and provide a RecordNumber, which can be any data that locates the recovery key.  
+If FileVault is enabled after this payload is installed on the system, the FileVault PRK will be encrypted with the specified certificate, wrapped with a CMS envelope and stored at `/var/db/FileVaultPRK.dat`. The encrypted data will be made available to the MDM server as part of the `SecurityInfo` command. Alternatively, if a site uses its own administration software, it can extract the PRK from the foregoing location at any time. Because the PRK is encrypted using the certificate provided in the profile, only the author of the profile can extract the data.  
 
-The SSL certificate chain of the server is evaluated by the client, which must trust it. If needed, the configuration profile can include an additional certificate to set up a chain of trust.  
+Note these cautions:  
+
+
+* The payload must exist in a system-scoped profile.  
+
+* Installing more than one payload of this type per machine will cause an error.  
+
+* The previous payload (`com.apple.security.FDERecoveryRedirect`) is no longer supported. It can still be installed, but it will be ignored. This lets servers send out the same profile to old and new clients.  
+
+* If only an old-style redirection payload is installed at the time FileVault is turned on (by means of the Security Preferences pane), an error will be displayed and FileVault will not be enabled.  
+
+* No warning or error will be provided if FileVault is already enabled and an old-style payload is installed. In this case, it’s assumed that the recovery key has already been escrowed with the server.  
+  
+
+This payload contains these keys:  
 
 |Key|Type|Value|
 |-|-|-|
-|`RedirectURL`|String|The URL to which FDE recovery keys should be sent instead of Apple. Must begin with `https://`.|
-|`EncryptCertPayloadUUID`|String|The UUID of a payload within the same profile that contains a certificate whose public key is used to encrypt the recovery key when it is sent to the redirected URL. The referenced payload must be of type `com.apple.security.pkcs1`.|
+|`Location`|String|Required. A short description of the location where the recovery key will be escrowed. This text will be inserted into the message the user sees when enabling FileVault.|
+|`EncryptCertPayloadUUID`|String|Required. The UUID of a payload within the same profile that contains the certificate that will be used to encrypt the recovery key. The referenced payload must be of type `com.apple.security.pkcs1`.|
+|`DeviceKey`|String|Optional. An optional string that will be included in help text if the user appears to have forgotten the password. Can be used by a site admin to look up the escrowed key for the particular machine. Replaces the `RecordNumber` key used in previous escrow mechanism. If missing, the device serial number will be used instead.|
   
 
-Once installed, this payload causes any FileVault recovery keys to be redirected to the specified URL instead of being sent to Apple. This will require sites to implement their own HTTPS server that will receive the recovery keys via a POST request.  
+# FileVault Client Request  
 
-This payload is valid only in system-scoped profiles (where `PayloadScope` is `System`). Installing more than one payload of this type per machine causes an error. The SSL certificate chain of the server is evaluated by the client, which must trust it. If
-needed, the configuration profile may contain another payload with the server’s root certificate to be marked as trusted when the profile is installed.  
-
-If the client cannot communicate with the server it will continually retry the connection. The retry interval starts at 5 seconds and doubles until retries are hourly. The client then retries once an hour until it successfully contacts the server.  
-  
-
-### FileVault Client Request  
-
- [Configuration Profile Reference - FileVault Client Request](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW842)  
+ [Configuration Profile Reference - FileVault Client Request](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW843)  
 
 The client issues a HTTPS POST request to the server with XML data containing the following:  
 
@@ -898,11 +1019,10 @@ These tags are enclosed within a parent `FDECaptureRequest` tag. An example of a
 <RecoveryKeyCMS64>MIAGCSqGSIb3DQEHA ... AAAAAAAAA==</RecoveryKeyCMS64>
 </FDECaptureRequest>
 ```  
-  
 
-### FileVault Server Response  
+# FileVault Server Response  
 
- [Configuration Profile Reference - FileVault Server Response](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW842)  
+ [Configuration Profile Reference - FileVault Server Response](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW844)  
 
 Upon receiving the client’s request, the server must respond to the client with XML data containing:  
 
@@ -910,7 +1030,6 @@ Upon receiving the client’s request, the server must respond to the client wit
 |-|-|-|
 |`SerialNumber`|String|The serial number of the client computer. This value must be the same as the one sent in the request.|
 |`RecordNumber`|Short string|This value must be nonempty but otherwise is up to the site to define it. This value will be displayed to the user along with the serial number on the EFI login screen when the user is asked to enter the recovery key. As an example, this could be a value to assist the site administrator in locating or verifying the user's recovery key in a database.|
-  
   
 
 # Firewall Payload  
@@ -1096,6 +1215,113 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`LDAPSearchSettingScope`|String|Defines what recursion to use in the search.</br>Can be one of the following 3 values:</br>LDAPSearchSettingScopeBase: Just the immediate node pointed to by SearchBase</br>LDAPSearchSettingScopeOneLevel: The node plus its immediate children.</br>LDAPSearchSettingScopeSubtree: The node plus all children, regardless of depth.|
   
 
+# Loginwindow Payload  
+
+ [Configuration Profile Reference - Loginwindow Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW101)  
+
+The Loginwindow payload is designated by specifying `com.apple.loginwindow` as the `PayloadType` value.  
+
+This payload creates managed preferences on all versions of macOS for system and device profiles. Multiple Loginwindow payloads may be installed together.  
+
+In addition to the settings common to all payloads, this payload defines these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`SHOWFULLNAME`|Boolean|Optional. Set to `true` to show the name and password dialog. Set to `false` to display a list of users.|
+|`HideLocalUsers`|Boolean|Optional. When showing a user list, set to `true` to  show only network and system users.|
+|`IncludeNetworkUser`|Boolean|Optional. When showing a user list, set to `true` to show network users.|
+|`HideAdminUsers`|Boolean|Optional. When showing a user list, set to `false` to hide the administrator users.|
+|`SHOWOTHERUSERS_MANAGED`|Boolean|Optional. When showing a list of users, set to `true` to display Other... users.|
+|`AdminHostInfo`|String|Optional. If this key is included in the payload, its value will be displayed as additional computer information on the login window. Before macOS 10.10, this string could contain only particular information (`HostName`, `SystemVersion`, or `IPAddress`). After macOS 10.10, setting this key to any value will allow the user to click the “time” area of the menu bar to toggle through various computer information values.|
+|`AllowList`|Array of Strings|Optional. User or group GUIDs of users that are allowed to log in. An asterisk '*' string specifies all users or groups.|
+|`DenyList`|Array of Strings|Optional. User or group GUIDs of users that cannot log in. This list takes priority over the list in the `AllowList` key.|
+|`HideMobileAccounts`|Boolean|Optional. If set to `true`, mobile account users will not be visible in a user list. In some cases mobile users will show up as network users.|
+|`ShutDownDisabled`|Boolean|Optional. If set to `true`, the Shut Down button item will be hidden.|
+|`RestartDisabled`|Boolean|Optional. If set to `true`, the Restart item will be hidden.|
+|`SleepDisabled`|Boolean|Optional. If set to `true`, the Sleep button item will be hidden.|
+|`DisableConsoleAccess`|Boolean|Optional. If set to `true`, the Other user will disregard use of the '>console' special user name.|
+|`LoginwindowText`|String|Optional. Text to display in the login window.|
+|`ShutDownDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Shut Down menu item will be disabled when the user is logged in.|
+|`RestartDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Restart menu item will be disabled when the user is logged in.|
+|`PowerOffDisabledWhileLoggedIn`|Boolean|Optional. If set to `true`, the Power Off menu item will be disabled when the user is logged in.|
+|`DisableLoginItemsSuppression`|Boolean|Optional. If set to `true`, the user is prevented from disabling login item launching using the Shift key.|
+  
+
+# Media Management  
+
+ [Configuration Profile Reference - Media Management](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW104)  
+
+The profile configuration keys for media management are of two kinds: those that restrict disc burning and those that restrict media mounting and ejection. All keys are available on all versions of macOS and are supported on the user channel.  
+
+### Disc Burning Payloads  
+
+ [Configuration Profile Reference - Disc Burning Payloads](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW104)  
+
+Disc burning restrictions require both Disc Burning and Finder payloads.  
+
+The Disc Burning payload is designated by specifying `com.apple.DiscRecording` as the `PayloadType` value.  
+
+In addition to the settings common to all payloads, this payload defines this key:  
+
+|Key|Type|Value|
+|-|-|-|
+|`BurnSupport`|String|Required. Set to `off` to disable disc burning. Set to `on` for normal default operation. Set to `authenticate` to require authentication. Setting this key to `on` will not enable disc burn support if it has already been disabled by other mechanisms or preferences.|
+  
+
+The Finder payload is designated by specifying `com.apple.finder` as the `PayloadType` value.  
+
+In addition to the settings common to all payloads, this payload defines this key:  
+
+|Key|Type|Value|
+|-|-|-|
+|`ProhibitBurn`|Boolean|Required. Set to `false` to enable the Finder’s burn support. Set to `true` to disable the Finder’s burn support.|
+  
+  
+
+### Allowed Media Payload  
+
+ [Configuration Profile Reference - Allowed Media Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW104)  
+
+The Allowed Media payload is designated by specifying `com.apple.systemuiserver` as the `PayloadType` value.  
+
+This payload defines these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`logout-eject`|Dictionary|Optional. Media type dictionary to define volumes to eject when the user logs out.|
+|`mount-controls`|Dictionary|Optional. Media type dictionary to control volume mounting.|
+|`unmount-controls`|Dictionary|Optional. Media type dictionary to control volume unmounting.|
+  
+
+The Media type dictionaries can contain the following keys. Not all dictionaries use all keys. Values for media action strings are given in the next table.  
+
+|Key (media type)|Type|Value|
+|-|-|-|
+|`all-media`|String|Optional. Unused; set to empty string.|
+|`cd`|String or Array of Strings|Optional. Media action string(s).|
+|`dvd`|String or Array of Strings|Optional. Media action string(s).|
+|`bd`|String or Array of Strings|Optional. Media action string(s).|
+|`blankcd`|String or Array of Strings|Optional. Media action string(s).|
+|`blankdvd`|String or Array of Strings|Optional. Media action string(s).|
+|`blankbd`|String or Array of Strings|Optional. Media action string(s).|
+|`dvdram`|String or Array of Strings|Optional. Media action string(s).|
+|`disk-image`|String or Array of Strings|Optional. Media action string(s).|
+|`harddisk-internal`|String or Array of Strings|Optional. Media action string(s).|
+|`networkdisk`|String or Array of Strings|Optional. Media action string(s).|
+|`harddisk-external`|String or Array of Strings|Optional. Media action string(s). Internally installed SD-Cards and USB flash drives are included in the `harddisk-external` category. This key is the default for media types that don’t fall into other categories.|
+  
+
+Media action strings are described below. You can combine some strings in arrays to create custom actions.  
+
+|Key|Type|Value|
+|-|-|-|
+|`authenticate`|Boolean|Optional. The user will be authenticated before the media is mounted.|
+|`read-only`|Boolean|Optional. The media will be mounted as read-only; this action cannot be combined with unmount controls.|
+|`deny`|Boolean|Optional. The media will not be mounted.|
+|`eject`|Boolean|Optional. The media will not be mounted and it will be ejected if possible. Note that some volumes are not defined as ejectable, so using the deny key may be the best solution. This action cannot be combined with unmount controls.|
+  
+  
+
 # Network Usage Rules Payload  
 
  [Configuration Profile Reference - Network Usage Rules Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW9a)  
@@ -1116,8 +1342,8 @@ Each entry in the `ApplicationRules` array must be a dictionary containing these
 |Key|Type|Value|
 |-|-|-|
 |`AppIdentifierMatches`|Array|Optional. A list of managed app identifiers, as strings, that must follow the associated rules. If this key is missing, the rules will apply to all managed apps on the device.</br>Each string in the `AppIdentifierMatches` array may either be an exact app identifier match, e.g. `com.mycompany.myapp`, or it may specify a prefix match for the Bundle ID by using the * wildcard character. The wildcard character, if used, must appear after a period character (.), and may only appear once, at the end of the string, e.g. `com.mycompany.*`.|
-|`AllowRoamingCellularData`|Boolean|Optional. Default `true`. If set to false, matching managed apps will not be allowed to use cellular data when roaming.|
-|`AllowCellularData`|Boolean|Optional. Default `true`. If set to false, matching managed apps will not be allowed to use cellular data at any time.|
+|`AllowRoamingCellularData`|Boolean|Optional. Default `true`. If set to `false`, matching managed apps will not be allowed to use cellular data when roaming.|
+|`AllowCellularData`|Boolean|Optional. Default `true`. If set to `false`, matching managed apps will not be allowed to use cellular data at any time.|
   
 
 # Notifications Payload  
@@ -1140,12 +1366,207 @@ Each entry in the NotificationSettings field contains the following dictionary:
 |Key|Type|Value|
 |-|-|-|
 |`BundleIdentifier`|String|Required. Bundle identifier of app to which to apply these notification settings.|
-|`NotificationsEnabled`|Boolean|Optional. Whether notifications are allowed for this app. Default is true.|
-|`ShowInNotificationCenter`|Boolean|Optional. Whether notifications can be shown in notification center. Default is true.|
-|`ShowInLockScreen`|Boolean|Optional. Whether notifications can be shown in the lock screen. Default is true.|
+|`NotificationsEnabled`|Boolean|Optional. Whether notifications are allowed for this app. Default is `true`.|
+|`ShowInNotificationCenter`|Boolean|Optional. Whether notifications can be shown in notification center. Default is `true`.|
+|`ShowInLockScreen`|Boolean|Optional. Whether notifications can be shown in the lock screen. Default is `true`.|
 |`AlertType`|Integer|Optional. The type of alert for notifications for this app:</br></br>* 0: None  </br></br>* 1: Banner  </br></br>* 2: Modal Alert  </br></br></br>Default is 1.|
-|`BadgesEnabled`|Boolean|Optional. Whether badges are allowed for this app. Default is true.|
-|`SoundsEnabled`|Boolean|Optional. Whether sounds are allowed for this app. Default is true.|
+|`BadgesEnabled`|Boolean|Optional. Whether badges are allowed for this app. Default is `true`.|
+|`SoundsEnabled`|Boolean|Optional. Whether sounds are allowed for this app. Default is `true`.|
+  
+
+# Parental Controls Payload  
+
+ [Configuration Profile Reference - Parental Controls Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW103)  
+
+Parental Control on macOS consists of many different payloads which are set individually depending on the type of control required. Parental control payloads are supported on the user channel. Each payload and its respective keys are described in the sections below.  
+
+### Parental Control Web Content Filter Payload  
+
+ [Configuration Profile Reference - Parental Control Web Content Filter Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW103)  
+
+The Parental Control Web Content Filter payload is designated by specifying `com.apple.familycontrols.contentfilter` as the `PayloadType` value.  
+
+In addition to the settings common to all payloads, this payload defines these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`restrictWeb`|Boolean|Required. Set to `true` to enable Web content filters.|
+|`useContentFilter`|Boolean|Optional. Set to `true` to try to automatically filter content.|
+|`whiteListEnabled`|Boolean|Optional. Set to `true` to use the filterWhiteList and filterBlackList lists.|
+|`siteWhiteList`|Array of Dictionaries|Required if `whiteListEnabled` is `true`. If specified, this key contains an array of dictionaries (see below) that define additional allowed sites besides those in the automated list of allowed and unallowed sites, including disallowed adult sites.|
+|`filterWhiteList`|Array of URL Strings|Optional. If specified and `restrictWeb` is `true`, qn array of URLs designating the only allowed Websites.|
+|`filterBlackList`|Array of URL Strings|Optional. If specified and `restrictWeb` is `true`, an array of URLs of Websites never to be allowed.|
+  
+
+Each `siteWhiteList` dictionary contains these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`address`|String|Required. Site prefix, including `http(s)` scheme.|
+|`pageTitle`|String|Optional. Site page title.|
+  
+  
+
+### Parental Control Time Limits Payload  
+
+ [Configuration Profile Reference - Parental Control Time Limits Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW103)  
+
+The Parental Control Time Limits payload is designated by specifying `com.apple.familycontrols.timelimits.v2` as the `PayloadType` value.  
+
+It consists of a dictionary containing a master enabled flag plus a dictionary of time limit specification keys.  
+
+In addition to the settings common to all payloads, this payload defines these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`familyControlsEnabled`|Boolean|Required. Set to `true` to use time limits.|
+|`time-limits`|Dictionary|Required if `familyControlsEnabled` is `true`. Time limits settings.|
+  
+
+Each `time-limits` dictionary contains these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`weekday-allowance`|Dictionary|Optional. Weekday allowance settings.|
+|`weekday-curfew`|Dictionary|Optional. Weekday curfew settings.|
+|`weekend-allowance`|Dictionary|Optional. Weekend allowance settings.|
+|`weekend-curfew`|Dictionary|Optional. Weekend curfew settings.|
+  
+
+Each `allowance` or `curfew` dictionary contains these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`enabled`|Boolean|Required. Set to `true` to enable these settings.|
+|`rangeType`|Number|Required. Type of day range: 0 = weekday, 1 = weekend.|
+|`start`|String|Optional. Curfew start time in the format %d:%d:%d.|
+|`end`|String|Optional. Curfew end time in the format %d:%d:%d.|
+|`secondsPerDay`|Number|Optional. Seconds for that day for allowance.|
+  
+  
+
+### Parental Control Application Access Payload  
+
+ [Configuration Profile Reference - Parental Control Application Access Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW103)  
+
+The Parental Control Application Access payload is designated by specifying `com.apple.applicationaccess.new` as the `PayloadType` value.  
+
+It enables application access restrictions on macOS.  
+
+In addition to the settings common to all payloads, this payload defines these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`familyControlsEnabled`|Boolean|Required. Set to `true` to enable application access restrictions.|
+|`whiteList`|Array of Dictionaries|Optional. Allowed processes.|
+|`pathBlackList`|Array of Strings|Optional. Paths to disallowed processes.|
+|`pathWhiteList`|Array of Strings|Optional. Paths to allowed processes.|
+  
+
+Each `whiteList` dictionary contains these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`bundleID`|String|Optional. Bundle ID of application.|
+|`displayName`|String|Optional. Display name.|
+|`displayName`|String|Optional. Path to application.|
+  
+  
+
+### Parental Control Dashboard Payload  
+
+ [Configuration Profile Reference - Parental Control Dashboard Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW103)  
+
+The Parental Control Dashboard payload is designated by specifying `com.apple.dashboard` as the `PayloadType` value.  
+
+It is used to define a white list of dashboard widgets.  
+
+In addition to the settings common to all payloads, this payload defines these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`whiteListEnabled`|Boolean|Required. Set to `true` to enable the widget white list items.|
+|`whiteList`|Array of Dictionaries|Required. List that defines Dashboard widgets.|
+  
+
+Each widget `whiteList` dictionary contains these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`Type`|String|Required. Set to `bundleID` to use a widget’s bundle ID as its ID.|
+|`ID`|String|Required. The bundle ID of a widget.|
+  
+  
+
+### Parental Control Dictionary Payload  
+
+ [Configuration Profile Reference - Parental Control Dictionary Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW103)  
+
+The Parental Control Dictionary payload is designated by specifying `com.apple.Dictionary` as the `PayloadType` value.  
+
+It enables the restrictions defined in the device’s Parental Controls Dictionary.  
+
+In addition to the settings common to all payloads, this payload defines this key:  
+
+|Key|Type|Value|
+|-|-|-|
+|`parentalControl`|Boolean|Required. Set to `true` to enable parental controls dictionary restrictions.|
+  
+  
+
+### Parental Control Dictation and Profanity Payload  
+
+ [Configuration Profile Reference - Parental Control Dictation and Profanity Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW103)  
+
+The Parental Control Dictation and Profanity payload is designated by specifying `com.apple.ironwood.support` as the `PayloadType` value.  
+
+It disables dictation and suppresses profanity on the device.  
+
+In addition to the settings common to all payloads, this payload defines these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`IronwoodAllowed`|Boolean|Optional. Set to `false` to disable dictation.|
+|`ProfanityAllowed`|Boolean|Optional. Set to `false` to suppress profanity.|
+  
+  
+
+### Parental Control Game Center Payload  
+
+ [Configuration Profile Reference - Parental Control Game Center Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW103)  
+
+The Parental Control Game Center payload is designated by specifying `com.apple.gamed` as the `PayloadType` value.  
+
+It restricts Game Center options on the device.  
+
+In addition to the settings common to all payloads, this payload defines these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`GKFeatureGameCenterAllowed`|Boolean|Optional. Set to `false` to disable Game Center.|
+|`GKFeatureAccountModificationAllowed`|Boolean|Optional. Set to `false` to disable account modifications.|
+|`GKFeatureAddingGameCenterFriendsAllowed`|Boolean|Optional. Set to `false` to disable adding Game Center friends.|
+|`GKFeatureMultiplayerGamingAllowed`|Boolean|Optional. Set to `false` to disable multiplayer gaming.|
+  
+  
+
+### Additional Parental Controls  
+
+ [Configuration Profile Reference - Additional Parental Controls](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW103)  
+
+Additional parental control functions can be found in the following payloads:  
+
+
+* [System Policy Control Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW21)  
+
+* [Email](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW11)  
+
+* [Media Management](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW104)  
+
+* [AppStore Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW197)  
+
+* [Dock Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW327)  
+  
   
 
 # Passcode Policy Payload  
@@ -1231,7 +1652,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowDiagnosticSubmission`|Boolean|Optional. When `false`, this prevents the device from automatically submitting diagnostic reports to Apple. Defaults to `true`.</br>**Availability:** Available only in iOS 6.0 and later.|
 |`allowExplicitContent`|Boolean|Optional. When `false`, explicit music or video content purchased from the iTunes Store is hidden. Explicit content is marked as such by content providers, such as record labels, when sold through the iTunes Store. This key is deprecated on unsupervised devices.|
 |`allowFindMyFriendsModification`|Boolean|Optional. Supervised only. If set to `false`, changes to Find My Friends are disabled.</br>**Availability:** Available only in iOS 7.0 and later.|
-|`allowFingerprintForUnlock`|Boolean|Optional. If `false`, prevents Touch ID from unlocking a device.</br>**Availability:** Available in iOS 7 and later.|
+|`allowFingerprintForUnlock`|Boolean|Optional. If `false`, prevents Touch ID from unlocking a device.</br>**Availability:** Available in iOS 7 and later and in macOS 10.12.4 and later.|
 |`allowGameCenter`|Boolean|Optional. Supervised only. When `false`, Game Center is disabled and its icon is removed from the Home screen. Default is `true`.</br>**Availability:** Available only in iOS 6.0 and later.|
 |`allowGlobalBackgroundFetchWhenRoaming`|Boolean|Optional. When `false`, disables global background fetch activity when an iOS phone is roaming.|
 |`allowInAppPurchases`|Boolean|Optional. When `false`, prohibits in-app purchasing.|
@@ -1242,15 +1663,15 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowMultiplayerGaming`|Boolean|Optional. When `false`, prohibits multiplayer gaming. This key is deprecated on unsupervised devices.|
 |`allowOpenFromManagedToUnmanaged`|Boolean|Optional. If `false`, documents in managed apps and accounts only open in other managed apps and accounts. Default is `true`.</br>**Availability:** Available only in iOS 7.0 and later.|
 |`allowOpenFromUnmanagedToManaged`|Boolean|Optional. If set to `false`, documents in unmanaged apps and accounts will only open in other unmanaged apps and accounts. Default is `true`.</br>**Availability:** Available only in iOS 7.0 and later.|
-|`allowOTAPKIUpdates`|Boolean|Optional. If `false`, over-the-air PKI updates are disabled. Setting this restriction to false does not disable CRL and OCSP checks. Default is `true`.</br>**Availability:** Available only in iOS 7.0 and later.|
+|`allowOTAPKIUpdates`|Boolean|Optional. If `false`, over-the-air PKI updates are disabled. Setting this restriction to `false` does not disable CRL and OCSP checks. Default is `true`.</br>**Availability:** Available only in iOS 7.0 and later.|
 |`allowPassbookWhileLocked`|Boolean|Optional. If set to `false`, Passbook notifications will not be shown on the lock screen.This will default to `true`.</br>**Availability:** Available in iOS 6.0 and later.|
 |`allowPhotoStream`|Boolean|Optional. When `false`, disables Photo Stream.</br>**Availability:** Available in iOS 5.0 and later.|
 |`allowSafari`|Boolean|Optional. When `false`, the Safari web browser application is disabled and its icon removed from the Home screen. This also prevents users from opening web clips. This key is deprecated on unsupervised devices.|
-|`safariAllowAutoFill`|Boolean|Optional. When `false`, Safari auto-fill is disabled. Defaults to true.|
-|`safariForceFraudWarning`|Boolean|Optional. When `true`, Safari fraud warning is enabled. Defaults to false.|
-|`safariAllowJavaScript`|Boolean|Optional. When `false`, Safari will not execute JavaScript. Defaults to true.|
-|`safariAllowPopups`|Boolean|Optional. When `false`, Safari will not allow pop-up tabs. Defaults to true.|
-|`safariAcceptCookies`|Integer|Optional. Determines conditions under which the device will accept cookies. Following are allowed values:</br></br>* 0:	 Never  </br></br>* 1:	 From visited sites only  </br></br>* 1.5: From websites I visit (enter `'&lt;real&gt;1.5&lt;/real&gt;'`)  </br></br>* 2:	 Always  </br></br></br>Defaults to 2.|
+|`safariAllowAutoFill`|Boolean|Optional. When `false`, Safari auto-fill is disabled. Defaults to `true`.|
+|`safariForceFraudWarning`|Boolean|Optional. When `true`, Safari fraud warning is enabled. Defaults to `false`.|
+|`safariAllowJavaScript`|Boolean|Optional. When `false`, Safari will not execute JavaScript. Defaults to `true`.|
+|`safariAllowPopups`|Boolean|Optional. When `false`, Safari will not allow pop-up tabs. Defaults to `true`.|
+|`safariAcceptCookies`|Real|Optional. Determines conditions under which the device will accept cookies. Following are allowed values:</br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always  </br></br></br>Defaults to 2.|
 |`allowSharedStream`|Boolean|Optional. If set to `false`, Shared Photo Stream will be disabled. This will default to `true`.</br>**Availability:** Available in iOS 6.0 and later.|
 |`allowUIConfigurationProfileInstallation`|Boolean|Optional. Supervised only. If set to `false`, the user is prohibited from installing configuration profiles and certificates interactively. This will default to `true`.</br>**Availability:** Available in iOS 6.0 and later.|
 |`allowUntrustedTLSPrompt`|Boolean|Optional. When `false`, automatically rejects untrusted HTTPS certificates without prompting the user.</br>**Availability:** Available in iOS 5.0 and later.|
@@ -1279,7 +1700,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`allowSpellCheck`|Boolean|Supervised only. If set to `false`, disables keyboard spell-check. Defaults to `true`.</br>**Availability:** Available in iOS 8.1.3 and later.|
 |`forceWatchWristDetection`|Boolean|If set to `true`, a paired Apple Watch will be forced to use Wrist Detection. Defaults to `false`.</br>**Availability:** Available in iOS 8.2 and later.|
 |`allowMusicService`|Boolean|Supervised only. If set to `false`, Music service is disabled and Music app reverts to classic mode. Defaults to `true`.</br>**Availability:** Available in iOS 9.3 and later and macOS 10.12 and later.|
-|`allowCloudPhotoLibrary`|Boolean|If set to `false`, disables iCloud Photo Library. Any photos not fully downloaded from iCloud Photo Library to the device will be removed from local storage.</br>**Availability:** Available in iOS 9.0 and later.|
+|`allowCloudPhotoLibrary`|Boolean|If set to `false`, disables iCloud Photo Library. Any photos not fully downloaded from iCloud Photo Library to the device will be removed from local storage.</br>**Availability:** Available in iOS 9.0 and later and in macOS 10.12 and later.|
 |`allowNews`|Boolean|Supervised only. If set to `false`, disables News. Defaults to `true`.</br>**Availability:** Available in iOS 9.0 and later.|
 |`forceAirDropUnmanaged`|Boolean|Optional. If set to `true`, causes AirDrop to be considered an unmanaged drop target. Defaults to `false`.</br>**Availability:** Available in iOS 9.0 and later.|
 |`allowUIAppInstallation`|Boolean|Supervised only. When `false`, the App Store is disabled and its icon is removed from the Home screen. However, users may continue to use Host apps (iTunes, Configurator) to install or update their apps. Defaults to `true`.</br>**Availability:** Available in iOS 9.0 and later.|
@@ -1295,9 +1716,19 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`blacklistedAppBundleIDs`|Array of strings|Supervised only. If present, prevents bundle IDs listed in the array from being shown or launchable.</br>**Availability:** Available in iOS 9.3 and later.|
 |`whitelistedAppBundleIDs`|Array of strings|Supervised only. If present, allows only bundle IDs listed in the array from being shown or launchable.</br>**Availability:** Available in iOS 9.3 and later.|
 |`allowNotificationsModification`|Boolean|Supervised only. If set to `false`, notification settings cannot be modified. Defaults to `true`.</br>**Availability:** Available in iOS 9.3 and later.|
-|`allowRemoteScreenObservation`|Boolean|Supervised only. If set to `false`, remote screen observation by the Classroom app is disabled. Defaults to `true`.</br>This key should be nested beneath `allowScreenShot` as a sub-restriction. If `allowScreenShot` is set to false, it also prevents the Classroom app from observing remote screens.</br>**Availability:** Available in iOS 9.3 and later.|
+|`allowRemoteScreenObservation`|Boolean|Supervised only. If set to `false`, remote screen observation by the Classroom app is disabled. Defaults to `true`.</br>This key should be nested beneath `allowScreenShot` as a sub-restriction. If `allowScreenShot` is set to `false`, it also prevents the Classroom app from observing remote screens.</br>**Availability:** Available in iOS 9.3 and later.|
 |`allowDiagnosticSubmissionModification`|Boolean|Supervised only. If set to `false`, the diagnostic submission and app analytics settings in the Diagnostics & Usage pane in Settings cannot be modified. Defaults to `true`.</br>**Availability:** Available in iOS 9.3.2 and later.|
 |`allowBluetoothModification`|Boolean|Supervised only. If set to `false`, prevents modification of Bluetooth settings. Defaults to `true`.</br>**Availability:** Available in iOS 10.0 and later.|
+|`allowAutoUnlock`|Boolean|If set to `false`, disallows macOS auto unlock. Defaults to `true`.</br>**Availability:** Available only in macOS 10.12 and later.|
+|`allowCloudDesktopAndDocuments`|Boolean|If set to `false`, disallows macOS cloud desktop and document services. Defaults to `true`.</br>**Availability:** Available only in macOS 10.12.4 and later.|
+|`allowDictation`|Boolean|Supervised only. If set to `false`, disallows dictation input. Defaults to `true`.</br>**Availability:** Available only in iOS 10.3 and later.|
+|`forceWiFiWhitelisting`|Boolean|Optional. Supervised only. If set to `true`, the device can join Wi-Fi networks only if they were set up through a configuration profile. Defaults to `false`.</br>**Availability:** Available only in iOS 10.3 and later.|
+|`forceUnpromptedManaged- ClassroomScreenObservation`|Boolean|Optional. Supervised only. If set to `true`, and `ScreenObservationPermissionModificationAllowed` is also `true` in the Education payload, a student enrolled in a managed course via the Classroom app will automatically give permission to that course's teacher’s requests to observe the student’s screen without prompting the student.  Defaults to `false`.</br>**Availability:** Available only in iOS 10.3 and later.|
+|`allowAirPrint`|Boolean|Supervised only. If set to `false`, disallow AirPrint. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and macOS 10.13 and later.|
+|`allowAirPrintCredentialsStorage`|Boolean|Supervised only. If set to `false`, disallows keychain storage of username and password for Airprint. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and later.|
+|`forceAirPrintTrustedTLSRequirement`|Boolean|Supervised only. If set to `true`, requires trusted certificates for TLS printing communication. Defaults to `false`.</br>**Availability:** Available only in iOS 11.0 and macOS 10.13 and later.|
+|`allowAirPrintiBeaconDiscovery`|Boolean|Supervised only. If set to `false`, disables iBeacon discovery of AirPrint printers. This prevents spurious AirPrint Bluetooth beacons from phishing for network traffic. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and macOS 10.13 and later.|
+|`allowVPNCreation`|Boolean|Supervised only. If set to `false`, disallow the creation of VPN configurations. Defaults to `true`.</br>**Availability:** Available only in iOS 11.0 and later.|
   
 
 # SCEP Payload  
@@ -1321,6 +1752,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`KeyUsage`|Number|Optional. A bitmask indicating the use of the key. 1 is signing, 4 is encryption, 5 is both signing and encryption. Some certificate authorities, such as Windows CA, support only encryption or signing, but not both at the same time.</br>**Availability:** Available only in iOS 4 and later.|
 |`Retries`|Integer|Optional. The number of times the device should retry if the server sends a PENDING response. Defaults to 3.|
 |`RetryDelay`|Integer|Optional. The number of seconds to wait between subsequent retries. The first retry is attempted without this delay. Defaults to 10.|
+|`CAFingerprint`|Data|Optional. The fingerprint of the Certificate Authority certificate.|
   
 
 ### SubjectAltName Dictionary Keys  
@@ -1436,6 +1868,61 @@ The URL matching patterns must begin with either `http://` or `https://`. A simp
 The patterns `http://.com` and `https://.com` match all HTTP and HTTPS URLs, respectively.  
 
 The `AppIdentifierMatches` array must contain strings that match app bundle IDs. These strings may be exact matches (`com.mycompany.myapp`, for example) or may specify a prefix match on the bundle ID by using the `*` wildcard character. The wildcard character must appear after a period character (`.`), and may appear only once, at the end of the string (`com.mycompany.*`, for example). When a wildcard is included, any app whose bundle ID begins with the prefix is granted access to the account.  
+
+# SmartCard Settings Payload  
+
+ [Configuration Profile Reference - SmartCard Settings Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW321)  
+
+The SmartCard Settings payload is designated by specifying `com.apple.security.smartcard` as the `PayloadType`.  
+
+This payload controls restrictions and settings for SmartCard pairing on macOS v10.12.4 and later.  
+
+In addition to the settings common to all payloads, this payload defines the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`UserPairing`|Boolean|Optional. If `false`, users will not get the pairing dialog, although existing pairings will still work. Default is `true`.|
+|`allowSmartCard`|Boolean|Optional. If `false`, the SmartCard is disabled for logins, authorizations, and screensaver unlocking. It is still allowed for other functions, such as signing emails and web access. A restart is required for a change of setting to take effect. Default is `true`.|
+|`checkCertificateTrust`|Boolean|Optional. If `true`, certificates on the card must be valid in these ways: its issuer is system-trusted, the certificate is not expired, its "valid-after" date is in the past, and it passes CRL and OCSP checking. User overrides are not allowed. Usually this key is set to `true` for SmartCard use in corporate environments. Default is `false`.|
+|`oneCardPerUser`|Boolean|Optional. If `true`, a user can pair with only one smart card, although existing pairings will be allowed if already set up. Default is `false`.|
+  
+
+# System Migration Payload  
+
+ [Configuration Profile Reference - System Migration Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW221)  
+
+The System Migration payload is designated by specifying `com.apple.systemmigration` as the `PayloadType`.  
+
+System migration occurs when items are transferred to a macOS device from a Windows device by reading source and destination path pairs from plist files. This payload provides a way to customize those transfers.  
+
+This payload must be single and exist only in a device profile. If the payload is present in a user profile, an error will be generated during installation and the profile will fail to install.  
+
+This payload is supported only on macOS 10.12.4 and later.  
+
+In addition to the settings common to all payloads, this payload defines the following key:  
+
+|Key|Type|Value|
+|-|-|-|
+|`CustomBehavior`|Array of dictionaries|Optional. Specifies custom behavior for the context designated in each dictionary.|
+  
+
+Each dictionary in the `CustomBehavior` array contains these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`Context`|String|Required. The context to which custom paths apply.|
+|`Paths`|Array of dictionaries|Required. The custom paths to be migrated from a source system to a target system.|
+  
+
+Each dictionary in the `Paths` array contains these keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`SourcePath`|String|Required. The path to the migrating file or directory on the source system.|
+|`SourcePathInUserHome`|Boolean|Required. If `true`, the source path is located within a user home directory.|
+|`TargetPath`|String|Required. The path to the destination file or directory on the target system.|
+|`TargetPathInUserHome`|Boolean|Required. If `true`, the target path is located within a user home directory.|
+  
 
 # System Policy Control Payload  
 
@@ -1685,14 +2172,12 @@ If `VPNType` is `IKEv2`, the following keys may be provided in a dictionary:
 |`DeadPeerDetectionRate`|String|Optional. One of the following:</br></br>* `FQDN`  </br></br>* `UserFQDN`  </br></br>* `Address`  </br></br>* `ASN1DN`  </br></br>* `FQDN`  </br></br>* `UserFQDN`  </br></br>* `Address`  </br></br>* `ASN1DN`  </br></br>* `SharedSecret`  </br></br>* `Certificate`  </br></br>* `None`  </br></br>* `RSA` (Default)  </br></br>* `ECDSA256`  </br></br>* `ECDSA384`  </br></br>* `ECDSA521`  </br></br>* `None` (Disable)  </br></br>* `Low` (`keepalive` sent every 30 minutes)  </br></br>* `Medium` (`keepalive` sent every 10 minutes)  </br></br>* `High` (`keepalive` sent every 1 minute)  </br></br></br>Defaults to Medium.|
 |`ServerCertificateIssuerCommonName`|String|Optional. Common Name of the server certificate issuer. If set, this field will cause IKE to send a certificate request based on this certificate issuer to the server.</br>This key is required if both the `CertificateType` key is included and the `ExtendedAuthEnabled` key is set to 1.|
 |`ServerCertificateCommonName`|String|Optional. Common Name of the server certificate. This name is used to validate the certificate sent by the IKE server. If not set, the Remote Identifier will be used to validate the certificate.|
+|`TLSMinimumVersion`|String|Optional. The minimum TLS version to be used with EAP-TLS authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default minimum is 1.0. **Availability:** Available in iOS 11.0 and macOS 10.13 and later.|
+|`TLSMaximumVersion`|String|Optional. The maximum TLS version to be used with EAP-TLS authentication. Value may be 1.0, 1.1, or 1.2. If no value is specified, the default maximum is 1.2. **Availability:** Available in iOS 11.0 and macOS 10.13 and later.|
 |`NATKeepAliveOffloadEnable`|Integer|Optional. Set to 1 to enable or 0 to disable NAT Keepalive offload for Always On VPN IKEv2 connections. Keepalive packets are sent by the device to maintain NAT mappings for IKEv2 connections that have a NAT on the path. Keepalive packets are sent at regular interval when the device is awake. If `NATKeepAliveOffloadEnable` is set to 1, Keepalive packets will be offloaded to hardware while the device is asleep. NAT Keepalive offload has an impact on the battery life since extra workload is added during sleep. The default interval for the Keepalive offload packets is 20 seconds over WiFi and 110 seconds over Cellular interface. The default NAT Keepalive works well on networks with small NAT mapping timeouts but imposes a potential battery impact. If a network is known to have larger NAT mapping timeouts, larger Keepalive intervals may be safely used to minimize battery impact. The Keepalive interval can be modified by setting the `NATKeepAliveInterval` key. Default value for `NATKeepAliveOffloadEnable` is 1.|
 |`NATKeepAliveInterval`|Integer|Optional. NAT Keepalive interval for Always On VPN IKEv2 connections. This value controls the interval over which Keepalive offload packets are sent by the device. The minimum value is 20 seconds. If no key is specified, the default is 20 seconds over WiFi and 110 seconds over a Cellular interface.|
 |`EnablePFS`|Integer|Optional. Set to 1 to enable Perfect Forward Secrecy (PFS) for IKEv2 Connections. Default is 0. |
-|`ServerAddresses`|Array of Strings|Required. An array of DNS server IP address strings. These IP addresses can be a mixture of IPv4 and IPv6 addresses.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
-|`SearchDomains`|Array of Strings|Optional. A list of domain strings used to fully qualify single-label host names.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
-|`DomainName`|String|Optional. The primary domain of the tunnel.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
-|`SupplementalMatchDomains`|Array of Strings|Optional. A list of domain strings used to determine which DNS queries will use the DNS resolver settings contained in `ServerAddresses`. This key is used to create a split DNS configuration where only hosts in certain domains are resolved using the tunnel’s DNS resolver. Hosts not in one of the domains in this list are resolved using the system’s default resolver.</br>If `SupplementalMatchDomains` contains the empty string it becomes the default domain. This is how a split-tunnel configuration can direct all DNS queries first to the VPN DNS servers before the primary DNS servers. If the VPN tunnel becomes the network’s default route, the servers listed in `ServerAddresses` become the default resolver and the `SupplementalMatchDomains` list is ignored.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
-|`SupplementalMatch- DomainsNoSearch`|Integer|Optional. Whether (0) or not (1) the domains in the `SupplementalMatchDomains` list should be appended to the resolver’s list of search domains. Default is 0.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
+|`EnableCertificate- RevocationCheck`|Integer|Optional. Set to 1 to enable a certificate revocation check for IKEv2 connections.  This is a best-effort revocation check; server response timeouts will not cause it to fail.</br>**Availability:** Available in iOS 9.0 and later.|
 |`IKESecurityAssociation- Parameters`|Dictionary|Optional. See table below. Applies to child Security Association unless `ChildSecurityAssociationParameters` is specified.|
 |`ChildSecurityAssociation- Parameters`|Dictionary|Optional. See table below.|
   
@@ -1701,8 +2186,8 @@ The `IKESecurityAssociationParameters` and `ChildSecurityAssociationParameters` 
 
 |Key|Type|Value|
 |-|-|-|
-|`EncryptionAlgorithm`|String|Optional. One of:</br></br>* `DES`  </br></br>* `3DES` (Default)  </br></br>* `AES-128`  </br></br>* `AES-256`  </br></br>* `AES-128-GCM (16-octet ICV)`  </br></br>* `AES-256-GCM (16-octet ICV)`  </br></br>* `SHA1-96` (Default)  </br></br>* `SHA1-160`  </br></br>* `SHA2-256`  </br></br>* `SHA2-384`  </br></br>* `SHA2-512`  </br></br>|
-|`IntegrityAlgorithm`|String|Optional. One of:</br></br>* `DES`  </br></br>* `3DES` (Default)  </br></br>* `AES-128`  </br></br>* `AES-256`  </br></br>* `AES-128-GCM (16-octet ICV)`  </br></br>* `AES-256-GCM (16-octet ICV)`  </br></br>* `SHA1-96` (Default)  </br></br>* `SHA1-160`  </br></br>* `SHA2-256`  </br></br>* `SHA2-384`  </br></br>* `SHA2-512`  </br></br>|
+|`EncryptionAlgorithm`|String|Optional. One of:</br></br>* `DES`  </br></br>* `3DES`  </br></br>* `AES-128`  </br></br>* `AES-256` (Default)  </br></br>* `AES-128-GCM (16-octet ICV)`  </br></br>* `AES-256-GCM (16-octet ICV)`  </br></br>* `SHA1-96`  </br></br>* `SHA1-160`  </br></br>* `SHA2-256` (Default)  </br></br>* `SHA2-384`  </br></br>* `SHA2-512`  </br></br>|
+|`IntegrityAlgorithm`|String|Optional. One of:</br></br>* `DES`  </br></br>* `3DES`  </br></br>* `AES-128`  </br></br>* `AES-256` (Default)  </br></br>* `AES-128-GCM (16-octet ICV)`  </br></br>* `AES-256-GCM (16-octet ICV)`  </br></br>* `SHA1-96`  </br></br>* `SHA1-160`  </br></br>* `SHA2-256` (Default)  </br></br>* `SHA2-384`  </br></br>* `SHA2-512`  </br></br>|
 |`DiffieHellmanGroup`|Integer|Optional. One of: 1, 2 (Default), 5, 14, 15, 16, 17, 18, 19, 20, or 21.|
 |`LifeTimeInMinutes`|Integer|Optional SA lifetime (rekey interval) in minutes. Valid values are 10 through 1440. Defaults to 1440 minutes.|
 |`UseConfigurationAttributeInternalIPSubnet`|Integer|Optional. If set to 1, negotiations should use IKEv2 Configuration Attribute INTERNAL_IP4_SUBNET and INTERNAL_IP6_SUBNET. Defaults to 0.</br>**Availability:** Available in iOS 9.0 and later.|
@@ -1710,8 +2195,22 @@ The `IKESecurityAssociationParameters` and `ChildSecurityAssociationParameters` 
 |`DisableRedirect`|Integer|Optional. If set to 1, disables IKEv2 redirect. If not set, the IKEv2 connection would be redirected if a redirect request is received from the server. Defaults to 0.</br>**Availability:** Available in iOS 9.0 and later.|
 |`NATKeepAliveOffloadEnable`|Integer|Optional. Set to 1 to enable and 0 to disable NAT Keepalive offload for Always On VPN IKEv2 connections. Keepalive packets are used to maintain NAT mappings for IKEv2 connections. These packets are sent at regular interval when the device is awake. If `NATKeepAliveOffloadEnable` is set to 1, Keepalive packets would be sent by the chip even while the device is asleep. The default interval for the Keepalive packets for Always On VPN is 20 seconds over WiFi and 110 seconds over Cellular interface. The interval could be changed by setting the desired value in `NATKeepAliveInterval`. Defaults to 1.</br>**Availability:** Available in iOS 9.0 and later.|
 |`NATKeepAliveInterval`|Integer|Optional. Controls the interval over which Keepalive packets are sent by the device. The minimum value is 20 seconds. If no key is specified, the default is 20 seconds.</br>**Availability:** Available in iOS 9.0 and later.|
-|`EnablePFS`|Integer|Optional. Set to 1 to enable Perfect Forward Secrecy for IKEv2
-`EnablePFS` connections. Default value is 0.</br>**Availability:** Available in iOS 9.0 and later.|
+  
+  
+
+### DNS Dictionary Keys  
+
+ [Configuration Profile Reference - DNS Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW27)  
+
+If `VPNType` is `IKEv2`, the following DNS keys may be provided:  
+
+|Key|Type|Value|
+|-|-|-|
+|`ServerAddresses`|Array of Strings|Required. An array of DNS server IP address strings. These IP addresses can be a mixture of IPv4 and IPv6 addresses.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
+|`SearchDomains`|Array of Strings|Optional. A list of domain strings used to fully qualify single-label host names.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
+|`DomainName`|String|Optional. The primary domain of the tunnel.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
+|`SupplementalMatchDomains`|Array of Strings|Optional. A list of domain strings used to determine which DNS queries will use the DNS resolver settings contained in `ServerAddresses`. This key is used to create a split DNS configuration where only hosts in certain domains are resolved using the tunnel’s DNS resolver. Hosts not in one of the domains in this list are resolved using the system’s default resolver.</br>If `SupplementalMatchDomains` contains the empty string it becomes the default domain. This is how a split-tunnel configuration can direct all DNS queries first to the VPN DNS servers before the primary DNS servers. If the VPN tunnel becomes the network’s default route, the servers listed in `ServerAddresses` become the default resolver and the `SupplementalMatchDomains` list is ignored.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
+|`SupplementalMatch- DomainsNoSearch`|Integer|Optional. Whether (0) or not (1) the domains in the `SupplementalMatchDomains` list should be appended to the resolver’s list of search domains. Default is 0.</br>**Availability:** Available in iOS 10.0 and later and macOS 10.12 and later.|
   
   
 
@@ -1792,8 +2291,8 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`URL`|String|The URL that the Web Clip should open when clicked. The URL must begin with HTTP or HTTPS or it won't work.|
 |`Label`|String|The name of the Web Clip as displayed on the Home screen.|
-|`Icon`|Data|Optional. A PNG icon to be shown on the Home screen. See the “Graphics” chapter of *[iOS Human Interface Guidelines](https://developer.apple.com/ios/human-interface-guidelines/)* for current icon sizes. If not specified, a white square will be shown.|
-|`IsRemovable`|Boolean|Optional. If false, the web clip is unremovable. Defaults to true. Not available in macOS.|
+|`Icon`|Data|Optional. A PNG icon to be shown on the Home screen. Should be 59 x 60 pixels in size. If not specified, a white square will be shown.|
+|`IsRemovable`|Boolean|Optional. If `false`, the web clip is unremovable. Defaults to `true`. Not available in macOS.|
   
 
 # Web Content Filter Payload  
@@ -1818,8 +2317,8 @@ If `FilterType` is `BuiltIn`, this payload defines the following keys in additio
 |-|-|-|
 |`AutoFilterEnabled`|Boolean|Optional. If `true`, automatic filtering is enabled. This function evaluates each web page as it is loaded and attempts to identify and block content not suitable for children. The search algorithm is complex and may vary from release to release, but it is basically looking for adult language, i.e. swearing and sexually explicit language. The default value is `false`.|
 |`PermittedURLs`|Array of strings|Optional. Used only when `AutoFilterEnabled` is `true`. Otherwise, this field is ignored.</br>Each entry contains a URL that is accessible whether the automatic filter allows access or not.|
-|`WhitelistedBookmarks`|Array of dictionaries|Optional. If present, these URLs are added to the browser’s bookmarks, and the user is not allowed to visit any sites other than these.|
-|`BlacklistedURLs`|Array of strings|Optional. Access to the specified URLs is blocked.|
+|`WhitelistedBookmarks`|Array of dictionaries|Optional. If present, these URLs are added to the browser’s bookmarks, and the user is not allowed to visit any sites other than these. The number of these URLs should be limited to about 500.|
+|`BlacklistedURLs`|Array of strings|Optional. Access to the specified URLs is blocked. The number of these URLs should be limited to about 500.|
   
 
 Each entry in the `WhitelistedBookmarks` field contains a dictionary with the following keys:  
@@ -2008,7 +2507,7 @@ Opening a document originating from a managed Safari web domain causes iOS to tr
 |Key|Type|Value|
 |-|-|-|
 |`WebDomains`|Array|Optional. An array of URL strings. URLs matching the patterns listed here will be considered managed. Not supported in macOS|
-|`SafariPasswordAutoFillDomains`|Array|Optional. An array of URL strings. Supported in iOS 9.3 and later; not supported in macOS.</br>Users can save passwords in Safari only from URLs matching the patterns listed here.</br>Regardless of the iCloud account that the user is using, if the device is not supervised, there can be no whitelist. If the device is supervised, there may be a whitelist, but if there is still no whitelist, note these two cases:</br></br>* If the device is configured as ephemeral multi-user, no password can be saved.  </br></br>* If the device is not configured as ephemeral multi-user, all passwords can be saved.  </br></br>|
+|`SafariPasswordAutoFillDomains`|Array|Optional. An array of URL strings. Supported in iOS 9.3 and later; not supported in macOS.</br>Users can save passwords in Safari only from URLs matching the patterns listed here.</br>Regardless of the iCloud account that the user is using, if the device is not supervised, there can be no whitelist. If the device is supervised, there may be a whitelist, but if there is still no whitelist, note these two cases:</br></br>* If the device is configured as Shared iPad, no password can be saved.  </br></br>* If the device is not configured as Shared iPad, all passwords can be saved.  </br></br>|
   
 
 The `WebDomains` and `SafariPasswordAutoFillDomains` arrays may contain strings using any of the following matching patterns:  

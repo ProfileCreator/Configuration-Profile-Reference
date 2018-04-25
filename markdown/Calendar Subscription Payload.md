@@ -14,7 +14,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`SubCalAccountDescription`|String|Optional. Description of the account.|
 |`SubCalAccountHostName`|String|The server address.|
-|`SubCalAccountUsername`|String|The user's login name|
+|`SubCalAccountUsername`|String|The user's login name.|
 |`SubCalAccountPassword`|String|The user's password.|
 |`SubCalAccountUseSSL`|Boolean|Whether or not to use SSL.|
   

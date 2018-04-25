@@ -2,7 +2,7 @@
 
  [Configuration Profile Reference - macOS Server Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW152)  
 
-This payload defines an macOS Server account. This payload is designated by the `com.apple.osxserver.account` PayloadType value.  
+This payload defines a macOS Server account. This payload is designated by the `com.apple.osxserver.account` PayloadType value.  
 
 |Key|Type|Value|
 |-|-|-|

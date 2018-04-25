@@ -19,6 +19,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`KeyUsage`|Number|Optional. A bitmask indicating the use of the key. 1 is signing, 4 is encryption, 5 is both signing and encryption. Some certificate authorities, such as Windows CA, support only encryption or signing, but not both at the same time.</br>**Availability:** Available only in iOS 4 and later.|
 |`Retries`|Integer|Optional. The number of times the device should retry if the server sends a PENDING response. Defaults to 3.|
 |`RetryDelay`|Integer|Optional. The number of seconds to wait between subsequent retries. The first retry is attempted without this delay. Defaults to 10.|
+|`CAFingerprint`|Data|Optional. The fingerprint of the Certificate Authority certificate.|
   
 
 ### SubjectAltName Dictionary Keys  

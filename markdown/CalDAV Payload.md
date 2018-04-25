@@ -4,7 +4,7 @@
 
 This payload configures a CalDAV account.  
 
-The payload is designated by specifying `com.apple.caldav.account` as the `PayloadType`  
+The payload is designated by specifying `com.apple.caldav.account` as the `PayloadType`.  
 
 In addition to the settings common to all payloads, this payload defines the following keys:  
 
@@ -13,7 +13,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`CalDAVAccountDescription`|String|Optional. The description of the account.|
 |`CalDAVHostName`|String|The server address.</br>In macOS, this key is required.|
 |`CalDAVUsername`|String|The user's login name.</br>In macOS, this key is required.|
-|`CalDAVPassword`|String|Optional. The user's password|
+|`CalDAVPassword`|String|Optional. The user's password.|
 |`CalDAVUseSSL`|Boolean|Whether or not to use SSL.</br>In macOS, this key is optional.|
 |`CalDAVPort`|Number|Optional. The port on which to connect to the server.|
 |`CalDAVPrincipalURL`|String|Optional. The base URL to the user’s calendar. In macOS this URL is required if the user doesn’t provide a password, because auto-discovery of the service will fail and the account won’t be created.|

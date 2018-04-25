@@ -17,7 +17,7 @@ In addition to the settings common to all payloads, all Certificate payloads def
 |Key|Type|Value|
 |-|-|-|
 |`PayloadCertificateFileName`|String|Optional. The file name of the enclosed certificate.|
-|`PayloadContent`|Data|Mandatory. The binary representation of the payload.|
+|`PayloadContent`|Data|Mandatory. The base64 representation of the payload with a line length of 52.|
 |`Password`|String|Optional. For PKCS#12 certificates, contains the password to the identity.|
   
 

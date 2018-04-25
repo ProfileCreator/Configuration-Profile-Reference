@@ -17,4 +17,6 @@ Each dictionary in the `AirPrint` array must contain the following keys and valu
 |-|-|-|
 |`IPAddress`|String|The IP Address of the AirPrint destination.|
 |`ResourcePath`|String|The Resource Path associated with the printer. This corresponds to the `rp` parameter of the `_ipps.tcp` Bonjour record. For example:</br></br>* `printers/Canon_MG5300_series`  </br></br>* `printers/Xerox_Phaser_7600`  </br></br>* `ipp/print`  </br></br>* `Epson_IPP_Printer`  </br></br>|
+|`Port`|Number|Listening port of the AirPrint destination. If this key is not specified AirPrint will use the default port.</br>**Availability:** Available only in iOS 11.0 and later.|
+|`ForceTLS`|Boolean|If `true` AirPrint connections are secured by Transport Layer Security (TLS). Default is `false`.</br>**Availability:** Available only in iOS 11.0 and later.|
   
