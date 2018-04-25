@@ -12,5 +12,5 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`AllowUserOverrides`|Boolean|If set to `true`, users can approve additional kernel extensions not explicitly allowed by configuration profiles.|
 |`AllowedTeamIdentifiers`|Array of Strings|An array of team identifiers that define which validly signed kernel extensions will be allowed to load.|
-|`AllowedKernelExtensions`|Dictionary|A dictionary representing a set of kernel extensions that will always be allowed to load on the machine. The dictionary maps team identifiers (keys) to arrays of bundle identifiers. For unsigned legacy kernel extensions, use an empty key for the team identifier.|
+|`AllowedKernelExtensions`|Dictionary|A dictionary representing a set of kernel extensions that will always be allowed to load on the machine. The dictionary maps team identifiers (keys) to arrays of bundle identifiers.|
   

@@ -400,58 +400,6 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`ProxyPort`|Integer|Optional. The port number of the APN proxy.|
   
 
-# Per-App VPN Payload  
-
- [Configuration Profile Reference - Per-App VPN Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW37)  
-
-The Per-App VPN payload is used for configuring add-on VPN software, and it works only on VPN services of type 'VPN'. It should not be confused with the standard VPN payload, described in [VPN Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW27).  
-
-This payload is supported only in iOS 7.0 and later and macOS v10.9 and later.  
-
-The VPN payload is designated by specifying `com.apple.vpn.managed.applayer` as the `PayloadType` value. The Per-App VPN payload supports all of the keys described in [VPN Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW27) plus the following additional keys:  
-
-|Key|Type|Value|
-|-|-|-|
-|`VPNUUID`|String|A globally-unique identifier for this VPN configuration. This identifier is used to configure apps so that they use the Per-App VPN service for all of their network communication. See [App-to-Per-App VPN Mapping](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW40).|
-|`SafariDomains`|Array|This optional key is a special case of App-to-Per App VPN Mapping. It sets up the app mapping for Safari (Webkit) with a specific identifier and a designated requirement.</br>The array contains strings, each of which is a domain that should trigger this VPN connection in Safari. The rule matching behavior is as follows:</br></br>* Before being matched against a host, all leading and trailing dots are stripped from the domain string. For example, if the domain string is `".com"` the domain string used to match is `"com"`.  </br></br>* Each label in the domain string must match an entire label in the host string. For example, a domain of `"example.com"` matches `"www.example.com"`, but not `"foo.badexample.com"`.  </br></br>* Domain strings with only one label must match the entire host string. For example, a domain of `"com"` matches `"com"`, not `"www.example.com"`.  </br></br>|
-|`OnDemandMatchAppEnabled`|Boolean|This key is placed in the VPN payload sub-dictionary.</br>If `true`, the Per-App VPN connection starts automatically when apps linked to this Per-App VPN service initiate network communication.</br>If `false`, the Per-App VPN connection must be started manually by the user before apps linked to this Per-App VPN service can initiate network communication.</br>If this key is not present, the value of the `OnDemandEnabled` key is used to determine the status of Per-App VPN On Demand.|
-  
-
-### VPN Dictionary Keys  
-
- [Configuration Profile Reference - VPN Dictionary Keys](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW37)  
-
-In addition to the VPN Dictionary keys defined in the com.apple.vpn.managed payload, the VPN Dictionary within the com.apple.vpn.managed.applayer payload can also contain the following keys:  
-
-|Key|Type|Value|
-|-|-|-|
-|`ProviderType`|String|Optional. Either `packet-tunnel` or `app-proxy`. The default is `app-proxy`. If the value of this key is `app-proxy`, then the VPN service will tunnel traffic at the application layer. If the value of this key is `packet-tunnel`, then the VPN service will tunnel traffic at the IP layer.|
-  
-  
-
-# App-to-Per-App VPN Mapping  
-
- [Configuration Profile Reference - App-to-Per-App VPN Mapping](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW40)  
-
-The App-to-Per-App mapping payload is designated by specifying `com.apple.vpn.managed.appmapping` as the `PayloadType` value.  
-
-This payload is supported only in macOS 10.9 and later. It is not supported in iOS.  
-
-|Key|Type|Value|
-|-|-|-|
-|`AppLayerVPNMapping`|Array of Dictionaries|An array of mapping dictionaries.|
-  
-
-Each dictionary in the array can contain the following keys:  
-
-|Key|Type|Value|
-|-|-|-|
-|`Identifier`|String|The app’s bundle ID.|
-|`VPNUUID`|String|The VPNUUID of the Per-App VPN defined in a Per-App VPN payload.|
-|`DesignatedRequirement`|String|The code signature designated requirement of the app that will use the per-app VPN. |
-|`SigningIdentifier`|String|The code signature signing identifier of the app that will use the per-app VPN. |
-  
-
 # App Lock Payload  
 
  [Configuration Profile Reference - App Lock Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW35)  
@@ -1259,7 +1207,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |-|-|-|
 |`AllowUserOverrides`|Boolean|If set to `true`, users can approve additional kernel extensions not explicitly allowed by configuration profiles.|
 |`AllowedTeamIdentifiers`|Array of Strings|An array of team identifiers that define which validly signed kernel extensions will be allowed to load.|
-|`AllowedKernelExtensions`|Dictionary|A dictionary representing a set of kernel extensions that will always be allowed to load on the machine. The dictionary maps team identifiers (keys) to arrays of bundle identifiers. For unsigned legacy kernel extensions, use an empty key for the team identifier.|
+|`AllowedKernelExtensions`|Dictionary|A dictionary representing a set of kernel extensions that will always be allowed to load on the machine. The dictionary maps team identifiers (keys) to arrays of bundle identifiers.|
   
 
 # LDAP Payload  
@@ -1770,7 +1718,7 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`safariForceFraudWarning`|Boolean|Optional. When `true`, Safari fraud warning is enabled. Defaults to `false`.|
 |`safariAllowJavaScript`|Boolean|Optional. When `false`, Safari will not execute JavaScript. Defaults to `true`.|
 |`safariAllowPopups`|Boolean|Optional. When `false`, Safari will not allow pop-up tabs. Defaults to `true`.|
-|`safariAcceptCookies`|Real|Optional. Determines conditions under which the device will accept cookies. Following are allowed values:</br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always  </br></br></br>Defaults to 2.|
+|`safariAcceptCookies`|Real|Optional. Determines conditions under which the device will accept cookies. </br>The user facing settings changed in iOS 11, though the possible values remain the same:</br></br>* 0: Prevent Cross-Site Tracking and Block All Cookies are enabled and the user can’t disable either setting.  </br></br>* 1 or 1.5: Prevent Cross-Site Tracking is enabled and the user can’t disable it. Block All Cookies is not enabled, though the user can enable it.  </br></br>* 2: Prevent Cross-Site Tracking is enabled and Block All Cookies is not enabled. The user can toggle either setting. (Default)  </br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always (Default)  </br></br></br>These are the allowed values and settings in iOS 10 and earlier:</br></br>* 0: Prevent Cross-Site Tracking and Block All Cookies are enabled and the user can’t disable either setting.  </br></br>* 1 or 1.5: Prevent Cross-Site Tracking is enabled and the user can’t disable it. Block All Cookies is not enabled, though the user can enable it.  </br></br>* 2: Prevent Cross-Site Tracking is enabled and Block All Cookies is not enabled. The user can toggle either setting. (Default)  </br></br>* 0:	 Never  </br></br>* 1:	 Allow from current website only  </br></br>* 1.5: Allow from websites visited (Available in iOS 8.0 and later); enter `'&lt;real&gt;1.5&lt;/real&gt;'`  </br></br>* 2:	 Always (Default)  </br></br></br>In iOS 10 and earlier, users can always pick an option that is more restrictive than the payload policy, but not a less restrictive policy. For example, with a payload value of 1.5, a user could switch to Never, but not Always Allow.|
 |`allowSharedStream`|Boolean|Optional. If set to `false`, Shared Photo Stream will be disabled. This will default to `true`.</br>**Availability:** Available in iOS 6.0 and later.|
 |`allowUIConfigurationProfileInstallation`|Boolean|Optional. Supervised only. If set to `false`, the user is prohibited from installing configuration profiles and certificates interactively. This will default to `true`.</br>**Availability:** Available in iOS 6.0 and later.|
 |`allowUntrustedTLSPrompt`|Boolean|Optional. When `false`, automatically rejects untrusted HTTPS certificates without prompting the user.</br>**Availability:** Available in iOS 5.0 and later.|
@@ -2011,7 +1959,8 @@ In addition to the settings common to all payloads, this payload defines the fol
 |`UserPairing`|Boolean|Optional. If `false`, users will not get the pairing dialog, although existing pairings will still work. Default is `true`.|
 |`allowSmartCard`|Boolean|Optional. If `false`, the SmartCard is disabled for logins, authorizations, and screensaver unlocking. It is still allowed for other functions, such as signing emails and web access. A restart is required for a change of setting to take effect. Default is `true`.|
 |`checkCertificateTrust`|Boolean|Optional. If `true`, certificates on the card must be valid in these ways: its issuer is system-trusted, the certificate is not expired, its "valid-after" date is in the past, and it passes CRL and OCSP checking. User overrides are not allowed. Usually this key is set to `true` for SmartCard use in corporate environments. Default is `false`.|
-|`oneCardPerUser`|Boolean|Optional. If `true`, a user can pair with only one smart card, although existing pairings will be allowed if already set up. Default is `false`.|
+|`oneCardPerUser`|Boolean|Optional. If `true`, a user can pair with only one SmartCard, although existing pairings will be allowed if already set up. Default is `false`.|
+|`enforceSmartCard`|Boolean|Optional. If `true`, a user can only login or authenticate with a SmartCard. Default is `false`.|
   
 
 # System Migration Payload  
@@ -2402,6 +2351,47 @@ Each dictionary in a ServiceExceptions array may contain the following keys:
 |`ServiceName`|String|Required. The name of a system service which is exempt from Always On VPN. Must be one of:</br></br>* `VoiceMail`  </br></br>* `AirPrint`  </br></br>* `Allow`  </br></br>* `Drop`  </br></br>|
 |`Action`|String|Required. One of the following:</br></br>* `VoiceMail`  </br></br>* `AirPrint`  </br></br>* `Allow`  </br></br>* `Drop`  </br></br>|
   
+  
+
+# Per-App VPN Payload  
+
+ [Configuration Profile Reference - Per-App VPN Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW37)  
+
+The Per-App VPN payload is used for configuring add-on VPN software, and it works only on VPN services of type 'VPN'. It should not be confused with the standard VPN payload, described in [VPN Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW27).  
+
+This payload is supported only in iOS 7.0 and later and macOS v10.9 and later.  
+
+The VPN payload is designated by specifying `com.apple.vpn.managed.applayer` as the `PayloadType` value. The Per-App VPN payload supports all of the keys described in [VPN Payload](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW27) plus the following additional keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`VPNUUID`|String|A globally-unique identifier for this VPN configuration. This identifier is used to configure apps so that they use the Per-App VPN service for all of their network communication. See [App-to-Per-App VPN Mapping](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW40).|
+|`SafariDomains`|Array|This optional key is a special case of App-to-Per App VPN Mapping. It sets up the app mapping for Safari (Webkit) with a specific identifier and a designated requirement.</br>The array contains strings, each of which is a domain that should trigger this VPN connection in Safari. The rule matching behavior is as follows:</br></br>* Before being matched against a host, all leading and trailing dots are stripped from the domain string. For example, if the domain string is `".com"` the domain string used to match is `"com"`.  </br></br>* Each label in the domain string must match an entire label in the host string. For example, a domain of `"example.com"` matches `"www.example.com"`, but not `"foo.badexample.com"`.  </br></br>* Domain strings with only one label must match the entire host string. For example, a domain of `"com"` matches `"com"`, not `"www.example.com"`.  </br></br>|
+|`OnDemandMatchAppEnabled`|Boolean|</br>If `true`, the Per-App VPN connection starts automatically when apps linked to this Per-App VPN service initiate network communication.</br>If `false`, the Per-App VPN connection must be started manually by the user before apps linked to this Per-App VPN service can initiate network communication.</br>If this key is not present, the value of the `OnDemandEnabled` key is used to determine the status of Per-App VPN On Demand.|
+|`ProviderType`|String|Optional. Either `packet-tunnel` or `app-proxy`. The default is `app-proxy`. If the value of this key is `app-proxy`, then the VPN service will tunnel traffic at the application layer. If the value of this key is `packet-tunnel`, then the VPN service will tunnel traffic at the IP layer.|
+  
+
+# App-to-Per-App VPN Mapping  
+
+ [Configuration Profile Reference - App-to-Per-App VPN Mapping](https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206-CH1-SW40)  
+
+The App-to-Per-App mapping payload is designated by specifying `com.apple.vpn.managed.appmapping` as the `PayloadType` value.  
+
+This payload is supported only in macOS 10.9 and later. It is not supported in iOS.  
+
+|Key|Type|Value|
+|-|-|-|
+|`AppLayerVPNMapping`|Array of Dictionaries|An array of mapping dictionaries.|
+  
+
+Each dictionary in the array can contain the following keys:  
+
+|Key|Type|Value|
+|-|-|-|
+|`Identifier`|String|The app’s bundle ID.|
+|`VPNUUID`|String|The VPNUUID of the Per-App VPN defined in a Per-App VPN payload.|
+|`DesignatedRequirement`|String|The code signature designated requirement of the app that will use the per-app VPN. |
+|`SigningIdentifier`|String|The code signature signing identifier of the app that will use the per-app VPN. |
   
 
 # Web Clip Payload  
