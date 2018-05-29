@@ -135,19 +135,13 @@ def sectionString(tag):
 
 	return cleanedString
 
-def sectionNotebox(tag):
-	sectionNoteboxString = ""
+def sectionBox(tag):
+	sectionBoxString = ""
 	for pTag in tag.find_all("p"):
 		string = sectionString(pTag)
 		if unicode(string) != u"":
-			sectionNoteboxString += '\n> ' + string + '  \n'
-	return sectionNoteboxString
-
-def sectionImportantbox(tag):
-	sectionImportantboxString = ""
-	for pTag in tag.find_all("p"):
-		sectionImportantboxString += '\n> ' + sectionString(pTag) + '  \n'
-	return sectionImportantboxString
+			sectionBoxString += '\n> ' + sectionString(pTag) + '  \n'
+	return sectionBoxString
 
 def sectionTitle(element):
 	if element.name == "a":
@@ -270,11 +264,15 @@ def exportSection(section, writeToFile=True):
 
 		# Check if tag is a div with a class 'notebox', meaning notebox
 		elif tagName == "div" and tag['class'] == ['notebox']:
-			sectionContent += '\n' + sectionNotebox(tag) + '  \n'
+			sectionContent += '\n' + sectionBox(tag) + '  \n'
 
-		# Check if tag is a div with a class 'importantbox clear', meaning importantbox
+		# Check if tag is importantbox
 		elif tagName == "div" and tag['class'] == [u'importantbox', u'clear']:
-			sectionContent += '\n' + sectionImportantbox(tag) + '  \n'
+			sectionContent += '\n' + sectionBox(tag) + '  \n'
+
+		# Check if tag is warningbox
+		elif tagName == "div" and tag['class'] == [u'warningbox', u'clear']:
+			sectionContent += '\n' + sectionBox(tag) + '  \n'
 
 		# Check if tag is codesample
 		elif tagName == "div" and tag['class'] == [u'codesample', u'clear']:
@@ -325,7 +323,7 @@ def deleteCurrentMarkdown():
 			print(e)
 
 # Download the current page and check if it has changed
-# downloadCurrentPage()
+downloadCurrentPage()
 
 # Open the current page html file
 with open(currentPath, 'r') as f:
