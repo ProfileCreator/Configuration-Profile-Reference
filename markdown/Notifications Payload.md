@@ -24,4 +24,6 @@ Each entry in the NotificationSettings field contains the following dictionary:
 |`AlertType`|Integer|Optional. The type of alert for notifications for this app:</br></br>* 0: None  </br></br>* 1: Banner  </br></br>* 2: Modal Alert  </br></br></br>Default is 1.|
 |`BadgesEnabled`|Boolean|Optional. Whether badges are allowed for this app. Default is `true`.|
 |`SoundsEnabled`|Boolean|Optional. Whether sounds are allowed for this app. Default is `true`.|
+|`ShowInCarPlay`|Boolean|Optional. Whether notifications can be shown in CarPlay. Default is `true`.</br>**Availability:** Available in iOS 12 and later.|
+|`CriticalAlertEnabled`|Boolean|Optional. Whether an app can mark a notification as a critical notification that will ignore Do Not Disturb and ringer settings. Default is `false`.</br>**Availability:** Available in iOS 12 and later.|
   

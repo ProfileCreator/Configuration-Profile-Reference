@@ -16,6 +16,4 @@ Each payload must contain exactly one font file in TrueType (.ttf) or OpenType (
 
 
 > **Important:** Fonts are identified by their embedded PostScript names. Two fonts with the same PostScript name are considered to be the same font even if their contents differ. Installing two different fonts with the same PostScript name is not supported, and the resulting behavior is undefined.  
-
->   
   

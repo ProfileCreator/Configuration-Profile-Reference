@@ -113,8 +113,6 @@ If a dictionary matches the current network, a server probe is sent if a URL is 
 
 
 > **Important:** Be sure to set a catch-all value. If you do not, the current default behavior is to allow the connection to occur, but this behavior is not guaranteed.  
-
->   
   
 
 The `OnDemandRules` dictionaries can contain one or more of the following keys:  
